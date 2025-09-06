@@ -57,11 +57,12 @@ export const DiagramBlock = ({
       <GridItem
         position={'relative'}
         onClick={(event: {detail: number}) => {
-          isCleanLookEnabled
-          && event.detail === 2
-          && dispatch(toggleCleanLook())
+          if (isCleanLookEnabled && event.detail === 2) {
+            dispatch(toggleCleanLook())
+          }
         }}
       >
+        {/* @ts-ignore */}
         <ResponsiveContainer>
           <LineChart
             data={unitData}

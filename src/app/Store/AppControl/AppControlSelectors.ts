@@ -1,6 +1,6 @@
-import { createDraftSafeSelector, createSelector } from '@reduxjs/toolkit';
-import { RootState } from '@/app/Store/Store';
-import { DISPLAYED_GRAPH } from '@/app/Constants/DisplayedGraph';
+import {createDraftSafeSelector} from '@reduxjs/toolkit';
+import {RootState} from '@/app/Store/Store';
+import {DISPLAYED_GRAPH} from '@/app/Constants/DisplayedGraph';
 
 export const appControlDomainSelector = (state: RootState) => state.appControl
 

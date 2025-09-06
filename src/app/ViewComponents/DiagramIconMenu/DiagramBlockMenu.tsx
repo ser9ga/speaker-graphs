@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react';
+import {ReactNode, useState} from 'react';
 import { Collapsible, IconButton, Stack } from '@chakra-ui/react';
 import { IoIosMenu } from 'react-icons/io';
 import { VscChromeClose } from 'react-icons/vsc';
 import { HiOutlineArrowsPointingIn, HiOutlineArrowsPointingOut } from 'react-icons/hi2';
 
 interface DiagramBlockMenuProps {
-  buttonCollection: any,
+  buttonCollection: ReactNode | ReactNode[], // TODO
   toggleGraphExpansion: () => void,
   isGraphExpanded: boolean
 }

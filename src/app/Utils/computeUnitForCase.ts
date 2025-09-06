@@ -16,6 +16,7 @@ export const pickUnitData = (
     }
 
     storeGraphData?.forEach((storeGraphDataItem) => {
+      // @ts-ignore
       const rawUnitValue  = storeGraphDataItem.graphData[currentFrequency][unit]
 
       let finalValue: number | null = null;

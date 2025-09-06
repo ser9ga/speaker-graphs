@@ -2,7 +2,7 @@
 
 import { Box, Button, CloseButton, Dialog, FileUpload, Flex, Icon, Portal } from '@chakra-ui/react';
 import { useAppDispatch, useAppSelector } from '@/app/Store/Hooks';
-import { toaster } from '@/app/components/ui/toaster';
+// import { toaster } from '@/app/components/ui/toaster';
 
 import { setGraphData } from '@/app/Store/GraphData/GraphDataSlice';
 import { DataFromJsonFile } from '@/app/Types/dataFromJsonFile';
@@ -25,7 +25,7 @@ export const ChooseFileModal = () => {
   //   type: "info",
   // })
 
-  const onFileAccept  = async ({files}) => {
+  const onFileAccept  = async ({files}: {files: Blob[]}) => {
     tempDataStorage.current = [];
     setIsSubmitButtonActive(false)
 
@@ -38,7 +38,7 @@ export const ChooseFileModal = () => {
 
       const file = files[index];
       reader.onload = async function(e) {
-        const bin = e.target.result as string;
+        const bin = e.target?.result as string;
 
         const parsedData: DataFromJsonFile = {
           meta: {
@@ -85,7 +85,7 @@ export const ChooseFileModal = () => {
         parsedData.meta.isDoorOpened = head[1][5] === 'true'
         parsedData.meta.voltageOfTesting = Number(head[1][6])
 
-        splitted.forEach((item, itemIndex) => {
+        splitted.forEach((item) => {
           parsedData.data[item[0] as unknown as number] = {
             Uin: normalizeRawNumber(item[1]),
             I: normalizeRawNumber(item[2]),

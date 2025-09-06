@@ -1,4 +1,4 @@
-export const normalizeRawNumber = (rawNumber: any) => {
+export const normalizeRawNumber = (rawNumber: unknown) => {
   if (rawNumber === null) {
     return null;
   }
@@ -14,7 +14,7 @@ export const normalizeRawNumber = (rawNumber: any) => {
   if (typeof rawNumber === 'string') {
     const normalizedRow = rawNumber.replace(',','.')
 
-    if (isNaN(normalizedRow)) {
+    if (isNaN(Number(normalizedRow))) {
       return null;
     }
 
