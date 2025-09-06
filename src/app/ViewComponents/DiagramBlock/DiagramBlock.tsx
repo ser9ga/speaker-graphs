@@ -129,7 +129,7 @@ export const DiagramBlock = ({
                   strokeWidth: 2
                 }}
                 formatter={(value) => {
-                  return Math.round(Number(value) * 100) / 100
+                  return `${Math.round(Number(value) * 100) / 100} ${GRAPH_LITERALS[graphName].unitLabel}`
                 }}
               />
               <LineCollection />

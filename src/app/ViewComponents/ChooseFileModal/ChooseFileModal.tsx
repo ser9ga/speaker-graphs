@@ -13,6 +13,7 @@ import { isFileChooseModalOpenedSelector } from '@/app/Store/AppControl/AppContr
 import { LuUpload } from 'react-icons/lu';
 import { setFileChooseModalOpened } from '@/app/Store/AppControl/AppControlSlice';
 import { useRef, useState } from 'react';
+import {_exhaustiveCheck} from "@/app/Utils/Common";
 
 export const ChooseFileModal = () => {
   const tempDataStorage = useRef<DataFromJsonFile[]>([])
@@ -77,12 +78,28 @@ export const ChooseFileModal = () => {
 
         const head = splitted.splice(0,3);
 
+        const getIsDoorOpened = (value: string) => {
+          const typedValue = (value.toLowerCase() as 'открыта' | 'закрыта')
+
+          switch (typedValue) {
+            case 'открыта': {
+              return true
+            }
+
+            case 'закрыта': {
+              return false
+            }
+
+            default: _exhaustiveCheck(typedValue)
+          }
+        }
+
         parsedData.meta.speaker.label = head[1][0].trim()
         parsedData.meta.cabinet.label = head[1][1].trim()
         parsedData.meta.port.diameter = Number(head[1][2])
         parsedData.meta.port.length = Number(head[1][3])
         parsedData.meta.car.label = head[1][4].trim()
-        parsedData.meta.isDoorOpened = head[1][5] === 'true'
+        parsedData.meta.isDoorOpened = getIsDoorOpened(head[1][5])
         parsedData.meta.voltageOfTesting = Number(head[1][6])
 
         splitted.forEach((item) => {

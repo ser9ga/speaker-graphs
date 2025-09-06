@@ -14,7 +14,9 @@ export const parseDataFromFile = (
       rawData.meta.car.id || rawData.meta.car.label,
       rawData.meta.port.id || `${rawData.meta.port.diameter}_${rawData.meta.port.length}`,
       rawData.meta.isDoorOpened,
-      rawData.meta.voltageOfTesting]
+      rawData.meta.voltageOfTesting,
+      Math.random().toFixed(5)
+    ]
       .join('_');
 
   const measurementMeta: MeasurementMeta = {
