@@ -14,6 +14,7 @@ export const DiagramCollection = () => {
   useEffect(() => {
     setTimeout(() => {
       const list = Array.from(document.getElementsByClassName('recharts-surface'));
+      // @ts-ignore
       [...list]?.forEach(el => el.style.outline = 'none')
     })
   }, [])

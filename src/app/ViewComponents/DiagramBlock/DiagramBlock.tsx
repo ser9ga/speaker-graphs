@@ -1,5 +1,5 @@
-import {CartesianGrid, Label, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import {Box, GridItem, Show} from '@chakra-ui/react';
+import {CartesianGrid, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+import {Box, Flex, GridItem, Show, Text} from '@chakra-ui/react';
 import {DiagramBlockMenu} from '@/app/ViewComponents/DiagramIconMenu/DiagramBlockMenu';
 import {DISPLAYED_GRAPH} from '@/app/Constants/DisplayedGraph';
 import {VERTICAL_SCALE_OPTION} from '@/app/Constants/VerticalScaleOption';
@@ -11,6 +11,7 @@ import {GraphName} from '@/app/Constants/GraphName';
 import {useAppDispatch, useAppSelector} from '@/app/Store/Hooks';
 import {
   currentDisplayedGraphSelector,
+  horizontalScaleOptionSelector,
   isCleanLookEnabledSelector,
   isGraphExpandedSelector,
   verticalScaleOptionSelector
@@ -18,6 +19,7 @@ import {
 import {toggleCleanLook, toggleGraphExpansion} from '@/app/Store/AppControl/AppControlSlice';
 import {Unit} from '@/app/Constants/Unit';
 import {getUnitDataByUnitName} from '@/app/Store/GraphData/GraphDataSelectors';
+import {getFilteredNotEmptyUnitData} from "@/app/Utils/getFlteredNotEmptyUnitData";
 
 interface DiagramBlockProps {
   graphName: GraphName
@@ -33,12 +35,13 @@ export const DiagramBlock = ({
   const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector);
   const currentDisplayedGraph = useAppSelector(currentDisplayedGraphSelector);
   const verticalScaleOption = useAppSelector(verticalScaleOptionSelector);
+  const horizontalScaleOption = useAppSelector(horizontalScaleOptionSelector);
   const unitData = useAppSelector(getUnitDataByUnitName(unitName));
   const isGraphExpanded = useAppSelector(isGraphExpandedSelector);
 
   const dispatch = useAppDispatch()
 
-  const domain = useMemo(() => {
+  const yDomain = useMemo(() => {
     switch (verticalScaleOption) {
       case VERTICAL_SCALE_OPTION.ZOOMED: {
         return ['auto', 'auto']
@@ -52,6 +55,20 @@ export const DiagramBlock = ({
     return _exhaustiveCheck(verticalScaleOption)
   }, [verticalScaleOption])
 
+  const data = useMemo(() => {
+    switch (horizontalScaleOption) {
+      case VERTICAL_SCALE_OPTION.ZOOMED: {
+        return getFilteredNotEmptyUnitData(unitData)
+      }
+
+      case VERTICAL_SCALE_OPTION.FULL: {
+        return unitData
+      }
+    }
+
+    return _exhaustiveCheck(horizontalScaleOption)
+  }, [unitData, horizontalScaleOption])
+
   return (
     <Show <boolean> when={currentDisplayedGraph === DISPLAYED_GRAPH.ALL
       || currentDisplayedGraph === graphName}>
@@ -63,69 +80,75 @@ export const DiagramBlock = ({
           }
         }}
       >
-        {/* @ts-ignore */}
-        <ResponsiveContainer>
-          <LineChart
-            data={unitData}
-            margin={{
-              top: 20,
-              right: 0,
-              left: -27,
-              bottom: 0,
-            }}
+        <Flex
+          alignItems="center"
+          justifyContent="space-between"
+          gap={'10px'}
+          direction={'column'}
+          height={'100%'}
+          width={'100%'}
+        >
+          <Text textStyle="xl">
+            {`${GRAPH_LITERALS[graphName].diagramLabel}, ${GRAPH_LITERALS[graphName].unitLabel}`}
+          </Text>
+          {/* @ts-ignore */}
+          <ResponsiveContainer
+            style={{position: 'relative'}}
+            height={'100%'}
+            minHeight={'0px'}
           >
-            <Label
-              value={`${GRAPH_LITERALS[graphName].diagramLabel}, ${GRAPH_LITERALS[graphName].unitLabel}`}
-              position={'top'}
-            />
-            <CartesianGrid
-              strokeDasharray="4 4"
-              style={{outline: 'none'}}
-            />
-            <XAxis
-              minTickGap={25}
-              dataKey="argument"
-              interval="preserveStart"
-              style={{fontSize: '12px',}}
-            />
-            <YAxis
-              // TODO
-              // label={{
-              //   value: GRAPH_LITERALS[graphName].unitLabel,
-              //   angle: -90,
-              //   position: 'insideLeft',
-              //   style: { textAnchor: 'middle' }
-              // }}
-              domain={domain}
-              style={{fontSize: '12px',}}
-            />
-            <Tooltip
-              labelFormatter={(value) => value + ' Гц'}
-              separator={''}
-              cursor={{
-                stroke: 'gold',
-                strokeWidth: 2
+            <LineChart
+              data={data}
+              margin={{
+                top: 0,
+                right: 0,
+                left: -27,
+                bottom: 0,
               }}
-              formatter={(value) => {
-                return Math.round(Number(value) * 100) / 100
-              }}
-            />
-            <LineCollection />
-          </LineChart>
-          <Show <boolean> when={!isCleanLookEnabled}>
-            <Box
-              position="absolute"
-              top={'30px'}
-              right={'10px'}
             >
-              <DiagramBlockMenu
-                buttonCollection={buttonCollection}
-                toggleGraphExpansion={() => dispatch(toggleGraphExpansion(graphName))}
-                isGraphExpanded={isGraphExpanded}
+              <CartesianGrid
+                strokeDasharray="4 4"
+                style={{outline: 'none'}}
               />
-            </Box>
-          </Show>
-        </ResponsiveContainer>
+              <XAxis
+                minTickGap={25}
+                dataKey="argument"
+                interval="preserveStart"
+                style={{fontSize: '12px',}}
+                domain={['dataMin', 'dataMax']}
+              />
+              <YAxis
+                domain={yDomain}
+                style={{fontSize: '12px',}}
+              />
+              <Tooltip
+                labelFormatter={(value) => value + ' Гц'}
+                separator={''}
+                cursor={{
+                  stroke: 'gold',
+                  strokeWidth: 2
+                }}
+                formatter={(value) => {
+                  return Math.round(Number(value) * 100) / 100
+                }}
+              />
+              <LineCollection />
+            </LineChart>
+            <Show <boolean> when={!isCleanLookEnabled}>
+              <Box
+                position="absolute"
+                top={'10px'}
+                right={'10px'}
+              >
+                <DiagramBlockMenu
+                  buttonCollection={buttonCollection}
+                  toggleGraphExpansion={() => dispatch(toggleGraphExpansion(graphName))}
+                  isGraphExpanded={isGraphExpanded}
+                />
+              </Box>
+            </Show>
+          </ResponsiveContainer>
+        </Flex>
       </GridItem>
     </Show>
   )

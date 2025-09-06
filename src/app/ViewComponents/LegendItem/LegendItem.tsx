@@ -1,13 +1,15 @@
-import { Flex, Grid, Switch, Text } from '@chakra-ui/react';
-import { PiSpeakerNone } from 'react-icons/pi';
-import { LuDiameter } from 'react-icons/lu';
-import { TbRulerMeasure } from 'react-icons/tb';
-import { IoCarOutline } from 'react-icons/io5';
-import { GiCarDoor } from 'react-icons/gi';
-import { RiSpeaker2Line } from 'react-icons/ri';
-import { useAppDispatch, useAppSelector } from '@/app/Store/Hooks';
-import { getIsLineVisibleSelector, getLineColorSelector } from '@/app/Store/GraphData/GraphDataSelectors';
-import { changeVisibilityOfCase } from '@/app/Store/GraphData/GraphDataSlice';
+import {Flex, Grid, Switch, Text} from '@chakra-ui/react';
+import {PiSpeakerNone} from 'react-icons/pi';
+import {LuDiameter} from 'react-icons/lu';
+import {TbCircuitVoltmeter, TbRulerMeasure} from 'react-icons/tb';
+import {IoCarOutline} from 'react-icons/io5';
+import {GiCarDoor} from 'react-icons/gi';
+import {RiSpeaker2Line} from 'react-icons/ri';
+import {useAppDispatch, useAppSelector} from '@/app/Store/Hooks';
+import {getIsLineVisibleSelector, getLineColorSelector} from '@/app/Store/GraphData/GraphDataSelectors';
+import {changeVisibilityOfCase} from '@/app/Store/GraphData/GraphDataSlice';
+import {Tooltip} from "@/app/components/ui/tooltip";
+import * as React from "react";
 
 interface LegendItemProps {
   uniqName: string
@@ -17,6 +19,7 @@ interface LegendItemProps {
   portLength: string
   carLabel: string
   doorState: string
+  voltageOfTesting: string
 }
 
 export const LegendItem = ({
@@ -27,6 +30,7 @@ export const LegendItem = ({
   portLength,
   carLabel,
   doorState,
+  voltageOfTesting
 }: LegendItemProps) => {
   const isVisible = useAppSelector(getIsLineVisibleSelector(uniqName))
   const strokeColor = useAppSelector(getLineColorSelector(uniqName))
@@ -42,7 +46,7 @@ export const LegendItem = ({
 
   return (
     <Grid
-      templateColumns={'40px 150px 80px 80px 80px 80px 100px'}
+      templateColumns={'40px 150px 80px 80px 80px 80px 80px 50px'}
       gap={'10px'}
       alignItems={'center'}
     >
@@ -64,28 +68,46 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <PiSpeakerNone />
-        <Text
-          textStyle="sm"
-          truncate
+        <Tooltip
+          content={speakerLabel}
+          positioning={{placement: 'top'}}
+          openDelay={1000}
         >
-          {speakerLabel}
-        </Text>
+          <Text
+            textStyle="sm"
+            truncate
+          >
+            {speakerLabel}
+          </Text>
+        </Tooltip>
       </Flex>
       <Flex
         alignItems={'center'}
         gap={'5px'}
       >
         <RiSpeaker2Line />
-        <Text textStyle="sm">
-          {cabinetLabel}
-        </Text>
+        <Tooltip
+          content={cabinetLabel}
+          positioning={{placement: 'top'}}
+          openDelay={1000}
+        >
+          <Text
+            textStyle="sm"
+            truncate
+          >
+            {cabinetLabel}
+          </Text>
+        </Tooltip>
       </Flex>
       <Flex
         alignItems={'center'}
         gap={'5px'}
       >
         <LuDiameter />
-        <Text textStyle="sm">
+        <Text
+          textStyle="sm"
+          truncate
+        >
           {portDiameter}
         </Text>
       </Flex>
@@ -94,7 +116,10 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <TbRulerMeasure />
-        <Text textStyle="sm">
+        <Text
+          textStyle="sm"
+          truncate
+        >
           {portLength}
         </Text>
       </Flex>
@@ -103,17 +128,41 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <IoCarOutline />
-        <Text textStyle="sm">
-          {carLabel}
-        </Text>
+        <Tooltip
+          content={carLabel}
+          positioning={{placement: 'top'}}
+          openDelay={1000}
+        >
+          <Text
+            textStyle="sm"
+            truncate
+          >
+            {carLabel}
+          </Text>
+        </Tooltip>
       </Flex>
       <Flex
         alignItems={'center'}
         gap={'5px'}
       >
         <GiCarDoor />
-        <Text textStyle="sm">
+        <Text
+          textStyle="sm"
+          truncate
+        >
           {doorState}
+        </Text>
+      </Flex>
+      <Flex
+        alignItems={'center'}
+        gap={'5px'}
+      >
+        <TbCircuitVoltmeter />
+        <Text
+          textStyle="sm"
+          truncate
+        >
+          {voltageOfTesting}
         </Text>
       </Flex>
     </Grid>

@@ -1,6 +1,8 @@
 import { Unit } from '@/app/Constants/Unit';
 import { StoreGraphDataItem } from '@/app/Types/GraphDataTypes';
+import {GraphDataItem} from "@/app/Types/Types";
 
+// TODO
 export const pickUnitData = (
   storeGraphData: StoreGraphDataItem[] | null,
   unit: Unit
@@ -8,10 +10,7 @@ export const pickUnitData = (
   [...Array(51)].map((_, i) => {
     const currentFrequency = i + 20
 
-    const result: {
-      argument: string,
-      [key: string]: number | string | null
-    }  = {
+    const result: GraphDataItem  = {
       argument: currentFrequency.toString()
     }
 

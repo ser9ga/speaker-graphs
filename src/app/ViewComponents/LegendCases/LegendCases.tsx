@@ -32,6 +32,7 @@ export const LegendCases = (
           portLength={item.portLength + 'мм'}
           carLabel={item.carLabel}
           doorState={item.isDoorOpened ? 'Открыта' : 'Закрыта'}
+          voltageOfTesting={`${item.voltageOfTesting}v`}
         />
       ))}
     </Flex>
