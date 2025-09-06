@@ -51,6 +51,7 @@ export const LegendItem = ({
         defaultChecked
         onCheckedChange={onCheckedChange}
         checked={isVisible}
+        size={'sm'}
       >
         <Switch.HiddenInput />
         <Switch.Control>
@@ -63,7 +64,10 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <PiSpeakerNone />
-        <Text truncate>
+        <Text
+          textStyle="sm"
+          truncate
+        >
           {speakerLabel}
         </Text>
       </Flex>
@@ -72,7 +76,7 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <RiSpeaker2Line />
-        <Text>
+        <Text textStyle="sm">
           {cabinetLabel}
         </Text>
       </Flex>
@@ -81,7 +85,7 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <LuDiameter />
-        <Text>
+        <Text textStyle="sm">
           {portDiameter}
         </Text>
       </Flex>
@@ -90,7 +94,7 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <TbRulerMeasure />
-        <Text>
+        <Text textStyle="sm">
           {portLength}
         </Text>
       </Flex>
@@ -99,7 +103,7 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <IoCarOutline />
-        <Text>
+        <Text textStyle="sm">
           {carLabel}
         </Text>
       </Flex>
@@ -108,7 +112,7 @@ export const LegendItem = ({
         gap={'5px'}
       >
         <GiCarDoor />
-        <Text>
+        <Text textStyle="sm">
           {doorState}
         </Text>
       </Flex>

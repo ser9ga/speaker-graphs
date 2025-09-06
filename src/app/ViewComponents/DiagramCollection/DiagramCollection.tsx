@@ -5,15 +5,24 @@ import { GRAPH_NAME } from '@/app/Constants/GraphName';
 import { UNIT } from '@/app/Constants/Unit';
 import { useAppSelector } from '@/app/Store/Hooks';
 import { isGraphExpandedSelector } from '@/app/Store/AppControl/AppControlSelectors';
+import {useEffect} from "react";
 
 export const DiagramCollection = () => {
   const isGraphExpanded = useAppSelector(isGraphExpandedSelector);
+
+  // нужно для отключения outline на графиках
+  useEffect(() => {
+    setTimeout(() => {
+      const list = Array.from(document.getElementsByClassName('recharts-surface'));
+      [...list]?.forEach(el => el.style.outline = 'none')
+    })
+  }, [])
 
   return (
     <Grid
       templateRows={isGraphExpanded ? "1fr" : "1fr 1fr"}
       templateColumns={isGraphExpanded ? "1fr" : "1fr 1fr"}
-      gap={10}
+      gap={'15px'}
       height={'100%'}
       width={'100%'}
     >

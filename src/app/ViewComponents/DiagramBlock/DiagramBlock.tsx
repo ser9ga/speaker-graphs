@@ -1,22 +1,23 @@
 import {CartesianGrid, Label, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import { Box, GridItem, Show } from '@chakra-ui/react';
-import { DiagramBlockMenu } from '@/app/ViewComponents/DiagramIconMenu/DiagramBlockMenu';
-import { DISPLAYED_GRAPH } from '@/app/Constants/DisplayedGraph';
-import { VERTICAL_SCALE_OPTION } from '@/app/Constants/VerticalScaleOption';
-import { JSX, useMemo } from 'react';
-import { _exhaustiveCheck } from '@/app/Utils/Common';
-import { LineCollection } from '@/app/ViewComponents/LineCollection/LineCollection';
-import { GRAPH_LITERALS } from '@/app/Constants/GraphLiterals';
-import { GraphName } from '@/app/Constants/GraphName';
-import { useAppDispatch, useAppSelector } from '@/app/Store/Hooks';
+import {Box, GridItem, Show} from '@chakra-ui/react';
+import {DiagramBlockMenu} from '@/app/ViewComponents/DiagramIconMenu/DiagramBlockMenu';
+import {DISPLAYED_GRAPH} from '@/app/Constants/DisplayedGraph';
+import {VERTICAL_SCALE_OPTION} from '@/app/Constants/VerticalScaleOption';
+import {JSX, useMemo} from 'react';
+import {_exhaustiveCheck} from '@/app/Utils/Common';
+import {LineCollection} from '@/app/ViewComponents/LineCollection/LineCollection';
+import {GRAPH_LITERALS} from '@/app/Constants/GraphLiterals';
+import {GraphName} from '@/app/Constants/GraphName';
+import {useAppDispatch, useAppSelector} from '@/app/Store/Hooks';
 import {
   currentDisplayedGraphSelector,
-  isCleanLookEnabledSelector, isGraphExpandedSelector,
+  isCleanLookEnabledSelector,
+  isGraphExpandedSelector,
   verticalScaleOptionSelector
 } from '@/app/Store/AppControl/AppControlSelectors';
-import { toggleCleanLook, toggleGraphExpansion } from '@/app/Store/AppControl/AppControlSlice';
-import { Unit } from '@/app/Constants/Unit';
-import { getUnitDataByUnitName } from '@/app/Store/GraphData/GraphDataSelectors';
+import {toggleCleanLook, toggleGraphExpansion} from '@/app/Store/AppControl/AppControlSlice';
+import {Unit} from '@/app/Constants/Unit';
+import {getUnitDataByUnitName} from '@/app/Store/GraphData/GraphDataSelectors';
 
 interface DiagramBlockProps {
   graphName: GraphName
@@ -67,28 +68,36 @@ export const DiagramBlock = ({
           <LineChart
             data={unitData}
             margin={{
-              top: 0,
+              top: 20,
               right: 0,
-              left: 0,
+              left: -27,
               bottom: 0,
             }}
           >
             <Label
-              value={GRAPH_LITERALS[graphName].diagramLabel}
+              value={`${GRAPH_LITERALS[graphName].diagramLabel}, ${GRAPH_LITERALS[graphName].unitLabel}`}
               position={'top'}
             />
-            <CartesianGrid strokeDasharray="4 4" />
+            <CartesianGrid
+              strokeDasharray="4 4"
+              style={{outline: 'none'}}
+            />
             <XAxis
+              minTickGap={25}
               dataKey="argument"
               interval="preserveStart"
+              style={{fontSize: '12px',}}
             />
             <YAxis
-              label={{
-                value: GRAPH_LITERALS[graphName].argumentLabel,
-                angle: -90,
-                position: 'insideLeft'
-              }}
+              // TODO
+              // label={{
+              //   value: GRAPH_LITERALS[graphName].unitLabel,
+              //   angle: -90,
+              //   position: 'insideLeft',
+              //   style: { textAnchor: 'middle' }
+              // }}
               domain={domain}
+              style={{fontSize: '12px',}}
             />
             <Tooltip
               labelFormatter={(value) => value + ' Гц'}
@@ -97,13 +106,16 @@ export const DiagramBlock = ({
                 stroke: 'gold',
                 strokeWidth: 2
               }}
+              formatter={(value) => {
+                return Math.round(Number(value) * 100) / 100
+              }}
             />
             <LineCollection />
           </LineChart>
           <Show <boolean> when={!isCleanLookEnabled}>
             <Box
               position="absolute"
-              top={'10px'}
+              top={'30px'}
               right={'10px'}
             >
               <DiagramBlockMenu

@@ -1,17 +1,10 @@
 import * as React from 'react';
-import { Flex, Show, VStack } from '@chakra-ui/react';
-import { LegendCases } from '@/app/ViewComponents/LegendCases/LegendCases';
-import {
-  VerticalScaleControlButton
-} from '@/app/ViewComponents/VerticalScaleControlButton/VerticalScaleControlButton';
-import {
-  HorizontalScaleControlButton
-} from '@/app/ViewComponents/HorizontalScaleControlButton/HorizontalScaleControlButton';
-import { CleanLookButton } from '@/app/ViewComponents/CleanLookButton/CleanLookButton';
-import { isCleanLookEnabledSelector } from '@/app/Store/AppControl/AppControlSelectors';
-import { useAppSelector } from '@/app/Store/Hooks';
-import { measurementMetasSelector } from '@/app/Store/GraphData/GraphDataSelectors';
-import { ChooseImportFilesButton } from '@/app/ViewComponents/ChooseImportFilesButton/ChooseImportFilesButton';
+import {Flex, Show} from '@chakra-ui/react';
+import {LegendCases} from '@/app/ViewComponents/LegendCases/LegendCases';
+import {isCleanLookEnabledSelector} from '@/app/Store/AppControl/AppControlSelectors';
+import {useAppSelector} from '@/app/Store/Hooks';
+import {measurementMetasSelector} from '@/app/Store/GraphData/GraphDataSelectors';
+import {ControlButtonBar} from "@/app/ViewComponents/ControlButtonBar/ControlButtonBar";
 
 export const ControlPanel = () => {
   const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector)
@@ -21,19 +14,13 @@ export const ControlPanel = () => {
     <Flex
       gap={'20px'}
       width={'100%'}
+      height={'100%'}
       justifyContent={'space-between'}
       alignItems={'center'}
     >
-      <LegendCases
-        items={measurements}
-      />
+      <LegendCases items={measurements} />
       <Show <boolean> when={!isCleanLookEnabled}>
-        <VStack>
-          <VerticalScaleControlButton />
-          <HorizontalScaleControlButton />
-          <ChooseImportFilesButton />
-          <CleanLookButton />
-        </VStack>
+        <ControlButtonBar />
       </Show>
     </Flex>
   );

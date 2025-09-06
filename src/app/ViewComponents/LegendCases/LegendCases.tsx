@@ -9,16 +9,18 @@ export const LegendCases = (
   {items}: LegendCasesProps
 ) => {
   if (!items || items.length === 0) {
-    return <Text alignSelf={'flex-start'}>
-      Не выбран ни один случай измерения
-    </Text>
+    return (
+      <Text alignSelf={'flex-start'}>
+        Не выбран ни один случай измерения
+      </Text>
+    )
   }
 
   return (
     <Flex
       direction='column'
-      gap={2}
-      alignSelf={'flex-start'}
+      gap={'3px'}
+      alignSelf={'flex-end'}
     >
       {items.map((item) => (
         <LegendItem

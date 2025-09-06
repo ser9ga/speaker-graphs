@@ -17,11 +17,12 @@ export const LineItem = ({
 
   return (
     <Line
+      style={{outline: 'none'}}
       name={' '}
       dataKey={uniqName}
       stroke={strokeColor}
       type="monotone"
-      dot={false} // TODO
+      dot={false}
       hide={!isVisible}
     />
   )
