@@ -3,7 +3,7 @@ import {Box, Flex, GridItem, Show, Text} from '@chakra-ui/react';
 import {DiagramBlockMenu} from '@/app/ViewComponents/DiagramIconMenu/DiagramBlockMenu';
 import {DISPLAYED_GRAPH} from '@/app/Constants/DisplayedGraph';
 import {VERTICAL_SCALE_OPTION} from '@/app/Constants/VerticalScaleOption';
-import {JSX, useMemo} from 'react';
+import {JSX, useMemo, useState} from 'react';
 import {_exhaustiveCheck} from '@/app/Utils/Common';
 import {LineCollection} from '@/app/ViewComponents/LineCollection/LineCollection';
 import {GRAPH_LITERALS} from '@/app/Constants/GraphLiterals';
@@ -32,6 +32,7 @@ export const DiagramBlock = ({
   unitName,
   buttonCollection,
 }: DiagramBlockProps) => {
+  const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
   const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector);
   const currentDisplayedGraph = useAppSelector(currentDisplayedGraphSelector);
   const verticalScaleOption = useAppSelector(verticalScaleOptionSelector);
@@ -102,6 +103,9 @@ export const DiagramBlock = ({
                 left: -27,
                 bottom: 0,
               }}
+              syncId="anyId"
+              onMouseEnter={() => setIsTooltipVisible(true)}
+              onMouseLeave={() => setIsTooltipVisible(false)}
             >
               <CartesianGrid
                 strokeDasharray="4 4"
@@ -112,22 +116,25 @@ export const DiagramBlock = ({
                 dataKey="argument"
                 interval="preserveStart"
                 style={{fontSize: '12px',}}
+                allowDuplicatedCategory={false}
               />
               <YAxis
                 domain={yDomain}
                 style={{fontSize: '12px',}}
+                allowDuplicatedCategory={false}
               />
-              <Tooltip
-                labelFormatter={(value) => value + ' Гц'}
-                separator={''}
-                cursor={{
-                  stroke: 'gold',
-                  strokeWidth: 2
-                }}
-                formatter={(value) => {
-                  return `${Math.round(Number(value) * 100) / 100} ${GRAPH_LITERALS[graphName].unitLabel}`
-                }}
-              />
+                <Tooltip
+                  {...(!isTooltipVisible && {contentStyle:{display: "none"}})}
+                  labelFormatter={(value) => value + ' Гц'}
+                  separator={''}
+                  cursor={{
+                    stroke: 'gold',
+                    strokeWidth: 2
+                  }}
+                  formatter={(value) => {
+                    return `${Math.round(Number(value) * 100) / 100} ${GRAPH_LITERALS[graphName].unitLabel}`
+                  }}
+                />
               <LineCollection />
             </LineChart>
             <Show <boolean> when={!isCleanLookEnabled}>

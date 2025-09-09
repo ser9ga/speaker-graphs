@@ -55,7 +55,6 @@ export const DiagramCollection = () => {
           </IconButton>
         )]}
       />
-
     </Grid>
   );
 }

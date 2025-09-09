@@ -20,7 +20,7 @@ export const GRAPH_LITERALS = {
   [GRAPH_NAME.SENSITIVITY_FROM_TARGET_VOLTAGE]: {
     diagramLabel: 'Чуствительность',
     argumentLabel: 'Чуствительность',
-    unitLabel: 'дБ/м'
+    unitLabel: 'дБ/Вт'
   },
   [GRAPH_NAME.PRESSURE_FROM_GIVEN_VOLTAGE]: {
     diagramLabel: 'Давление с заданного напряжения',
