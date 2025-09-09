@@ -87,16 +87,13 @@ export const DiagramBlock = ({
           direction={'column'}
           height={'100%'}
           width={'100%'}
+          minWidth={'0px'}
         >
           <Text textStyle="xl">
             {`${GRAPH_LITERALS[graphName].diagramLabel}, ${GRAPH_LITERALS[graphName].unitLabel}`}
           </Text>
           {/* @ts-ignore */}
-          <ResponsiveContainer
-            style={{position: 'relative'}}
-            height={'100%'}
-            minHeight={'0px'}
-          >
+          <ResponsiveContainer style={{position: 'relative'}}>
             <LineChart
               data={data}
               margin={{
@@ -115,7 +112,6 @@ export const DiagramBlock = ({
                 dataKey="argument"
                 interval="preserveStart"
                 style={{fontSize: '12px',}}
-                domain={['dataMin', 'dataMax']}
               />
               <YAxis
                 domain={yDomain}

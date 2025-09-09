@@ -1,13 +1,14 @@
 import { UNIT, Unit } from '@/app/Constants/Unit';
 import { StoreGraphDataItem } from '@/app/Types/GraphDataTypes';
-import { getImpedanceValuesForFrequency } from '@/app/Utils/calculateAndPackUnitData/calculateAndPackImpedance';
+import { calculateAndPackImpedance } from '@/app/Utils/calculateAndPackUnitData/calculateAndPackImpedance';
 import {
-  getSensitivityValuesForFrequency
+  calculateAndPackSensitivity
 } from '@/app/Utils/calculateAndPackUnitData/calculateAndPackSensitivity';
 import { calculateAndPackPressure } from '@/app/Utils/calculateAndPackUnitData/calculateAndPackPressure';
 import {
   calculateAndPackPowerFromGivenVoltage
 } from '@/app/Utils/calculateAndPackUnitData/calculateAndPackPowerFromGivenVoltage';
+import {calculateAndPackPower} from "@/app/Utils/calculateAndPackUnitData/calculateAndPackPower";
 
 export const calculateAndPackUnitData = (
   storeGraphData: StoreGraphDataItem[] | null,
@@ -29,11 +30,11 @@ export const calculateAndPackUnitData = (
     }
 
     if (targetUnit === UNIT.Z)  {
-      result = getImpedanceValuesForFrequency(storeGraphData, currentFrequency);
+      result = calculateAndPackImpedance(storeGraphData, currentFrequency);
     }
 
     if (targetUnit === UNIT.S)  {
-      result = getSensitivityValuesForFrequency(storeGraphData, currentFrequency);
+      result = calculateAndPackSensitivity(storeGraphData, currentFrequency);
     }
 
     if (targetUnit === UNIT.PaUout)  {
@@ -42,6 +43,10 @@ export const calculateAndPackUnitData = (
         currentFrequency,
         {substitutedVoltageOfTesting: params?.substitutedVoltageOfTesting}
       );
+    }
+
+    if (targetUnit === UNIT.P)  {
+      result = calculateAndPackPower(storeGraphData, currentFrequency);
     }
 
     return {

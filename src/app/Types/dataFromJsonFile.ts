@@ -30,10 +30,5 @@ export interface DataFromJsonFile {
     Uin: number | null
     I: number | null
     Pa: number | null
-    // P: number | null
-    // Z: number | null
-    // S: number | null
-    // PaUout: number | null
-    // PPamax: number | null
   }>
 }

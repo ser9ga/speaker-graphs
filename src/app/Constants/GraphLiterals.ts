@@ -4,23 +4,28 @@ import { valueof } from '@/app/Types/TypeUtils';
 export const GRAPH_LITERALS = {
   [GRAPH_NAME.PRESSURE_FROM_TARGET_VOLTAGE]: {
     diagramLabel: 'Давление при напряжении тестирования',
-    argumentLabel: 'Давление, dB',
-    unitLabel: 'dB'
+    argumentLabel: 'Давление',
+    unitLabel: 'дБ'
   },
   [GRAPH_NAME.IMPEDANCE_FROM_TARGET_VOLTAGE]: {
     diagramLabel: 'Импеданс при напряжении тестирования',
-    argumentLabel: 'Импеданс, Ohm',
-    unitLabel: 'Ohm',
+    argumentLabel: 'Импеданс',
+    unitLabel: 'Ом',
   },
   [GRAPH_NAME.SENSITIVITY_FROM_TARGET_VOLTAGE]: {
     diagramLabel: 'Чуствительность',
-    argumentLabel: 'Чуствительность, dB/m',
-    unitLabel: 'dB/m'
+    argumentLabel: 'Чуствительность',
+    unitLabel: 'дБ/м'
   },
   [GRAPH_NAME.PRESSURE_FROM_GIVEN_VOLTAGE]: {
     diagramLabel: 'Давление с заданного напряжения',
-    argumentLabel: 'Давление, dB',
-    unitLabel: 'dB'
+    argumentLabel: 'Давление',
+    unitLabel: 'дБ'
+  },
+  [GRAPH_NAME.POWER]: {
+    diagramLabel: 'Мощность',
+    argumentLabel: 'Мощность',
+    unitLabel: 'Вт'
   }
 } as const;
 

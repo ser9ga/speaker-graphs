@@ -4,7 +4,7 @@ import { UNIT } from '@/app/Constants/Unit';
 import { getSensitivity } from '@/app/Formulas/getSensitivity';
 import { getPower } from '@/app/Formulas/getPower';
 
-export const getSensitivityValuesForFrequency = (storeGraphData: StoreGraphDataItem[] | null, currentFrequency: number) => {
+export const calculateAndPackSensitivity = (storeGraphData: StoreGraphDataItem[] | null, currentFrequency: number) => {
   const result: Record<string, number | null> = {}
 
   storeGraphData?.forEach((storeGraphDataItem) => {

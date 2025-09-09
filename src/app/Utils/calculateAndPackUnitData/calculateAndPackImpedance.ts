@@ -3,7 +3,7 @@ import { getImpedance } from '@/app/Formulas/getImpedance';
 import { getIsAllValuesArNotEmpty, normalizeRawNumber } from '@/app/Utils/calculateAndPackUnitData/utils';
 import { UNIT } from '@/app/Constants/Unit';
 
-export const getImpedanceValuesForFrequency = (
+export const calculateAndPackImpedance = (
   storeGraphData: StoreGraphDataItem[] | null,
   currentFrequency: number
 ) => {

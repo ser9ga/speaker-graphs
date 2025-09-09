@@ -22,7 +22,7 @@ export const DiagramCollection = () => {
   return (
     <Grid
       templateRows={isGraphExpanded ? "1fr" : "1fr 1fr"}
-      templateColumns={isGraphExpanded ? "1fr" : "1fr 1fr"}
+      templateColumns={isGraphExpanded ? "1fr" : "1fr 1fr 1fr"}
       gap={'15px'}
       height={'100%'}
       width={'100%'}
@@ -50,6 +50,10 @@ export const DiagramCollection = () => {
             <GiElectricalResistance />
           </IconButton>
         )]}
+      />
+      <DiagramBlock
+        graphName={GRAPH_NAME.POWER}
+        unitName={UNIT.P}
       />
     </Grid>
   );
