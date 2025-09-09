@@ -36,6 +36,10 @@ export const DiagramCollection = () => {
         unitName={UNIT.Z}
       />
       <DiagramBlock
+        graphName={GRAPH_NAME.POWER}
+        unitName={UNIT.P}
+      />
+      <DiagramBlock
         graphName={GRAPH_NAME.SENSITIVITY_FROM_TARGET_VOLTAGE}
         unitName={UNIT.S}
       />
@@ -51,10 +55,7 @@ export const DiagramCollection = () => {
           </IconButton>
         )]}
       />
-      <DiagramBlock
-        graphName={GRAPH_NAME.POWER}
-        unitName={UNIT.P}
-      />
+
     </Grid>
   );
 }

@@ -12,6 +12,11 @@ export const GRAPH_LITERALS = {
     argumentLabel: 'Импеданс',
     unitLabel: 'Ом',
   },
+  [GRAPH_NAME.POWER]: {
+    diagramLabel: 'Мощность',
+    argumentLabel: 'Мощность',
+    unitLabel: 'Вт'
+  },
   [GRAPH_NAME.SENSITIVITY_FROM_TARGET_VOLTAGE]: {
     diagramLabel: 'Чуствительность',
     argumentLabel: 'Чуствительность',
@@ -22,11 +27,6 @@ export const GRAPH_LITERALS = {
     argumentLabel: 'Давление',
     unitLabel: 'дБ'
   },
-  [GRAPH_NAME.POWER]: {
-    diagramLabel: 'Мощность',
-    argumentLabel: 'Мощность',
-    unitLabel: 'Вт'
-  }
 } as const;
 
 export type GraphLiterals = valueof<typeof GRAPH_LITERALS>;
