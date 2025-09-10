@@ -16,6 +16,7 @@ export const calculateAndPackUnitData = (
   params: {
     substitutedVoltageOfTesting: number | null | undefined
   } | undefined) => {
+
   if (!storeGraphData) {
     return null;
   }

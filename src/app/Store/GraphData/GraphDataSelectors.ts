@@ -1,10 +1,10 @@
-import { createDraftSafeSelector } from '@reduxjs/toolkit';
-import { RootState } from '@/app/Store/Store';
-import { MeasurementUnitWithUniqName } from '@/app/Types/GraphDataTypes';
-import { UNIT, Unit } from '@/app/Constants/Unit';
-import { calculateAndPackUnitData } from '@/app/Utils/calculateAndPackUnitData/calculateAndPackUnitData';
-
-export const graphDataDomainSelector = (state: RootState) => state.graphData;
+import {createDraftSafeSelector} from '@reduxjs/toolkit';
+import {RootState} from '@/app/Store/Store';
+import {MeasurementUnitWithUniqName} from '@/app/Types/GraphDataTypes';
+import {UNIT, Unit} from '@/app/Constants/Unit';
+import {calculateAndPackUnitData} from '@/app/Utils/calculateAndPackUnitData/calculateAndPackUnitData';
+import {graphDataDomainSelector} from "@/app/Store/GraphData/GraphDataDomainSelector";
+import {appControlDomainSelector} from "@/app/Store/AppControl/AppControlDomainSelector";
 
 export const measurementMetasSelector = createDraftSafeSelector(
   graphDataDomainSelector,
@@ -17,39 +17,40 @@ export const measurementMetasSelector = createDraftSafeSelector(
   ) || null
 );
 
-export const getIsLineVisibleSelector = (uniqName: string) => {
-  return createDraftSafeSelector(
-    graphDataDomainSelector,
-    (graphDataState) => graphDataState
-      .graphDataCollection?.find(
-        (graphDataItem) => graphDataItem.uniqName === uniqName
-      )?.graphOptions.isVisible
-  ) || null;
-};
+export const getIsLineVisibleSelector = createDraftSafeSelector(
+  graphDataDomainSelector,
+  (_: RootState, uniqName: string ) => uniqName,
+  (graphDataState, uniqName) => graphDataState
+    .graphDataCollection?.find(
+      (graphDataItem) => graphDataItem.uniqName === uniqName
+    )?.graphOptions.isVisible
+) || null;
 
-export const getLineColorSelector = (uniqName: string) => {
-  return createDraftSafeSelector(
-    graphDataDomainSelector,
-    (graphDataState) => graphDataState
-      .graphDataCollection?.find(
-        (graphDataItem) => graphDataItem.uniqName === uniqName
-      )?.graphOptions.strokeColor
-  ) || null;
-};
+export const getLineColorSelector = createDraftSafeSelector(
+  graphDataDomainSelector,
+  (_: RootState, uniqName: string ) => uniqName,
+  (graphDataState, uniqName) => graphDataState
+    .graphDataCollection?.find(
+      (graphDataItem) => graphDataItem.uniqName === uniqName
+    )?.graphOptions.strokeColor
+) || null;
 
+export const substitutedVoltageOfTesting = createDraftSafeSelector(
+  appControlDomainSelector,
+  ({substitutedVoltageOfTesting}) => substitutedVoltageOfTesting
+)
 
-export const getUnitDataByUnitName = (unit: Unit) => {
-  return createDraftSafeSelector(
-    (state: RootState) => state.appControl,
-    (state: RootState) => state.graphData,
-    (appControl, graphData) => {
-      return calculateAndPackUnitData(
-        graphData.graphDataCollection,
-        unit,
-        unit === UNIT.PaUout
-          ? {substitutedVoltageOfTesting: appControl.substitutedVoltageOfTesting}
-          : undefined
-      ) || []
-    }
-  )
-};
+export const getUnitDataByUnitName = createDraftSafeSelector(
+  substitutedVoltageOfTesting,
+  (state: RootState) => state.graphData,
+  (_: RootState, unit: Unit) => unit,
+  (substitutedVoltageOfTesting, graphData, unit) => {
+    return calculateAndPackUnitData(
+      graphData.graphDataCollection,
+      unit,
+      unit === UNIT.PaUout
+        ? {substitutedVoltageOfTesting}
+        : undefined
+    ) || []
+  }
+)

@@ -7,6 +7,7 @@ interface AppControlSlice {
   currentDisplayedGraph: DisplayedGraph
   verticalScaleOption: VerticalScaleOption
   horizontalScaleOption: HorizontalScaleOption
+  currentMouseOnGraph: DisplayedGraph | null
   substitutedVoltageOfTesting: number | null
   isCleanLookEnabled: boolean
   isResistantCompensationEnabled: boolean
@@ -16,8 +17,9 @@ interface AppControlSlice {
 const initialState: AppControlSlice = {
   currentDisplayedGraph: DISPLAYED_GRAPH.ALL,
   verticalScaleOption: VERTICAL_SCALE_OPTION.ZOOMED,
-  substitutedVoltageOfTesting: null,
   horizontalScaleOption: HORIZONTAL_SCALE_OPTION.FULL,
+  currentMouseOnGraph: null,
+  substitutedVoltageOfTesting: null,
   isCleanLookEnabled: false,
   isResistantCompensationEnabled: false,
   isFileChooseModalOpened: false,
@@ -92,6 +94,12 @@ export const appControlSlice = createSlice({
     ) => {
       state.isFileChooseModalOpened = payload;
     },
+    setCurrentMouseOnGraph: (
+      state,
+      {payload}: {payload: DisplayedGraph | null}
+    ) => {
+      state.currentMouseOnGraph = payload;
+    },
   },
 });
 
@@ -103,6 +111,7 @@ export const {
   toggleHorizontalScaleOption,
   toggleCleanLook,
   toggleResistantCompensation,
-  setFileChooseModalOpened
+  setFileChooseModalOpened,
+  setCurrentMouseOnGraph,
 } = appControlSlice.actions
 

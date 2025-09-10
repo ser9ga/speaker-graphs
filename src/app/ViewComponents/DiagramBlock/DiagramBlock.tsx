@@ -1,25 +1,21 @@
-import {CartesianGrid, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import {Box, Flex, GridItem, Show, Text} from '@chakra-ui/react';
-import {DiagramBlockMenu} from '@/app/ViewComponents/DiagramIconMenu/DiagramBlockMenu';
+import {Flex, GridItem, Show, Text} from '@chakra-ui/react';
 import {DISPLAYED_GRAPH} from '@/app/Constants/DisplayedGraph';
 import {VERTICAL_SCALE_OPTION} from '@/app/Constants/VerticalScaleOption';
-import {JSX, useMemo, useState} from 'react';
+import {JSX, useMemo} from 'react';
 import {_exhaustiveCheck} from '@/app/Utils/Common';
-import {LineCollection} from '@/app/ViewComponents/LineCollection/LineCollection';
 import {GRAPH_LITERALS} from '@/app/Constants/GraphLiterals';
 import {GraphName} from '@/app/Constants/GraphName';
 import {useAppDispatch, useAppSelector} from '@/app/Store/Hooks';
 import {
   currentDisplayedGraphSelector,
   horizontalScaleOptionSelector,
-  isCleanLookEnabledSelector,
-  isGraphExpandedSelector,
-  verticalScaleOptionSelector
+  isCleanLookEnabledSelector
 } from '@/app/Store/AppControl/AppControlSelectors';
-import {toggleCleanLook, toggleGraphExpansion} from '@/app/Store/AppControl/AppControlSlice';
+import {toggleCleanLook} from '@/app/Store/AppControl/AppControlSlice';
 import {Unit} from '@/app/Constants/Unit';
 import {getUnitDataByUnitName} from '@/app/Store/GraphData/GraphDataSelectors';
 import {getFilteredNotEmptyUnitData} from "@/app/Utils/getFlteredNotEmptyUnitData";
+import {Diagram} from "@/app/ViewComponents/DiagramBlock/Diagram";
 
 interface DiagramBlockProps {
   graphName: GraphName
@@ -32,29 +28,12 @@ export const DiagramBlock = ({
   unitName,
   buttonCollection,
 }: DiagramBlockProps) => {
-  const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
   const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector);
   const currentDisplayedGraph = useAppSelector(currentDisplayedGraphSelector);
-  const verticalScaleOption = useAppSelector(verticalScaleOptionSelector);
   const horizontalScaleOption = useAppSelector(horizontalScaleOptionSelector);
-  const unitData = useAppSelector(getUnitDataByUnitName(unitName));
-  const isGraphExpanded = useAppSelector(isGraphExpandedSelector);
-
+  const unitData = useAppSelector(state => getUnitDataByUnitName(state, unitName));
+  
   const dispatch = useAppDispatch()
-
-  const yDomain = useMemo(() => {
-    switch (verticalScaleOption) {
-      case VERTICAL_SCALE_OPTION.ZOOMED: {
-        return ['auto', 'auto']
-      }
-
-      case VERTICAL_SCALE_OPTION.FULL: {
-        return undefined
-      }
-    }
-
-    return _exhaustiveCheck(verticalScaleOption)
-  }, [verticalScaleOption])
 
   const data = useMemo(() => {
     switch (horizontalScaleOption) {
@@ -93,64 +72,11 @@ export const DiagramBlock = ({
           <Text textStyle="xl">
             {`${GRAPH_LITERALS[graphName].diagramLabel}, ${GRAPH_LITERALS[graphName].unitLabel}`}
           </Text>
-          {/* @ts-ignore */}
-          <ResponsiveContainer style={{position: 'relative'}}>
-            <LineChart
-              data={data}
-              margin={{
-                top: 0,
-                right: 0,
-                left: -27,
-                bottom: 0,
-              }}
-              syncId="anyId"
-              onMouseEnter={() => setIsTooltipVisible(true)}
-              onMouseLeave={() => setIsTooltipVisible(false)}
-            >
-              <CartesianGrid
-                strokeDasharray="4 4"
-                style={{outline: 'none'}}
-              />
-              <XAxis
-                minTickGap={25}
-                dataKey="argument"
-                interval="preserveStart"
-                style={{fontSize: '12px',}}
-                allowDuplicatedCategory={false}
-              />
-              <YAxis
-                domain={yDomain}
-                style={{fontSize: '12px',}}
-                allowDuplicatedCategory={false}
-              />
-                <Tooltip
-                  {...(!isTooltipVisible && {contentStyle:{display: "none"}})}
-                  labelFormatter={(value) => value + ' Гц'}
-                  separator={''}
-                  cursor={{
-                    stroke: 'gold',
-                    strokeWidth: 2
-                  }}
-                  formatter={(value) => {
-                    return `${Math.round(Number(value) * 100) / 100} ${GRAPH_LITERALS[graphName].unitLabel}`
-                  }}
-                />
-              <LineCollection />
-            </LineChart>
-            <Show <boolean> when={!isCleanLookEnabled}>
-              <Box
-                position="absolute"
-                top={'10px'}
-                right={'10px'}
-              >
-                <DiagramBlockMenu
-                  buttonCollection={buttonCollection}
-                  toggleGraphExpansion={() => dispatch(toggleGraphExpansion(graphName))}
-                  isGraphExpanded={isGraphExpanded}
-                />
-              </Box>
-            </Show>
-          </ResponsiveContainer>
+          <Diagram
+            data={data}
+            graphName={graphName}
+            buttonCollection={buttonCollection}
+          />
         </Flex>
       </GridItem>
     </Show>

@@ -12,8 +12,8 @@ interface LineItemProps {
 export const LineItem = ({
   uniqName,
 }: LineItemProps) => {
-  const strokeColor = useAppSelector(getLineColorSelector(uniqName))
-  const isVisible = useAppSelector(getIsLineVisibleSelector(uniqName))
+  const strokeColor = useAppSelector(state => getLineColorSelector(state, uniqName))
+  const isVisible = useAppSelector(state => getIsLineVisibleSelector(state, uniqName))
 
   return (
     <Line

@@ -32,8 +32,8 @@ export const LegendItem = ({
   doorState,
   voltageOfTesting
 }: LegendItemProps) => {
-  const isVisible = useAppSelector(getIsLineVisibleSelector(uniqName))
-  const strokeColor = useAppSelector(getLineColorSelector(uniqName))
+  const isVisible = useAppSelector(state => getIsLineVisibleSelector(state, uniqName))
+  const strokeColor = useAppSelector(state => getLineColorSelector(state, uniqName))
 
   const dispatch = useAppDispatch()
 

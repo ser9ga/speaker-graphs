@@ -1,37 +1,38 @@
 import {createDraftSafeSelector} from '@reduxjs/toolkit';
-import {RootState} from '@/app/Store/Store';
 import {DISPLAYED_GRAPH} from '@/app/Constants/DisplayedGraph';
-
-export const appControlDomainSelector = (state: RootState) => state.appControl
-
+import {appControlDomainSelector} from "@/app/Store/AppControl/AppControlDomainSelector";
 
 export const isCleanLookEnabledSelector = createDraftSafeSelector(
   appControlDomainSelector,
-  (appControlState) => appControlState.isCleanLookEnabled
+  ({isCleanLookEnabled}) => isCleanLookEnabled
 )
 
 export const isGraphExpandedSelector = createDraftSafeSelector(
   appControlDomainSelector,
-  (appControlState) => appControlState.currentDisplayedGraph !== DISPLAYED_GRAPH.ALL
+  ({currentDisplayedGraph}) => currentDisplayedGraph !== DISPLAYED_GRAPH.ALL
 )
 
 export const verticalScaleOptionSelector = createDraftSafeSelector(
   appControlDomainSelector,
-  (appControlState) => appControlState.verticalScaleOption
+  ({verticalScaleOption}) => verticalScaleOption
 )
 
 export const horizontalScaleOptionSelector = createDraftSafeSelector(
   appControlDomainSelector,
-  (appControlState) => appControlState.horizontalScaleOption
+  ({horizontalScaleOption}) => horizontalScaleOption
 )
 
 export const currentDisplayedGraphSelector = createDraftSafeSelector(
   appControlDomainSelector,
-  (appControlState) => appControlState.currentDisplayedGraph
+  ({currentDisplayedGraph}) => currentDisplayedGraph
 )
 
 export const isFileChooseModalOpenedSelector = createDraftSafeSelector(
   appControlDomainSelector,
-  (appControlState) => appControlState.isFileChooseModalOpened
+  ({isFileChooseModalOpened}) => isFileChooseModalOpened
 )
 
+export const currentMouseOnGraphSelector = createDraftSafeSelector(
+  appControlDomainSelector,
+  (state) => state?.currentMouseOnGraph
+)
