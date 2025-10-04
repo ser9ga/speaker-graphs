@@ -12,7 +12,7 @@ import {
   isGraphExpandedSelector,
   verticalScaleOptionSelector
 } from '@/app/Store/AppControl/AppControlSelectors';
-import {setCurrentMouseOnGraph, toggleGraphExpansion} from '@/app/Store/AppControl/AppControlSlice';
+import {setCurrentMouseOnGraph, toggleCleanLook, toggleGraphExpansion} from '@/app/Store/AppControl/AppControlSlice';
 import {DiagramTooltip} from "@/app/ViewComponents/DiagramBlock/DiagramTooltip";
 import {GraphDataItem} from "@/app/Types/Types";
 
@@ -69,6 +69,13 @@ export const Diagram = ({
 
           dispatch(setCurrentMouseOnGraph(null))
           // funcContainer(p => !p)
+        }}
+        onDoubleClick={() => {
+          dispatch(toggleGraphExpansion(graphName))
+
+          if (isCleanLookEnabled) {
+            dispatch(toggleCleanLook())
+          }
         }}
       >
         <CartesianGrid

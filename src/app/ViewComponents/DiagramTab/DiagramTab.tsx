@@ -5,7 +5,7 @@ import {ControlPanel} from "@/app/ViewComponents/ControlPanel/ControlPanel";
 export const DiagramTab = () => {
   return (
     <Grid
-      templateRows={'2fr 135px'}
+      templateRows={'2fr auto'}
       padding={'15px'}
       height={'100%'}
       width={'100%'}

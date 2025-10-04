@@ -5,13 +5,8 @@ import {JSX, useMemo} from 'react';
 import {_exhaustiveCheck} from '@/app/Utils/Common';
 import {GRAPH_LITERALS} from '@/app/Constants/GraphLiterals';
 import {GraphName} from '@/app/Constants/GraphName';
-import {useAppDispatch, useAppSelector} from '@/app/Store/Hooks';
-import {
-  currentDisplayedGraphSelector,
-  horizontalScaleOptionSelector,
-  isCleanLookEnabledSelector
-} from '@/app/Store/AppControl/AppControlSelectors';
-import {toggleCleanLook} from '@/app/Store/AppControl/AppControlSlice';
+import {useAppSelector} from '@/app/Store/Hooks';
+import {currentDisplayedGraphSelector, horizontalScaleOptionSelector} from '@/app/Store/AppControl/AppControlSelectors';
 import {Unit} from '@/app/Constants/Unit';
 import {getUnitDataByUnitName} from '@/app/Store/GraphData/GraphDataSelectors';
 import {getFilteredNotEmptyUnitData} from "@/app/Utils/getFlteredNotEmptyUnitData";
@@ -28,12 +23,9 @@ export const DiagramBlock = ({
   unitName,
   buttonCollection,
 }: DiagramBlockProps) => {
-  const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector);
   const currentDisplayedGraph = useAppSelector(currentDisplayedGraphSelector);
   const horizontalScaleOption = useAppSelector(horizontalScaleOptionSelector);
   const unitData = useAppSelector(state => getUnitDataByUnitName(state, unitName));
-  
-  const dispatch = useAppDispatch()
 
   const data = useMemo(() => {
     switch (horizontalScaleOption) {
@@ -52,14 +44,7 @@ export const DiagramBlock = ({
   return (
     <Show <boolean> when={currentDisplayedGraph === DISPLAYED_GRAPH.ALL
       || currentDisplayedGraph === graphName}>
-      <GridItem
-        position={'relative'}
-        onClick={(event: {detail: number}) => {
-          if (isCleanLookEnabled && event.detail === 2) {
-            dispatch(toggleCleanLook())
-          }
-        }}
-      >
+      <GridItem position={'relative'}>
         <Flex
           alignItems="center"
           justifyContent="space-between"

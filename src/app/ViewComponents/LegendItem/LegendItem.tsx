@@ -46,12 +46,23 @@ export const LegendItem = ({
 
   return (
     <Grid
-      templateColumns={'40px 150px 80px 80px 80px 80px 80px 50px'}
+      templateColumns={'30px 32px 150px 80px 80px 80px 80px 80px 50px'}
       gap={'10px'}
       alignItems={'center'}
     >
+      <Flex
+        alignItems={'center'}
+        gap={'5px'}
+      >
+        <div
+          style={{
+            height: '1.5px',
+            width: '100%',
+            backgroundColor: strokeColor
+          }}
+        />
+      </Flex>
       <Switch.Root
-        colorPalette={strokeColor}
         defaultChecked
         onCheckedChange={onCheckedChange}
         checked={isVisible}
