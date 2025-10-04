@@ -46,7 +46,7 @@ export const LegendItem = ({
 
   return (
     <Grid
-      templateColumns={'30px 32px 150px 80px 80px 80px 80px 80px 50px'}
+      templateColumns={'15px 32px 150px 80px 80px 80px 150px 80px 50px'}
       gap={'10px'}
       alignItems={'center'}
     >
@@ -56,7 +56,7 @@ export const LegendItem = ({
       >
         <div
           style={{
-            height: '1.5px',
+            height: '15px',
             width: '100%',
             backgroundColor: strokeColor
           }}
