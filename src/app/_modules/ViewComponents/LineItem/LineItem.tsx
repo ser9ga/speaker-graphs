@@ -1,0 +1,29 @@
+import { Line } from 'recharts';
+import { useAppSelector } from '@/app/_modules/Store/Hooks';
+import {
+  getIsLineVisibleSelector,
+  getLineColorSelector,
+} from '@/app/_modules/Store/GraphData/GraphDataSelectors';
+
+interface LineItemProps {
+  uniqName: string
+}
+
+export const LineItem = ({
+  uniqName,
+}: LineItemProps) => {
+  const strokeColor = useAppSelector(state => getLineColorSelector(state, uniqName))
+  const isVisible = useAppSelector(state => getIsLineVisibleSelector(state, uniqName))
+
+  return (
+    <Line
+      style={{outline: 'none'}}
+      name={' '}
+      dataKey={uniqName}
+      stroke={strokeColor}
+      type="monotone"
+      dot={false}
+      hide={!isVisible}
+    />
+  )
+}

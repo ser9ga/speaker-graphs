@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:app.db"
+}
+
+model Speakers {
+  id                  Int                   @id @default(autoincrement())
+  label               String                @unique
+  coilResistance      Decimal
+  description         String?
+}
+
+model Cabinets {
+  id                  Int                   @id @default(autoincrement())
+  volume              Decimal               @unique
+  speakerSize         Decimal
+  description         String?
+}
+
+model Ports {
+  id                  Int                   @id @default(autoincrement())
+  diameter            Decimal               @unique
+  length              Decimal
+  description         String?
+}
+
+model Cars {
+  id                  Int                   @id @default(autoincrement())
+  label               String                @unique
+  description         String?
+}
+
+model MeasurementFrame {
+  frequency           Int                   @id
+  Uin                 Decimal
+  I                   Decimal
+  Pa                  Decimal
+  measurementCase     MeasurementCase       @relation(fields: [measurementCaseId], references: [id])
+  measurementCaseId   Int
+}
+
+model MeasurementMeta {
+  id                  Int                   @id
+  speaker             Speakers
+  cabinet             Cabinets
+  port                Ports
+  car                 Cars
+  isDoorOpened        Boolean
+  voltageOfTesting    Decimal
+  description         String?
+  measurementCase     MeasurementCase       @relation(fields: [measurementCaseId], references: [id])
+  measurementCaseId   Int                   @unique
+}
+
+model MeasurementCase {
+  id                  Int                   @id @default(autoincrement())
+  meta                MeasurementMeta
+  data                MeasurementFrame[]
+}

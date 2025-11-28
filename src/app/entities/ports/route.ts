@@ -1,0 +1,27 @@
+import {db} from "@/app/_modules/db";
+
+export const GET = async () => {
+  try {
+    const entityCollection = await db.ports.getAll();
+
+    return new Response(JSON.stringify(entityCollection));
+  } catch (error) {
+    return new Response(`Error: ${error?.message || 'unknown error'}`, {
+      status: 404,
+    })
+  }
+};
+
+export const POST = async (request: Request)=> {
+  try {
+    const body = await request.json();
+
+    const product = await db.ports.add(body);
+
+    return new Response(JSON.stringify(product));;
+  } catch (error) {
+    return new Response(`Error: ${error?.message || 'unknown error'}`, {
+      status: 404,
+    })
+  }
+}

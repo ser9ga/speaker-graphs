@@ -1,3 +1,4 @@
 {
-  "feature__catalog": false
+  "feature__catalog": false,
+  "feature__registry": true
 }
