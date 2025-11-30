@@ -19,10 +19,10 @@ export const add = async (speaker: Omit<SpeakerFromDataBase, 'id'>) => {
   });
 }
 
-export const update = async (id: SpeakerIdFromDataBase, data: Omit<SpeakerFromDataBase, 'id'>) => {
+export const update = async (id: SpeakerIdFromDataBase, speaker: Omit<SpeakerFromDataBase, 'id'>) => {
   return prisma.speakers.update({
     where: {id},
-    data: data,
+    data: speaker,
   });
 }
 
@@ -34,15 +34,16 @@ export const remove = async (id: SpeakerIdFromDataBase) => {
 
 (async () => {
   const count = await prisma.speakers.count();
+
   if (count === 0) {
     const res = await prisma.speakers.createMany({
       data: [
         { label: "М25.15", coilResistance: 0.7, description: null },
         { label: "M45_15", coilResistance: 0.35, description: null },
         { label: "М25.15 корч", coilResistance: 0.7, description: 'Какое-то описание' },
-        { label: "M45_15 корч", coilResistance: 0.2, description: 'Какое-то другое описание' },
-        { label: "М25.15 корч", coilResistance: 1, description: 'Какое-то описание' },
-        { label: "M45_15 корч", coilResistance: 2, description: 'Какое-то другое описание' },
+        { label: "M45_15 корч1", coilResistance: 0.2, description: 'Какое-то другое описание' },
+        { label: "М25.15 корч2", coilResistance: 1, description: 'Какое-то описание' },
+        { label: "M45_15 корч3", coilResistance: 2, description: 'Какое-то другое описание' },
       ],
     });
     console.log('res', res)

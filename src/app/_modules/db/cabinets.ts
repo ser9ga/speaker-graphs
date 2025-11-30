@@ -19,10 +19,10 @@ export const add = async (cabinet: Omit<CabinetFromDataBase, 'id'>) => {
   });
 }
 
-export const update = async (id: CabinetIdFromDataBase, data: Omit<CabinetFromDataBase, 'id'>) => {
+export const update = async (id: CabinetIdFromDataBase, cabinet: Omit<CabinetFromDataBase, 'id'>) => {
   return prisma.cabinets.update({
     where: {id},
-    data: data,
+    data: cabinet,
   });
 }
 

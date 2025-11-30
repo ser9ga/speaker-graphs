@@ -45,8 +45,10 @@ export interface MeasurementFrameFromDataBase {
 
 export type MeasurementDataFromDataBase = Record<number, MeasurementFrameFromDataBase>
 
+export type MeasurementCaseIdFromDataBase = number
+
 export interface MeasurementCaseFromDataBase {
-  id: number
+  id: MeasurementCaseIdFromDataBase
   meta: {
     speakerId: SpeakerIdFromDataBase
     cabinetId: CabinetIdFromDataBase

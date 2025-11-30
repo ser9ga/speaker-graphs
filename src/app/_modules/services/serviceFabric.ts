@@ -1,4 +1,9 @@
-export function serviceFabric<T extends Record<string, any>> (entitiesName: string){
+import {toaster} from "@/app/_modules/components/ui/toaster";
+
+export function serviceFabric<T extends Record<string, any>> (
+  entitiesName: string,
+  entityLabel: string
+){
   const getAll = async () => {
     try {
       const response = await fetch(`/entities/${entitiesName}`);
@@ -8,9 +13,16 @@ export function serviceFabric<T extends Record<string, any>> (entitiesName: stri
       }
 
       return response.json();
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    } catch (e: object) {
+      toaster.create({
+        description: `Не удалось загрузить ${entityLabel}`,
+        type: "error",
+      })
+
+      return {
+        isError: true,
+        ...e
+      }    }
   };
 
   const getOne = async (id: number) => {
@@ -22,8 +34,16 @@ export function serviceFabric<T extends Record<string, any>> (entitiesName: stri
       }
 
       return response.json();
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (e: object) {
+      toaster.create({
+        description: `Не удалось загрузить ${entityLabel}`,
+        type: "error",
+      })
+
+      return {
+        isError: true,
+        ...e
+      }
     }
   }
 
@@ -39,10 +59,20 @@ export function serviceFabric<T extends Record<string, any>> (entitiesName: stri
       }
 
       return response.json();
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (e: object) {
+      toaster.create({
+        description: `Не удалось создать ${entityLabel}`,
+        type: "error",
+      })
+
+      return {
+        isError: true,
+        ...e
+      }
     }
   }
+
+
 
   const update = async (entity: T) => {
     try {
@@ -57,8 +87,16 @@ export function serviceFabric<T extends Record<string, any>> (entitiesName: stri
       }
 
       return response.json() as unknown as T;
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (e: object) {
+      toaster.create({
+        description: `Не удалось изменить ${entityLabel}`,
+        type: "error",
+      })
+
+      return {
+        isError: true,
+        ...e
+      }
     }
   }
 
@@ -71,8 +109,16 @@ export function serviceFabric<T extends Record<string, any>> (entitiesName: stri
       if (!response.ok) {
         throw new Error("Not 2xx response", {cause: response});
       }
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (e: object) {
+      toaster.create({
+        description: `Не удалось удалить ${entityLabel}`,
+        type: "error",
+      })
+
+      return {
+        isError: true,
+        ...e
+      }
     }
   }
 

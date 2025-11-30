@@ -4,6 +4,7 @@ import React, {FC} from "react";
 interface ConfirmActionPopoverProps {
   header: React.ReactNode,
   description?: React.ReactNode,
+  confirmButtonLabel?: string,
   onConfirm?: () => void,
   onReject?: () => void,
   onExitComplete?: () => void,
@@ -13,6 +14,7 @@ interface ConfirmActionPopoverProps {
 export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({
   header,
   description,
+  confirmButtonLabel,
   onConfirm,
   children,
   onExitComplete
@@ -49,7 +51,7 @@ export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({
                   variant="solid"
                   {...(onConfirm && {onClick: onConfirm})}
                 >
-                  Подтвердить
+                  {confirmButtonLabel || 'Подтвердить'}
                 </Button>
               </HStack>
             </Popover.Body>

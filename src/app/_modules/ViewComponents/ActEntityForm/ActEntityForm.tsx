@@ -7,12 +7,14 @@ import {ConfirmActionPopover} from "@/app/_modules/ViewComponents/ConfirmActionP
 import {ValueOf} from "next/constants";
 
 interface ActEntityFormProps<T> {
-  values: T,
+  values?: T,
   onSave: (values: T) => void
   columns: {
     keyName: string
     label: string
   }[],
+  confirmText?: string
+  confirmButtonLabel?: string
   onDeleteConfirmPopoverExit?: () => void,
 }
 
@@ -20,8 +22,11 @@ export function ActEntityForm<T extends Record<string, any>> ({
   values,
   onSave,
   columns,
+  confirmText,
+  confirmButtonLabel,
   onDeleteConfirmPopoverExit
 }: ActEntityFormProps<T>) {
+  console.log('values', values)
   const {
     register,
     handleSubmit,
@@ -35,7 +40,9 @@ export function ActEntityForm<T extends Record<string, any>> ({
   return (
     <form onSubmit={onSubmit}>
       <Stack gap="4" align="flex-start">
-        {columns.map((item) => {
+        {columns
+          .filter((item) => item.keyName !== 'id')
+          .map((item) => {
           return (
             <Field.Root
               key={item.keyName}
@@ -53,12 +60,13 @@ export function ActEntityForm<T extends Record<string, any>> ({
           )
         })}
         <ConfirmActionPopover
-          header={'Сохранить изменения?'}
+          header={confirmText ||'Сохранить?'}
           onConfirm={onSubmit}
           onExitComplete={onDeleteConfirmPopoverExit}
+          confirmButtonLabel={confirmButtonLabel || 'Сохранить'}
         >
           <Button alignSelf={'end'}>
-            Сохранить
+            {'Сохранить'}
           </Button>
         </ConfirmActionPopover>
       </Stack>

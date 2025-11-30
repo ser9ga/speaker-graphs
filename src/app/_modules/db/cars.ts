@@ -19,10 +19,10 @@ export const add = async (car: Omit<CarFromDataBase, 'id'>) => {
   });
 }
 
-export const update = async (id: CarIdFromDataBase, data: Omit<CarFromDataBase, 'id'>) => {
+export const update = async (id: CarIdFromDataBase, car: Omit<CarFromDataBase, 'id'>) => {
   return prisma.cars.update({
     where: {id},
-    data: data,
+    data: car,
   });
 }
 
