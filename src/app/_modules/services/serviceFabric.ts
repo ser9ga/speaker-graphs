@@ -1,12 +1,12 @@
 import {toaster} from "@/app/_modules/components/ui/toaster";
 
 export function serviceFabric<T extends Record<string, any>> (
-  entitiesName: string,
-  entityLabel: string
+  path: string,
+  collectionLabel: string,
 ){
   const getAll = async () => {
     try {
-      const response = await fetch(`/entities/${entitiesName}`);
+      const response = await fetch(`${path}`);
 
       if (!response.ok) {
         throw new Error("Not 2xx response", {cause: response});
@@ -15,7 +15,7 @@ export function serviceFabric<T extends Record<string, any>> (
       return response.json();
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось загрузить ${entityLabel}`,
+        description: `Не удалось загрузить ${collectionLabel}`,
         type: "error",
       })
 
@@ -27,7 +27,7 @@ export function serviceFabric<T extends Record<string, any>> (
 
   const getOne = async (id: number) => {
     try {
-      const response = await fetch(`/entities/${entitiesName}/${id}`);
+      const response = await fetch(`${path}/${id}`);
 
       if (!response.ok) {
         throw new Error("Not 2xx response", {cause: response});
@@ -36,7 +36,7 @@ export function serviceFabric<T extends Record<string, any>> (
       return response.json();
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось загрузить ${entityLabel}`,
+        description: `Не удалось загрузить ${collectionLabel}`,
         type: "error",
       })
 
@@ -49,7 +49,7 @@ export function serviceFabric<T extends Record<string, any>> (
 
   const add = async (entity: Omit<T, 'id'>) => {
     try {
-      const response = await fetch(`/entities/${entitiesName}`,{
+      const response = await fetch(`${path}`,{
         method: 'POST',
         body: JSON.stringify(entity),
       });
@@ -61,7 +61,7 @@ export function serviceFabric<T extends Record<string, any>> (
       return response.json();
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось создать ${entityLabel}`,
+        description: `Не удалось создать ${collectionLabel}`,
         type: "error",
       })
 
@@ -77,7 +77,7 @@ export function serviceFabric<T extends Record<string, any>> (
   const update = async (entity: T) => {
     try {
       const  {id, ...rest} = entity;
-      const response = await fetch(`/entities/${entitiesName}/${id}`,{
+      const response = await fetch(`${path}/${id}`,{
         method: 'PUT',
         body: JSON.stringify(rest),
       });
@@ -89,7 +89,7 @@ export function serviceFabric<T extends Record<string, any>> (
       return response.json() as unknown as T;
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось изменить ${entityLabel}`,
+        description: `Не удалось изменить ${collectionLabel}`,
         type: "error",
       })
 
@@ -102,7 +102,7 @@ export function serviceFabric<T extends Record<string, any>> (
 
   const remove = async (id: number) => {
     try {
-      const response = await fetch(`/entities/${entitiesName}/${id}`, {
+      const response = await fetch(`${path}/${id}`, {
         method: 'DELETE',
       });
 
@@ -111,7 +111,7 @@ export function serviceFabric<T extends Record<string, any>> (
       }
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось удалить ${entityLabel}`,
+        description: `Не удалось удалить ${collectionLabel}`,
         type: "error",
       })
 

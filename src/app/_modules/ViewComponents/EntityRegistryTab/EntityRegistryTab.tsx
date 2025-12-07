@@ -14,6 +14,7 @@ import {CabinetsEntityTable} from "@/app/_modules/ViewComponents/CabinetsEntityT
 import {PortsEntityTable} from "@/app/_modules/ViewComponents/PortsEntityTable/PortsEntityTable";
 import {CarsEntityTable} from "@/app/_modules/ViewComponents/CarsEntityTable/CarsEntityTable";
 import {ENTITY_CATEGORY, EntityCategory} from "@/app/_modules/Constants/EntityCategory";
+import {services} from "@/app/_modules/services";
 
 export const EntityRegistryTab = () => {
   const [activeEntity, setActiveEntity] = useState<EntityCategory>(ENTITY_CATEGORY.SPEAKERS);
@@ -55,6 +56,24 @@ export const EntityRegistryTab = () => {
         direction={'column'}
         gap={'10px'}
       >
+        <IconButton
+          variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
+          onClick={() => services.measurementCases.getAll()}
+        >
+          Получить случаи
+        </IconButton >
+        <IconButton
+          variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
+          onClick={() => services.measurementCases.add({})}
+        >
+          Добавить случай
+        </IconButton >
+        <IconButton
+          variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
+          onClick={() => services.measurementCases.update({id: 1})}
+        >
+          Обновить случай
+        </IconButton >
         <IconButton
           variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
           onClick={() => setActiveEntity(ENTITY_CATEGORY.SPEAKERS)}

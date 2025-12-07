@@ -2,7 +2,7 @@ import {db} from "@/app/_modules/db";
 
 export const GET = async () => {
   try {
-    const entityCollection = await db.speakers.getAll();
+    const entityCollection = await db.measurementCases.getAll();
 
     return new Response(JSON.stringify(entityCollection));
   } catch (error) {
@@ -16,7 +16,7 @@ export const POST = async (request: Request)=> {
   try {
     const body = await request.json();
 
-    const product = await db.speakers.add(body);
+    const product = await db.measurementCases.add(body);
 
     return new Response(JSON.stringify(product));;
   } catch (error) {

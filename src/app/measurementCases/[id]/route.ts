@@ -1,6 +1,6 @@
 import {db} from "@/app/_modules/db";
 
-export async function GET(_: Request, ctx: RouteContext<'/entities/speakers/[id]'>) {
+export async function GET(_: Request, ctx: RouteContext<'/measurementCases/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -14,7 +14,7 @@ export async function GET(_: Request, ctx: RouteContext<'/entities/speakers/[id]
       )
     }
 
-    const collection = await db.speakers.getOne(Number(id))
+    const collection = await db.measurementCases.getOne(Number(id))
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
@@ -24,7 +24,7 @@ export async function GET(_: Request, ctx: RouteContext<'/entities/speakers/[id]
   }
 }
 
-export async function PUT(request: Request, ctx: RouteContext<'/entities/speakers/[id]'>) {
+export async function PUT(request: Request, ctx: RouteContext<'/measurementCases/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -40,7 +40,7 @@ export async function PUT(request: Request, ctx: RouteContext<'/entities/speaker
 
     const body = await request.json();
 
-    const collection = await db.speakers.update(Number(id), body)
+    const collection = await db.measurementCases.update(Number(id), body)
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
@@ -50,7 +50,7 @@ export async function PUT(request: Request, ctx: RouteContext<'/entities/speaker
   }
 }
 
-export async function DELETE(_: Request, ctx: RouteContext<'/entities/speakers/[id]'>) {
+export async function DELETE(_: Request, ctx: RouteContext<'/measurementCases/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -64,7 +64,7 @@ export async function DELETE(_: Request, ctx: RouteContext<'/entities/speakers/[
       )
     }
 
-    const collection = await db.speakers.remove(Number(id))
+    const collection = await db.measurementCases.remove(Number(id))
 
     return new Response(JSON.stringify(collection));
   } catch (error) {

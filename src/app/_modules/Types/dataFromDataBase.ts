@@ -50,10 +50,10 @@ export type MeasurementCaseIdFromDataBase = number
 export interface MeasurementCaseFromDataBase {
   id: MeasurementCaseIdFromDataBase
   meta: {
-    speakerId: SpeakerIdFromDataBase
-    cabinetId: CabinetIdFromDataBase
-    portId: PortIdFromDataBase
-    carId: CarIdFromDataBase
+    speaker: SpeakerFromDataBase
+    cabinet: CabinetFromDataBase
+    port: PortFromDataBase
+    car: CarFromDataBase
     isDoorOpened: DoorStateFromDataBase
     voltageOfTesting: VoltageOfTestingFromDataBase
     description: string | null
