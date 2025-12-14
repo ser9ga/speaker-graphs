@@ -1,7 +1,7 @@
 'use client'
 
 import {ChooseFileModal} from "@/app/_modules/ViewComponents/ChooseFileModal/ChooseFileModal";
-import {actEntityDialog} from "@/app/_modules/ViewComponents/ActEntityModal/ActEntityModal";
+import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
 import React from "react";
 import {Toaster} from "@/app/_modules/components/ui/toaster";
 
@@ -9,7 +9,7 @@ export const ModalCollection = () => {
   return (
     <>
       <ChooseFileModal />
-      <actEntityDialog.Viewport />
+      <commonDialog.Viewport />
       <Toaster />
     </>
   )

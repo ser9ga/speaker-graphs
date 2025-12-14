@@ -1,7 +1,47 @@
 import {PrismaClient} from "@prisma/client";
-import {MeasurementCaseFromDataBase, MeasurementCaseIdFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {speakerMapper} from './speakers'
+import {cabinetMapper} from './cabinets'
+import {portMapper} from './ports'
+import {carMapper} from './cars'
 
 const prisma = new PrismaClient();
+const model = prisma.measurementCases
+
+type EntityFromCatalogue = MeasurementCaseFromCatalogue
+type EntityFromDB =  Awaited<ReturnType<typeof model.findUnique>>
+
+const measurementDataMapper = (initialCollecton) => initialCollecton
+  .reduce((acc, cur) => {
+    const {frequency, ...rest} = cur
+    return {
+      ...acc,
+      [frequency]: {
+        I: rest.I?.toNumber() || null,
+        Pa: rest.Pa?.toNumber() || null,
+        Uin: rest.Uin?.toNumber() || null,
+      },
+    }
+  }, {})
+
+const mapper = (measurementCase: EntityFromDB): EntityFromCatalogue | null => {
+  if (measurementCase === null) {
+    return measurementCase;
+  }
+
+  return ({
+    ...measurementCase,
+    meta: {
+      ...measurementCase.meta,
+      speaker: speakerMapper(measurementCase.meta.speaker),
+      cabinet: cabinetMapper(measurementCase.meta.cabinet),
+      port: portMapper(measurementCase.meta.port),
+      car: carMapper(measurementCase.meta.car),
+      voltageOfTesting: measurementCase.meta.voltageOfTesting.toNumber(),
+    },
+    data: measurementDataMapper(measurementCase.data)
+  })
+}
 
 const inclusion = {
   meta: {
@@ -57,12 +97,20 @@ const mockMeasurementCase = {
     }
   },
   data: {
-    create: [{
-      frequency: 20,
-      Uin: 31.2,
-      I: 10.4,
-      Pa: 59
-    }]
+    create: [
+      {
+        frequency: 20,
+        Uin: 31.2,
+        I: 10.4,
+        Pa: 59
+      },
+      {
+        frequency: 21,
+        Uin: 31.2,
+        I: 10.4,
+        Pa: 59
+      },
+    ]
   }
 }
 
@@ -105,48 +153,55 @@ const mockModifiedMeasurementCase = {
 }
 
 export const getAll = async () => {
-  return prisma.measurementCases.findMany({
+  const collection = await prisma.measurementCases.findMany({
     include: inclusion,
   });
+
+  return collection.map(mapper)
 }
 
-export const getOne = async (id: MeasurementCaseIdFromDataBase) => {
-  return prisma.measurementCases.findUnique({
+export const getOne = async (id: MeasurementCaseFromCatalogue['id']) => {
+  const item = await prisma.measurementCases.findUnique({
     where: {id},
     include: inclusion,
   })
+
+  return mapper(item)
 }
 
-
-export const add = async (measurementCase: Omit<MeasurementCaseFromDataBase, 'id'>) => {
-  return prisma.measurementCases.create({
+export const add = async (measurementCase: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
+  const item = await  prisma.measurementCases.create({
     data: measurementCase,
     include: inclusion,
   });
+
+  return mapper(item)
 }
 
-export const update = async (id: MeasurementCaseIdFromDataBase, measurementCase: Omit<MeasurementCaseFromDataBase, 'id'>) => {
-  return prisma.measurementCases.update({
+export const update = async (id: MeasurementCaseFromCatalogue['id'], measurementCase: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
+  const item = await  prisma.measurementCases.update({
     where: {id},
     data: mockModifiedMeasurementCase,
   });
+
+  return mapper(item)
 }
 
-export const remove = async (id: MeasurementCaseIdFromDataBase) => {
-  return prisma.measurementCases.delete({
+export const remove = async (id: MeasurementCaseFromCatalogue['id']) => {
+  const item = await  prisma.measurementCases.delete({
     where: { id },
   });
+
+  return mapper(item)
 }
 
 (async () => {
   const count = await prisma.measurementCases.count();
-  if (count === 0) {
+  // if (count === 0) {
     const res = await prisma.measurementCases.createMany({
       data: [
         mockMeasurementCase
       ],
     });
-
-    console.log('res', res)
-  }
+  // }
 })();

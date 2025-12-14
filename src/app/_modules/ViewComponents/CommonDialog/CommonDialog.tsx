@@ -10,7 +10,7 @@ interface actEntityDialogProps {
   exitCallback?: () => void;
 }
 
-export const actEntityDialog = createOverlay<actEntityDialogProps>((props) => {
+export const commonDialog = createOverlay<actEntityDialogProps>((props) => {
   const {
     title,
     description,

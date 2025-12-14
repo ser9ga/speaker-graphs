@@ -13,27 +13,26 @@ import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
 import {CabinetsEntityTable} from "@/app/_modules/ViewComponents/CabinetsEntityTable/CabinetsEntityTable";
 import {PortsEntityTable} from "@/app/_modules/ViewComponents/PortsEntityTable/PortsEntityTable";
 import {CarsEntityTable} from "@/app/_modules/ViewComponents/CarsEntityTable/CarsEntityTable";
-import {ENTITY_CATEGORY, EntityCategory} from "@/app/_modules/Constants/EntityCategory";
-import {services} from "@/app/_modules/services";
+import {ENTITY_CATEGORY_NAME, EntityCategoryName} from "@/app/_modules/Constants/EntityCategoryName";
 
 export const EntityRegistryTab = () => {
-  const [activeEntity, setActiveEntity] = useState<EntityCategory>(ENTITY_CATEGORY.SPEAKERS);
+  const [activeEntity, setActiveEntity] = useState<EntityCategoryName>(ENTITY_CATEGORY_NAME.SPEAKERS);
 
   const getActiveTable = useCallback(() => {
     switch (activeEntity) {
-      case ENTITY_CATEGORY.SPEAKERS: {
+      case ENTITY_CATEGORY_NAME.SPEAKERS: {
         return <SpeakersEntityTable />;
       }
 
-      case ENTITY_CATEGORY.CABINETS: {
+      case ENTITY_CATEGORY_NAME.CABINETS: {
         return <CabinetsEntityTable />;
       }
 
-      case ENTITY_CATEGORY.PORTS: {
+      case ENTITY_CATEGORY_NAME.PORTS: {
         return <PortsEntityTable />;
       }
 
-      case ENTITY_CATEGORY.CARS: {
+      case ENTITY_CATEGORY_NAME.CARS: {
         return <CarsEntityTable />;
       }
 
@@ -57,50 +56,32 @@ export const EntityRegistryTab = () => {
         gap={'10px'}
       >
         <IconButton
-          variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
-          onClick={() => services.measurementCases.getAll()}
-        >
-          Получить случаи
-        </IconButton >
-        <IconButton
-          variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
-          onClick={() => services.measurementCases.add({})}
-        >
-          Добавить случай
-        </IconButton >
-        <IconButton
-          variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
-          onClick={() => services.measurementCases.update({id: 1})}
-        >
-          Обновить случай
-        </IconButton >
-        <IconButton
-          variant={activeEntity === ENTITY_CATEGORY.SPEAKERS ? "solid" : "outline"}
-          onClick={() => setActiveEntity(ENTITY_CATEGORY.SPEAKERS)}
+          variant={activeEntity === ENTITY_CATEGORY_NAME.SPEAKERS ? "solid" : "outline"}
+          onClick={() => setActiveEntity(ENTITY_CATEGORY_NAME.SPEAKERS)}
         >
           <PiSpeakerNone />
-          {ENTITY_CATEGORY_NAME_LABEL.SPEAKERS}
+          {ENTITY_CATEGORY_NAME_LABEL[ENTITY_CATEGORY_NAME.SPEAKERS]}
         </IconButton >
         <IconButton
-          variant={activeEntity === ENTITY_CATEGORY.CABINETS ? "solid" : "outline"}
-          onClick={() => setActiveEntity(ENTITY_CATEGORY.CABINETS)}
+          variant={activeEntity === ENTITY_CATEGORY_NAME.CABINETS ? "solid" : "outline"}
+          onClick={() => setActiveEntity(ENTITY_CATEGORY_NAME.CABINETS)}
         >
           <RiSpeaker2Line />
-          {ENTITY_CATEGORY_NAME_LABEL.CABINETS}
+          {ENTITY_CATEGORY_NAME_LABEL[ENTITY_CATEGORY_NAME.CABINETS]}
         </IconButton>
         <IconButton
-          variant={activeEntity === ENTITY_CATEGORY.PORTS ? "solid" : "outline"}
-          onClick={() => setActiveEntity(ENTITY_CATEGORY.PORTS)}
+          variant={activeEntity === ENTITY_CATEGORY_NAME.PORTS ? "solid" : "outline"}
+          onClick={() => setActiveEntity(ENTITY_CATEGORY_NAME.PORTS)}
         >
           <LuDiameter />
-          {ENTITY_CATEGORY_NAME_LABEL.PORTS}
+          {ENTITY_CATEGORY_NAME_LABEL[ENTITY_CATEGORY_NAME.PORTS]}
         </IconButton>
         <IconButton
-          variant={activeEntity === ENTITY_CATEGORY.CARS ? "solid" : "outline"}
-          onClick={() => setActiveEntity(ENTITY_CATEGORY.CARS)}
+          variant={activeEntity === ENTITY_CATEGORY_NAME.CARS ? "solid" : "outline"}
+          onClick={() => setActiveEntity(ENTITY_CATEGORY_NAME.CARS)}
         >
           <IoCarOutline />
-          {ENTITY_CATEGORY_NAME_LABEL.CARS}
+          {ENTITY_CATEGORY_NAME_LABEL[ENTITY_CATEGORY_NAME.CARS]}
         </IconButton>
       </Flex>
       {getActiveTable()}

@@ -4,13 +4,12 @@ import {useEffect, useState} from "react";
 import {OverlayLoader} from "@/app/_modules/ViewComponents/OverlayLoader/OverlayLoader";
 import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 import {ActEntityForm} from "@/app/_modules/ViewComponents/ActEntityForm/ActEntityForm";
-import {actEntityDialog} from "@/app/_modules/ViewComponents/ActEntityModal/ActEntityModal";
-import {EntityCategory} from "@/app/_modules/Constants/EntityCategory";
+import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
+import {EntityCategoryName} from "@/app/_modules/Constants/EntityCategoryName";
 import {EntityTableActionBar} from "@/app/_modules/ViewComponents/EntityTableActionBar/EntityTableActionBar";
-import {toaster} from "@/app/_modules/components/ui/toaster";
 
 interface EntityTableProps<T extends Record<string, any>> {
-  dialogNamePrefix: EntityCategory;
+  dialogNamePrefix: EntityCategoryName;
   columns: {
     keyName: string,
     width?: number,
@@ -57,7 +56,7 @@ export function EntityTable<T extends Record<string, any>> ({
        return;
     }
 
-    await actEntityDialog.close(getDialogFullName('new'))
+    await commonDialog.close(getDialogFullName('new'))
 
     await getEntities()
   }
@@ -69,7 +68,7 @@ export function EntityTable<T extends Record<string, any>> ({
       return;
     }
 
-    await actEntityDialog.close(getDialogFullName(id))
+    await commonDialog.close(getDialogFullName(id))
 
     await getEntities()
   }
@@ -94,7 +93,7 @@ export function EntityTable<T extends Record<string, any>> ({
       >
         <EntityTableActionBar
           onAddClick={() => {
-            actEntityDialog.open(getDialogFullName('new'), {
+            commonDialog.open(getDialogFullName('new'), {
               title: 'Создание',
               content: (
                 <ActEntityForm
@@ -127,8 +126,6 @@ export function EntityTable<T extends Record<string, any>> ({
           </Table.Header>
           <Table.Body>
             {entities.map((item) => {
-              const entityLabel = item.label
-
               return (
                 <Table.Row key={item.id}>
                   {columns.map((column) => {
@@ -139,8 +136,8 @@ export function EntityTable<T extends Record<string, any>> ({
                             {child}
                             <EntityActionTableCell
                               onEditClick={(exitCallback) => {
-                                actEntityDialog.open(getDialogFullName(item.id), {
-                                  title: `Редактирование ${entityLabel}`,
+                                commonDialog.open(getDialogFullName(item.id), {
+                                  title: `Редактирование ${item.label}`,
                                   content: (
                                     <ActEntityForm
                                       values={item}

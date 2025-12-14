@@ -1,35 +1,59 @@
 import {PrismaClient} from "@prisma/client";
-import {CarFromDataBase, CarIdFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {CarFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 const prisma = new PrismaClient();
+const model = prisma.cars
 
-export const getAll = async () => {
-  return prisma.cars.findMany();
-}
+type EntityFromCatalogue = CarFromCatalogue
+type EntityFromDB = Awaited<ReturnType<typeof model.findUnique>>
 
-export const getOne = async (id: CarIdFromDataBase) => {
-  return prisma.cars.findUnique({
-    where: {id},
+const mapper = (entity: EntityFromDB): EntityFromCatalogue | null => {
+  if (entity === null) {
+    return entity;
+  }
+
+  return ({
+    ...entity,
   })
 }
 
-export const add = async (car: Omit<CarFromDataBase, 'id'>) => {
-  return prisma.cars.create({
-    data: car,
-  });
+export const getAll = async () => {
+  const collection = await model.findMany()
+
+  return collection.map(mapper)
 }
 
-export const update = async (id: CarIdFromDataBase, car: Omit<CarFromDataBase, 'id'>) => {
-  return prisma.cars.update({
+export const getOne = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.findUnique({
     where: {id},
-    data: car,
-  });
+  })
+
+  return mapper(resultedItem);
 }
 
-export const remove = async (id: CarIdFromDataBase) => {
-  return prisma.cars.delete({
+export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const resultedItem =  await model.create({
+    data: initialItem,
+  });
+
+  return mapper(resultedItem);;
+}
+
+export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const item  = await model.update({
+    where: {id},
+    data: initialItem,
+  });
+
+  return mapper(item);
+}
+
+export const remove = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.delete({
     where: { id },
   });
+
+  return mapper(resultedItem);
 }
 
 (async () => {
@@ -43,6 +67,7 @@ export const remove = async (id: CarIdFromDataBase) => {
         { label: "Веста", description: null },
       ],
     });
-    console.log('res', res)
   }
 })();
+
+export {mapper as carMapper}

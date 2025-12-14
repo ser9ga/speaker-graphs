@@ -1,7 +1,7 @@
 import {serviceFabric} from "@/app/_modules/services/serviceFabric";
-import {CarFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {CarFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-export const cars = serviceFabric<CarFromDataBase>(
+export const cars = serviceFabric<CarFromCatalogue>(
   '/entities/cars',
   'автомобиль'
 );

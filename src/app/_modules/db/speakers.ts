@@ -1,35 +1,60 @@
 import {PrismaClient} from "@prisma/client";
-import {SpeakerFromDataBase, SpeakerIdFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {SpeakerFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 const prisma = new PrismaClient();
+const model = prisma.speakers
 
-export const getAll = async () => {
-  return prisma.speakers.findMany();
-}
+type EntityFromCatalogue = SpeakerFromCatalogue
+type EntityFromDB =Awaited<ReturnType<typeof model.findUnique>>
 
-export const getOne = async (id: SpeakerIdFromDataBase) => {
-  return prisma.speakers.findUnique({
-    where: {id},
+const mapper = (entity: EntityFromDB): EntityFromCatalogue | null => {
+  if (entity === null) {
+    return entity;
+  }
+
+  return ({
+    ...entity,
+    coilResistance: entity.coilResistance.toNumber(),
   })
 }
 
-export const add = async (speaker: Omit<SpeakerFromDataBase, 'id'>) => {
-  return prisma.speakers.create({
-    data: speaker,
-  });
+export const getAll = async () => {
+  const collection = await model.findMany()
+
+  return collection.map(mapper)
 }
 
-export const update = async (id: SpeakerIdFromDataBase, speaker: Omit<SpeakerFromDataBase, 'id'>) => {
-  return prisma.speakers.update({
+export const getOne = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.findUnique({
     where: {id},
-    data: speaker,
-  });
+  })
+
+  return mapper(resultedItem);
 }
 
-export const remove = async (id: SpeakerIdFromDataBase) => {
-  return prisma.speakers.delete({
+export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const resultedItem =  await model.create({
+    data: initialItem,
+  });
+
+  return mapper(resultedItem);;
+}
+
+export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const item  = await model.update({
+    where: {id},
+    data: initialItem,
+  });
+
+  return mapper(item);
+}
+
+export const remove = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.delete({
     where: { id },
   });
+
+  return mapper(resultedItem);
 }
 
 (async () => {
@@ -46,6 +71,7 @@ export const remove = async (id: SpeakerIdFromDataBase) => {
         { label: "M45_15 корч3", coilResistance: 2, description: 'Какое-то другое описание' },
       ],
     });
-    console.log('res', res)
   }
 })();
+
+export {mapper as speakerMapper}

@@ -26,7 +26,6 @@ export function ActEntityForm<T extends Record<string, any>> ({
   confirmButtonLabel,
   onDeleteConfirmPopoverExit
 }: ActEntityFormProps<T>) {
-  console.log('values', values)
   const {
     register,
     handleSubmit,

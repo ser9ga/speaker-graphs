@@ -1,7 +1,7 @@
 import {serviceFabric} from "@/app/_modules/services/serviceFabric";
-import {CabinetFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {CabinetFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-export const cabinets = serviceFabric<CabinetFromDataBase>(
+export const cabinets = serviceFabric<CabinetFromCatalogue>(
   '/entities/cabinets',
   'короб'
   );

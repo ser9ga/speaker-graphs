@@ -12,6 +12,7 @@ import {
 } from "@/app/_modules/ViewComponents/MeasurementCaseCollection/MeasurementCaseCollection";
 import flags from "@/app/feature-flags.json";
 import {EntityRegistryTab} from "@/app/_modules/ViewComponents/EntityRegistryTab/EntityRegistryTab";
+import {VscGraph} from "react-icons/vsc";
 
 export const TabContainer = () => {
   const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector);
@@ -45,7 +46,7 @@ export const TabContainer = () => {
             {flags.feature__catalog && (
               <Tabs.Trigger value={MAIN_TAB_NAME.MEASUREMENT_CASE_CATALOG}>
                 <Icon size="sm">
-                  <GoListUnordered/>
+                  <VscGraph />
                 </Icon>
                 Каталог
               </Tabs.Trigger>

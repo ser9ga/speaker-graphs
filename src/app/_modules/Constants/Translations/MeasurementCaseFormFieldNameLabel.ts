@@ -1,0 +1,16 @@
+import {valueof} from "@/app/_modules/Types/TypeUtils";
+import {MEASUREMENT_CASE_ACT_FORM_FIELD_NAME} from "@/app/_modules/Constants/MeasurementCaseFormFieldName";
+
+export const MEASUREMENT_CASE_ACT_FORM_FIELD_NAME_LABEL = {
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.ID]: 'ID',
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.SPEAKER]: 'Динамик',
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.CABINET]: 'Короб',
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.PORT]: 'Порт',
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.CAR]: 'Автомобиль',
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.VOLTAGE_OF_TESTING]: 'Напряжение тестирования',
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.IS_DOOR_OPENED]: 'Дверь',
+  [MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.DESCRIPTION]: 'Описание'
+} as const;
+
+export type MeasurementCaseActFormFieldNameLabel = valueof<typeof MEASUREMENT_CASE_ACT_FORM_FIELD_NAME_LABEL>;
+

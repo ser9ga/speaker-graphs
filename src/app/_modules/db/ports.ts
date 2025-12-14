@@ -1,35 +1,61 @@
 import {PrismaClient} from "@prisma/client";
-import {PortFromDataBase, PortIdFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {PortFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 const prisma = new PrismaClient();
+const model = prisma.ports
 
-export const getAll = async () => {
-  return prisma.ports.findMany();
-}
+type EntityFromCatalogue = PortFromCatalogue
+type EntityFromDB = Awaited<ReturnType<typeof model.findUnique>>
 
-export const getOne = async (id: PortIdFromDataBase) => {
-  return prisma.ports.findUnique({
-    where: {id},
+const mapper = (entity: EntityFromDB): EntityFromCatalogue | null => {
+  if (entity === null) {
+    return entity;
+  }
+
+  return ({
+    ...entity,
+    length: entity.length.toNumber(),
+    diameter: entity.diameter.toNumber(),
   })
 }
 
-export const add = async (port: Omit<PortFromDataBase, 'id'>) => {
-  return prisma.ports.create({
-    data: port,
-  });
+export const getAll = async () => {
+  const collection = await model.findMany()
+
+  return collection.map(mapper)
 }
 
-export const update = async (id: PortIdFromDataBase, data: Omit<PortFromDataBase, 'id'>) => {
-  return prisma.ports.update({
+export const getOne = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.findUnique({
     where: {id},
-    data: data,
-  });
+  })
+
+  return mapper(resultedItem);
 }
 
-export const remove = async (id: PortIdFromDataBase) => {
-  return prisma.ports.delete({
+export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const resultedItem =  await model.create({
+    data: initialItem,
+  });
+
+  return mapper(resultedItem);;
+}
+
+export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const item  = await model.update({
+    where: {id},
+    data: initialItem,
+  });
+
+  return mapper(item);
+}
+
+export const remove = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.delete({
     where: { id },
   });
+
+  return mapper(resultedItem);
 }
 
 (async () => {
@@ -45,6 +71,7 @@ export const remove = async (id: PortIdFromDataBase) => {
         { diameter: 250, length: 400, description: 'Еще акое-то описание порта' },
       ],
     });
-    console.log('res', res)
   }
 })();
+
+export {mapper as portMapper}

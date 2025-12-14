@@ -1,7 +1,7 @@
 import {serviceFabric} from "@/app/_modules/services/serviceFabric";
-import {MeasurementCaseFromDataBase, SpeakerFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {MeasurementCaseFromCatalogue, SpeakerFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-export const measurementCases = serviceFabric<MeasurementCaseFromDataBase>(
+export const measurementCases = serviceFabric<MeasurementCaseFromCatalogue>(
   'measurementCases',
   'случай измерения'
 );

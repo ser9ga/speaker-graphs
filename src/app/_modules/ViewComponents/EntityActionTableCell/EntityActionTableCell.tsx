@@ -19,9 +19,7 @@ export const EntityActionTableCell: FC<Props> = ({
   const [isOpened, setIsOpened] = useState(false);
 
   return (
-    <Box
-      className={classNames(!isOpened && styles.cellWrapper)}
-    >
+    <Box className={classNames(!isOpened && styles.cellWrapper)}>
       <HStack
         className={classNames(!isOpened && styles.cellButtonsWrapper)}
         gap={'0px'}

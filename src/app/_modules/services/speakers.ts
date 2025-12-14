@@ -1,7 +1,7 @@
 import {serviceFabric} from "@/app/_modules/services/serviceFabric";
-import {SpeakerFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {SpeakerFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-export const speakers = serviceFabric<SpeakerFromDataBase>(
+export const speakers = serviceFabric<SpeakerFromCatalogue>(
   '/entities/speakers',
   'динамик'
 );

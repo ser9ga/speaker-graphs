@@ -1,7 +1,7 @@
 import {serviceFabric} from "@/app/_modules/services/serviceFabric";
-import {PortFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {PortFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-export const ports = serviceFabric<PortFromDataBase>(
+export const ports = serviceFabric<PortFromCatalogue>(
   '/entities/ports',
   'порт'
 );

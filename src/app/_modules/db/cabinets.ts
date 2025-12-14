@@ -1,35 +1,61 @@
 import {PrismaClient} from "@prisma/client";
-import {CabinetFromDataBase, CabinetIdFromDataBase} from "@/app/_modules/Types/dataFromDataBase";
+import {CabinetFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 const prisma = new PrismaClient();
+const model = prisma.cabinets
 
-export const getAll = async () => {
-  return prisma.cabinets.findMany();
-}
+type EntityFromCatalogue = CabinetFromCatalogue
+type EntityFromDB = Awaited<ReturnType<typeof model.findUnique>>
 
-export const getOne = async (id: CabinetIdFromDataBase) => {
-  return prisma.cabinets.findUnique({
-    where: {id},
+const mapper = (entity: EntityFromDB): EntityFromCatalogue | null => {
+  if (entity === null) {
+    return entity;
+  }
+
+  return ({
+    ...entity,
+     volume: entity.volume.toNumber(),
+     speakerSize: entity.speakerSize.toNumber(),
   })
 }
 
-export const add = async (cabinet: Omit<CabinetFromDataBase, 'id'>) => {
-  return prisma.cabinets.create({
-    data: cabinet,
-  });
+export const getAll = async () => {
+  const collection = await model.findMany()
+
+  return collection.map(mapper)
 }
 
-export const update = async (id: CabinetIdFromDataBase, cabinet: Omit<CabinetFromDataBase, 'id'>) => {
-  return prisma.cabinets.update({
+export const getOne = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.findUnique({
     where: {id},
-    data: cabinet,
-  });
+  })
+
+  return mapper(resultedItem);
 }
 
-export const remove = async (id: CabinetIdFromDataBase) => {
-  return prisma.cabinets.delete({
+export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const resultedItem =  await model.create({
+    data: initialItem,
+  });
+
+  return mapper(resultedItem);;
+}
+
+export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {
+  const item  = await model.update({
+    where: {id},
+    data: initialItem,
+  });
+
+  return mapper(item);
+}
+
+export const remove = async (id: EntityFromCatalogue['id']) => {
+  const resultedItem = await model.delete({
     where: { id },
   });
+
+  return mapper(resultedItem);
 }
 
 (async () => {
@@ -45,6 +71,7 @@ export const remove = async (id: CabinetIdFromDataBase) => {
         { volume: 125, speakerSize: 15, description: null},
       ],
     });
-    console.log('res', res)
   }
 })();
+
+export {mapper as cabinetMapper}
