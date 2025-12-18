@@ -6,10 +6,15 @@ export function _exhaustiveCheck<T>(
   options?: {
     fallBack?: T
     errorMessage?: string
+    onErrorCallback?: () => unknown
   }) {
   if (options?.fallBack !== undefined) {
     return options?.fallBack;
   }
 
-  throw new Error(options?.errorMessage || 'should not reach here');
+  if (options?.onErrorCallback) {
+    options?.onErrorCallback()
+  } else {
+    throw new Error(options?.errorMessage || 'should not reach here');
+  }
 }

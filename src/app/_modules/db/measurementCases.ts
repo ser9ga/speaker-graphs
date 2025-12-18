@@ -12,7 +12,7 @@ type EntityFromCatalogue = MeasurementCaseFromCatalogue
 type EntityFromDB =  Awaited<ReturnType<typeof model.findUnique>>
 
 const measurementDataMapper = (initialCollecton) => initialCollecton
-  .reduce((acc, cur) => {
+  ?.reduce((acc, cur) => {
     const {frequency, ...rest} = cur
     return {
       ...acc,
@@ -32,12 +32,12 @@ const mapper = (measurementCase: EntityFromDB): EntityFromCatalogue | null => {
   return ({
     ...measurementCase,
     meta: {
-      ...measurementCase.meta,
-      speaker: speakerMapper(measurementCase.meta.speaker),
-      cabinet: cabinetMapper(measurementCase.meta.cabinet),
-      port: portMapper(measurementCase.meta.port),
-      car: carMapper(measurementCase.meta.car),
-      voltageOfTesting: measurementCase.meta.voltageOfTesting.toNumber(),
+      ...measurementCase?.meta,
+      speaker: speakerMapper(measurementCase.meta?.speaker),
+      cabinet: cabinetMapper(measurementCase.meta?.cabinet),
+      port: portMapper(measurementCase.meta?.port),
+      car: carMapper(measurementCase.meta?.car),
+      voltageOfTesting: measurementCase.meta?.voltageOfTesting?.toNumber?.(),
     },
     data: measurementDataMapper(measurementCase.data)
   })
@@ -62,94 +62,9 @@ const inclusion = {
   },
   data: {
     omit: {
-      id: true,
       measurementCaseId: true,
     }
   },
-}
-
-const mockMeasurementCase = {
-  meta: {
-    create: {
-      isDoorOpened: false,
-      voltageOfTesting: 40,
-      description: 'Описание измерения',
-      speaker: {
-        connect: {
-          id: 4
-        }
-      },
-      cabinet: {
-        connect: {
-          id: 1
-        }
-      },
-      port: {
-        connect: {
-          id: 1
-        }
-      },
-      car: {
-        connect: {
-          id: 1
-        }
-      }
-    }
-  },
-  data: {
-    create: [
-      {
-        frequency: 20,
-        Uin: 31.2,
-        I: 10.4,
-        Pa: 59
-      },
-      {
-        frequency: 21,
-        Uin: 31.2,
-        I: 10.4,
-        Pa: 59
-      },
-    ]
-  }
-}
-
-const mockModifiedMeasurementCase = {
-  meta: {
-    upsert: {
-      isDoorOpened: true,
-      voltageOfTesting: 40,
-      description: 'Описание измерения',
-      speaker: {
-        connect: {
-          id: 4
-        }
-      },
-      cabinet: {
-        connect: {
-          id: 1
-        }
-      },
-      port: {
-        connect: {
-          id: 1
-        }
-      },
-      car: {
-        connect: {
-          id: 1
-        }
-      }
-    }
-  },
-  data: {
-    create: [{
-      frequency: 20,
-      Uin: 31.2,
-      I: 10.4,
-      Pa: 59
-    }]
-  }
 }
 
 export const getAll = async () => {
@@ -170,8 +85,48 @@ export const getOne = async (id: MeasurementCaseFromCatalogue['id']) => {
 }
 
 export const add = async (measurementCase: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
-  const item = await  prisma.measurementCases.create({
-    data: measurementCase,
+  const parsedMeasurementCase = {
+    meta: {
+      create: {
+        speaker: {
+          connect: {
+            id: measurementCase.meta.speaker.id,
+          }
+        },
+        cabinet: {
+          connect: {
+            id: measurementCase.meta.cabinet.id,
+          }
+        },
+        port: {
+          connect: {
+            id: measurementCase.meta.port.id,
+          }
+        },
+        car: {
+          connect: {
+            id: measurementCase.meta.car.id,
+          }
+        },
+        voltageOfTesting: Number(measurementCase.meta.voltageOfTesting),
+        isDoorOpened: measurementCase.meta.isDoorOpened,
+        description: measurementCase.meta.description,
+      }
+    },
+    data: {
+      create:
+        Object.entries(measurementCase.data)
+          .map(([measurementCaseId, data]) => ({
+            frequency: Number(measurementCaseId),
+            Uin: Number(data.Uin),
+            I: Number(data.I),
+            Pa: Number(data.Pa),
+          }))
+    }
+  }
+
+  const item = await prisma.measurementCases.create({
+    data: parsedMeasurementCase,
     include: inclusion,
   });
 
@@ -179,10 +134,58 @@ export const add = async (measurementCase: Omit<MeasurementCaseFromCatalogue, 'i
 }
 
 export const update = async (id: MeasurementCaseFromCatalogue['id'], measurementCase: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
-  const item = await  prisma.measurementCases.update({
+  const parsedMeasurementCase = {
     where: {id},
-    data: mockModifiedMeasurementCase,
-  });
+    data: {
+      meta: {
+        update: {
+          speaker: {
+            connect: {
+              id: measurementCase.meta.speaker.id,
+            }
+          },
+          cabinet: {
+            connect: {
+              id: measurementCase.meta.cabinet.id,
+            }
+          },
+          port: {
+            connect: {
+              id: measurementCase.meta.port.id,
+            }
+          },
+          car: {
+            connect: {
+              id: measurementCase.meta.car.id,
+            }
+          },
+          voltageOfTesting: Number(measurementCase.meta.voltageOfTesting),
+          isDoorOpened: measurementCase.meta.isDoorOpened,
+          description: measurementCase.meta.description,
+        }
+      },
+      data: {
+        update:
+          Object.entries(measurementCase.data)
+            .map(([measurementCaseId, data]) => ({
+              where: {
+                compositeId: {
+                  measurementCaseId: id,
+                  frequency: Number(measurementCaseId)
+                }
+              },
+              data:{
+                Uin: Number(data.Uin),
+                I: Number(data.I),
+                Pa: Number(data.Pa),
+              }
+            }))
+      }
+    },
+    include: inclusion,
+  };
+
+  const item = await  prisma.measurementCases.update(parsedMeasurementCase);
 
   return mapper(item)
 }
@@ -194,14 +197,3 @@ export const remove = async (id: MeasurementCaseFromCatalogue['id']) => {
 
   return mapper(item)
 }
-
-(async () => {
-  const count = await prisma.measurementCases.count();
-  // if (count === 0) {
-    const res = await prisma.measurementCases.createMany({
-      data: [
-        mockMeasurementCase
-      ],
-    });
-  // }
-})();

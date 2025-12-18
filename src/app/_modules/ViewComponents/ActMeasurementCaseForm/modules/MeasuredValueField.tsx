@@ -2,45 +2,85 @@
 
 import * as React from "react";
 import {Field, NumberInput} from "@chakra-ui/react"
-import {UseFormRegister} from "react-hook-form";
-import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
-import {isNumber} from "lodash";
+import {Control, Controller, FieldPath, TriggerConfig} from "react-hook-form";
+import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {get, isNaN} from "lodash";
+import {getIsFrameEmptyAndValid, getIsFrameFilledAndValid} from "@/app/_modules/Utils/measurementCaseFormUtils";
 
 interface DoorOpenStateFieldProps {
   fieldName: string,
-  label: string,
-  register: UseFormRegister<MeasurementCaseFromCatalogue>,
-  errorText: string,
-  isError: boolean,
+  fieldLabel: string,
+  control: Control<
+    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    unknown,
+    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+  >
+  framePath: string
+  trigger: (
+    name?: (
+      | FieldPath<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>
+      | FieldPath<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>[]
+      ),
+    options?: TriggerConfig
+  ) => Promise<boolean>
 }
 
-export function MeasuredValueField ({
+export const MeasuredValueField = ({
   fieldName,
-  label,
-  register,
-  errorText,
-  isError
-}: DoorOpenStateFieldProps) {
-  const qwe = register(fieldName, {
-    required: true,
-  });
+  control,
+  framePath,
+}: DoorOpenStateFieldProps) => {
+  const getIsConsistentDataSet = async (_, formValues: MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue) => {
+    const frame = get(formValues, framePath)
+
+    const isFrameFilledAndValid = getIsFrameFilledAndValid(frame)
+    const isFrameEmptyAndValid = getIsFrameEmptyAndValid(frame)
+
+    return isFrameFilledAndValid || isFrameEmptyAndValid
+  }
+
+  const getInputValue = (formValue: number | null) => {
+    if (isNaN(formValue) || formValue === null) {
+      return ''
+    }
+
+    return String(formValue)
+  }
+
+  const getFormValue = (inputValue: number) => {
+    if (Number.isNaN(inputValue)) {
+      return undefined
+    }
+
+    return Number(inputValue)
+  }
 
   return (
-    <Field.Root
-      invalid={isError}
-      display={'block'}
-    >
-      <Field.Label>
-        {label}
-      </Field.Label>
-      <NumberInput.Root width={'70px'}>
-        <NumberInput.Input
-          {...qwe}
-        />
-      </NumberInput.Root>
-      <Field.ErrorText>
-        {errorText}
-      </Field.ErrorText>
-    </Field.Root>
+    <Controller
+      control={control}
+      name={fieldName}
+      rules={{
+        validate: {
+          isConsistentDataSet: getIsConsistentDataSet,
+        },
+      }}
+      render={({
+        field: {
+          onChange,
+          value
+        },
+        fieldState: {error}
+      }) => (
+        <Field.Root invalid={!!error}>
+          <NumberInput.Root
+            width={'70px'}
+            value={getInputValue(value)}
+            onValueChange={(e) => onChange(getFormValue(e.valueAsNumber))}
+          >
+            <NumberInput.Input/>
+          </NumberInput.Root>
+        </Field.Root>
+      )}
+    />
   )
 }

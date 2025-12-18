@@ -1,8 +1,8 @@
 import {Control, Controller} from "react-hook-form"
 import * as React from "react";
 import {useMemo} from "react";
-import {createListCollection, Select} from "@chakra-ui/react";
-import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {createListCollection, Field, Select} from "@chakra-ui/react";
+import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 type SelectFieldProps<T extends {id: number}[]> = {
   collection: T;
@@ -12,10 +12,12 @@ type SelectFieldProps<T extends {id: number}[]> = {
     | 'meta.port'
     | 'meta.car'
   fieldLabel: string,
-  control: Control<MeasurementCaseFromCatalogue, any, MeasurementCaseFromCatalogue>
+  control: Control<
+    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    unknown,
+    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+  >
   getItemLabel: (collectionItem: T[number]) => string;
-  errorText: string,
-  isError: boolean,
 }
 
 export function SelectField<T extends {id: number}[]> ({
@@ -23,9 +25,7 @@ export function SelectField<T extends {id: number}[]> ({
   fieldName,
   fieldLabel,
   control,
-  getItemLabel,
-  errorText,
-  isError
+  getItemLabel
 }: SelectFieldProps<T>) {
   const frameworks = useMemo(() => createListCollection({
     items: collection.map((item) => ({
@@ -39,16 +39,29 @@ export function SelectField<T extends {id: number}[]> ({
     <Controller
       control={control}
       name={fieldName}
-      render={({ field: { onChange, value } }) => (
+      rules={{
+        required: true,
+      }}
+      render={({
+        field: {
+          onChange,
+          value
+        },
+        fieldState: {error}
+      }) => (
+        <Field.Root invalid={!!error}>
+          <Field.Label
+            paddingLeft={'5px'}
+            {...(!!error && {color: 'red'})}
+          >
+            {fieldLabel}
+          </Field.Label>
           <Select.Root
             collection={frameworks}
             value={value ? [value.id.toString()] : []}
             onValueChange={(e) => onChange(e.items?.[0].full)}
           >
             <Select.HiddenSelect />
-            <Select.Label paddingLeft={'5px'}>
-              {fieldLabel}
-            </Select.Label>
             <Select.Control>
               <Select.Trigger>
                 <Select.ValueText />
@@ -59,8 +72,7 @@ export function SelectField<T extends {id: number}[]> ({
             </Select.Control>
             <Select.Positioner>
               <Select.Content>
-                {
-                  frameworks
+                {frameworks
                   .items
                   .map((framework) => (
                     <Select.Item
@@ -75,8 +87,8 @@ export function SelectField<T extends {id: number}[]> ({
               </Select.Content>
             </Select.Positioner>
           </Select.Root>
-        )
-      }
+        </Field.Root>
+      )}
     />
   )
 }

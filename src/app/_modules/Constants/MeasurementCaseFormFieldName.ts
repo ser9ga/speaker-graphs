@@ -8,7 +8,8 @@ export const MEASUREMENT_CASE_ACT_FORM_FIELD_NAME = {
   CAR: 'meta.car',
   VOLTAGE_OF_TESTING: 'meta.voltageOfTesting',
   IS_DOOR_OPENED: 'meta.isDoorOpened',
-  DESCRIPTION: 'meta.description'
+  DESCRIPTION: 'meta.description',
+  DATA: 'data'
 } as const;
 
 export type MeasurementCaseFormFieldName = valueof<typeof MEASUREMENT_CASE_ACT_FORM_FIELD_NAME>;

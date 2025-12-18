@@ -10,111 +10,11 @@ import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDia
 import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 import {OverlayLoader} from "@/app/_modules/ViewComponents/OverlayLoader/OverlayLoader";
 import {
-  MEASUREMENT_CASE_TABLE_COLUMN_NAME
-} from "@/app/_modules/Constants/MeasurementCaseTableColumnName";
-import {MEASUREMENT_CASE_TABLE_COLUMN_LABEL} from "@/app/_modules/Constants/Translations/MeasurementCaseTableColumnLabel";
-import {
   MeasurementCaseCollectionTableActionBar
 } from "@/app/_modules/ViewComponents/MeasurementCaseCollectionTableActionBar/MeasurementCaseCollectionTableActionBar";
 import {ActMeasurementCaseForm} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/ActMeasurementCaseForm";
-
-
-const data = [
-  {
-    key: '1',
-    firstName: 'John',
-    lastName: 'Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    firstName: 'Jim',
-    lastName: 'Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    firstName: 'Joe',
-    lastName: 'Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
-const columns = [
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID,
-      width: 60,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_LABEL,
-      path: 'meta.speaker.label',
-      width: 300,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_LABEL]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE,
-      path: 'meta.speaker.coilResistance',
-      width: 120,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE,
-      path: 'meta.cabinet.speakerSize',
-      width: 120,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME,
-      path: 'meta.cabinet.volume',
-      width: 120,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER,
-      path: 'meta.port.diameter',
-      width: 120,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH,
-      path: 'meta.port.length',
-      width: 120,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL,
-      path: 'meta.car.label',
-      width: 200,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING,
-      path: 'meta.voltageOfTesting',
-      width: 150,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING]
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED,
-      path: 'meta.isDoorOpened',
-      width: 120,
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED],
-      cellValue: (rawCell: MeasurementCaseFromCatalogue) => rawCell.meta.isDoorOpened
-        ? "открыта"
-        : "закрыта"
-    },
-    {
-      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION,
-      path: 'meta.description',
-      label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION]
-    },
-]
+import {generateEmptyMeasurementCase} from "@/app/_modules/Utils/measurementCaseFormUtils";
+import {columns} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
 
 export const MeasurementCaseTable = () => {
   const [measurementCases, setMeasurementCases] = useState<MeasurementCaseFromCatalogue[]>([])
@@ -188,6 +88,7 @@ export const MeasurementCaseTable = () => {
               title: 'Создание нового случая изменрения',
               content: (
                 <ActMeasurementCaseForm
+                  values={generateEmptyMeasurementCase()}
                   onSave={(values) => onEntityAdd(values)}
                   columns={columns}
                   confirmText={'Подтвердить создание?'}

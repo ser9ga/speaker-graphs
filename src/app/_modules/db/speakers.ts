@@ -14,7 +14,7 @@ const mapper = (entity: EntityFromDB): EntityFromCatalogue | null => {
 
   return ({
     ...entity,
-    coilResistance: entity.coilResistance.toNumber(),
+    coilResistance: entity?.coilResistance?.toNumber(),
   })
 }
 
@@ -37,7 +37,7 @@ export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
     data: initialItem,
   });
 
-  return mapper(resultedItem);;
+  return mapper(resultedItem);
 }
 
 export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {
@@ -61,7 +61,7 @@ export const remove = async (id: EntityFromCatalogue['id']) => {
   const count = await prisma.speakers.count();
 
   if (count === 0) {
-    const res = await prisma.speakers.createMany({
+    await prisma.speakers.createMany({
       data: [
         { label: "М25.15", coilResistance: 0.7, description: null },
         { label: "M45_15", coilResistance: 0.35, description: null },

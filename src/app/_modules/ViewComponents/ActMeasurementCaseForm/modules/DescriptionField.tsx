@@ -2,42 +2,63 @@
 
 import * as React from "react";
 import {Field, Textarea} from "@chakra-ui/react"
-import {UseFormRegister} from "react-hook-form";
-import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {Control, Controller} from "react-hook-form";
+import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 interface DoorOpenStateFieldProps {
-  fieldName: string,
-  label: string,
-  register: UseFormRegister<MeasurementCaseFromCatalogue>,
-  errorText: string,
-  isError: boolean,
+  fieldName: 'meta.description',
+  fieldLabel: string,
+  control: Control<
+    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    unknown,
+    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+  >
 }
 
 export function DescriptionField ({
   fieldName,
-  label,
-  register,
-  errorText,
-  isError
+  fieldLabel,
+  control,
 }: DoorOpenStateFieldProps) {
-  const inputProps = register(fieldName, {
-    required: true,
-  });
+  const getInputValue = (formValue: string | null) => {
+    if (formValue === null) {
+      return ''
+    }
+
+    return formValue
+  }
+
+  const getFormValue = (inputValue: string) => {
+    if (inputValue === '') {
+      return null
+    }
+    return inputValue
+  }
 
   return (
-    <Field.Root
-      invalid={isError}
-      width={'100%'}
-    >
-      <Field.Label paddingLeft={'5px'}>
-        {label}
-      </Field.Label>
-        <Textarea
-          {...inputProps}
-        />
-      <Field.ErrorText>
-        {errorText}
-      </Field.ErrorText>
-    </Field.Root>
+    <Controller
+      control={control}
+      name={fieldName}
+      render={({
+        field: {
+          onChange,
+          value
+        },
+        fieldState: {error}
+      }) => (
+        <Field.Root invalid={!!error}>
+          <Field.Label {...(!!error && {color: 'red'})}>
+            {fieldLabel}
+          </Field.Label>
+          <Textarea
+            value={getInputValue(value)}
+            onChange={(e) => {
+              onChange(getFormValue(e.target.value))
+            }}
+          />
+        </Field.Root>
+        )
+      }
+    />
   )
 }

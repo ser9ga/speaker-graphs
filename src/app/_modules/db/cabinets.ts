@@ -14,8 +14,8 @@ const mapper = (entity: EntityFromDB): EntityFromCatalogue | null => {
 
   return ({
     ...entity,
-     volume: entity.volume.toNumber(),
-     speakerSize: entity.speakerSize.toNumber(),
+     volume: entity?.volume?.toNumber(),
+     speakerSize: entity?.speakerSize?.toNumber(),
   })
 }
 
@@ -38,7 +38,7 @@ export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
     data: initialItem,
   });
 
-  return mapper(resultedItem);;
+  return mapper(resultedItem);
 }
 
 export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {
@@ -61,7 +61,7 @@ export const remove = async (id: EntityFromCatalogue['id']) => {
 (async () => {
   const count = await prisma.cabinets.count();
   if (count === 0) {
-    const res = await prisma.cabinets.createMany({
+    await prisma.cabinets.createMany({
       data: [
         { volume: 45, speakerSize: 12, description: null},
         { volume: 50, speakerSize: 12, description: 'Описание короба'},

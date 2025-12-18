@@ -2,7 +2,7 @@ import {valueof} from "@/app/_modules/Types/TypeUtils";
 import {
   MEASUREMENT_CASE_TABLE_COLUMN_NAME,
   MeasurementCaseTableColumnName
-} from "@/app/_modules/Constants/MeasurementCaseTableColumnName";
+} from "@/app/_modules/Constants";
 
 export const MEASUREMENT_CASE_TABLE_COLUMN_LABEL: {
   [K in MeasurementCaseTableColumnName]: string

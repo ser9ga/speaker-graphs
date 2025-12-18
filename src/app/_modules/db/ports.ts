@@ -14,8 +14,8 @@ const mapper = (entity: EntityFromDB): EntityFromCatalogue | null => {
 
   return ({
     ...entity,
-    length: entity.length.toNumber(),
-    diameter: entity.diameter.toNumber(),
+    length: entity?.length?.toNumber(),
+    diameter: entity?.diameter?.toNumber(),
   })
 }
 
@@ -38,7 +38,7 @@ export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
     data: initialItem,
   });
 
-  return mapper(resultedItem);;
+  return mapper(resultedItem);
 }
 
 export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {
@@ -61,7 +61,7 @@ export const remove = async (id: EntityFromCatalogue['id']) => {
 (async () => {
   const count = await prisma.ports.count();
   if (count === 0) {
-    const res = await prisma.ports.createMany({
+    await prisma.ports.createMany({
       data: [
         { diameter: 100, length: 200, description: null },
         { diameter: 100, length: 300, description: null },

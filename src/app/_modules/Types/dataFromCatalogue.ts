@@ -1,3 +1,5 @@
+import {NulledRecord} from "@/app/_modules/Types/TypeUtils";
+
 export interface SpeakerFromCatalogue {
   id: number
   label: string
@@ -25,11 +27,21 @@ export interface CarFromCatalogue {
   description: string | null
 }
 
-export interface MeasurementFrameFromCatalogue {
-  Uin: number | null
-  I: number | null
-  Pa: number | null
+export interface FilledMeasurementFrameFromCatalogue {
+  Uin: number
+  I: number
+  Pa: number
 }
+
+export interface EmptyMeasurementFrameFromCatalogue {
+  Uin: null
+  I: null
+  Pa: null
+}
+
+export type MeasurementFrameFromCatalogue =
+  | FilledMeasurementFrameFromCatalogue
+  | EmptyMeasurementFrameFromCatalogue
 
 export interface MeasurementCaseFromCatalogue {
   id: number
@@ -43,4 +55,9 @@ export interface MeasurementCaseFromCatalogue {
     description: string | null
   }
   data: Record<number, MeasurementFrameFromCatalogue>
+}
+
+export interface EmptyMeasurementCaseFromCatalogue {
+  meta: NulledRecord<MeasurementCaseFromCatalogue['meta']>
+  data: Record<number, EmptyMeasurementFrameFromCatalogue>
 }

@@ -1,2 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type valueof<O extends Record<string, any>> = O[keyof O];
+
+export type valueof<O extends Record<string, unknown>> = O[keyof O];
+
+export type NullableRecord<T extends Record<string, unknown>> = Record<keyof T, valueof<T> | null>
+
+export type NulledRecord<T extends Record<string, unknown>> = Record<keyof T, null>

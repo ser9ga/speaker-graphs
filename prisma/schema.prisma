@@ -46,13 +46,14 @@ model Cars {
 }
 
 model MeasurementFrame {
-  id                Int              @id @default(autoincrement())
   frequency         Int
   Uin               Decimal
   I                 Decimal
   Pa                Decimal
-  measurementCase   MeasurementCases @relation(fields: [measurementCaseId], references: [id])
+  measurementCase   MeasurementCases @relation(fields: [measurementCaseId], references: [id], onDelete: Cascade)
   measurementCaseId Int
+
+  @@id(name: "compositeId", [measurementCaseId, frequency])
 }
 
 model MeasurementMeta {
@@ -68,7 +69,7 @@ model MeasurementMeta {
   isDoorOpened      Boolean
   voltageOfTesting  Decimal
   description       String?
-  measurementCase   MeasurementCases @relation(fields: [measurementCaseId], references: [id])
+  measurementCase   MeasurementCases @relation(fields: [measurementCaseId], references: [id], onDelete: Cascade)
   measurementCaseId Int              @unique
 }
 
