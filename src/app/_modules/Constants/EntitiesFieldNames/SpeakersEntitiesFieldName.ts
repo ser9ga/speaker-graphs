@@ -3,6 +3,7 @@ import {valueof} from "@/app/_modules/Types/TypeUtils";
 export const SPEAKERS_ENTITIES_FIELD_NAME = {
   ID: 'id',
   LABEL: 'label',
+  SIZE: 'size',
   COIL_RESISTANCE: 'coilResistance',
   DESCRIPTION: 'description',
 } as const;

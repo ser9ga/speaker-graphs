@@ -1,6 +1,7 @@
 import {valueof} from "@/app/_modules/Types/TypeUtils";
 
 export const MEASUREMENT_CASE_TABLE_COLUMN_NAME = {
+  COLOR: 'color',
   ID: 'id',
   SPEAKER_LABEL: 'speakerLabel',
   SPEAKER_COIL_RESISTANCE: 'speakerCoilResistance',

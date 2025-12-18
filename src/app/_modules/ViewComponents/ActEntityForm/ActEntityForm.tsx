@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {Button, Field, Input, Stack} from "@chakra-ui/react"
 import {useForm} from "react-hook-form"

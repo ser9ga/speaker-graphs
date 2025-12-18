@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
 import * as React from "react";
 import {Field, NumberInput} from "@chakra-ui/react"
 import {Control, Controller, FieldPath, TriggerConfig} from "react-hook-form";
-import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {get, isNaN} from "lodash";
 import {getIsFrameEmptyAndValid, getIsFrameFilledAndValid} from "@/app/_modules/Utils/measurementCaseFormUtils";
 
@@ -11,15 +11,15 @@ interface DoorOpenStateFieldProps {
   fieldName: string,
   fieldLabel: string,
   control: Control<
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    EditableMeasurementCaseFromCatalogue,
     unknown,
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+    EditableMeasurementCaseFromCatalogue
   >
   framePath: string
   trigger: (
     name?: (
-      | FieldPath<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>
-      | FieldPath<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>[]
+      | FieldPath<EditableMeasurementCaseFromCatalogue>
+      | FieldPath<EditableMeasurementCaseFromCatalogue>[]
       ),
     options?: TriggerConfig
   ) => Promise<boolean>
@@ -30,7 +30,7 @@ export const MeasuredValueField = ({
   control,
   framePath,
 }: DoorOpenStateFieldProps) => {
-  const getIsConsistentDataSet = async (_, formValues: MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue) => {
+  const getIsConsistentDataSet = async (_, formValues: EditableMeasurementCaseFromCatalogue) => {
     const frame = get(formValues, framePath)
 
     const isFrameFilledAndValid = getIsFrameFilledAndValid(frame)

@@ -20,6 +20,11 @@ export const SpeakersEntityTable = () => {
           label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.LABEL]
         },
         {
+          keyName: SPEAKERS_ENTITIES_FIELD_NAME.SIZE,
+          width: 150,
+          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.SIZE]
+        },
+        {
           keyName: SPEAKERS_ENTITIES_FIELD_NAME.COIL_RESISTANCE,
           width: 150,
           label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.COIL_RESISTANCE]

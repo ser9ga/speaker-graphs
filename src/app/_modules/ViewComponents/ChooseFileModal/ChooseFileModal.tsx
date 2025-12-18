@@ -2,11 +2,10 @@
 
 import {Button, CloseButton, Dialog, FileUpload, Flex, Portal} from '@chakra-ui/react';
 import {useAppDispatch, useAppSelector} from '@/app/_modules/Store/Hooks';
-// import { toaster } from '@/app/components/ui/toaster';
 import {setGraphData} from '@/app/_modules/Store/GraphData/GraphDataSlice';
 import {DataFromJsonFile} from '@/app/_modules/Types/dataFromJsonFile';
 import {normalizeRawNumber} from '@/app/_modules/Utils/calculateAndPackUnitData/utils';
-import {parseDataFromFile} from '@/app/_modules/Utils/parseDataFromFile';
+import {parseDataFromFileToGraph} from '@/app/_modules/Utils/parseDataFromFileToGraph';
 import {LEGEND_COLORS} from '@/app/_modules/Constants/Colors';
 import {isFileChooseModalOpenedSelector} from '@/app/_modules/Store/AppControl/AppControlSelectors';
 import {setFileChooseModalOpened} from '@/app/_modules/Store/AppControl/AppControlSlice';
@@ -19,11 +18,6 @@ export const ChooseFileModal = () => {
   const [isSubmitButtonActive, setIsSubmitButtonActive] = useState(false)
   const isFileChooseModalOpened = useAppSelector(isFileChooseModalOpenedSelector);
   const dispatch = useAppDispatch();
-
-  // toaster.create({ // TODO
-  //   description: "File saved successfully",
-  //   type: "info",
-  // })
 
   const onFileAccept  = async ({files}: {files: Blob[]}) => {
     tempDataStorage.current = [];
@@ -140,7 +134,7 @@ export const ChooseFileModal = () => {
 
     dispatch(setGraphData(tempDataStorage.current.map(
       (parsedData) => {
-        return parseDataFromFile(
+        return parseDataFromFileToGraph(
           parsedData as unknown as DataFromJsonFile,
           {strokeColor: getRandomColor()}
         )

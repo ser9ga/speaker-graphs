@@ -1,8 +1,11 @@
 'use client'
 
-import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {
+  EditableMeasurementCaseFromCatalogue,
+  MeasurementCaseFromCatalogue
+} from "@/app/_modules/Types/dataFromCatalogue";
 import {MEASURED_UNIT} from "@/app/_modules/Constants";
-import {isEqual, isNumber, isNaN} from "lodash";
+import {isEqual, isNaN, isNumber} from "lodash";
 
 const validateEntity = (
   entity: unknown,
@@ -56,7 +59,7 @@ const getIsFrameValid = (frame: unknown, validateCallback: (arg: unknown) => boo
 
 export const getIsFrameFilledAndValid = (frame: unknown) => getIsFrameValid(
   frame,
-  (value) =>  isNumber(value) && !isNaN()
+  (value) => isNumber(value) && !isNaN()
 );
 
 export const getIsFrameEmptyAndValid = (frame: unknown) => getIsFrameValid(
@@ -158,7 +161,7 @@ export const validateMeasurementCase = (
 }
 
 export const generateEmptyMeasurementCase = () => {
-  const emptyMeasurementCase: EmptyMeasurementCaseFromCatalogue =  {
+  const emptyMeasurementCase: EditableMeasurementCaseFromCatalogue =  {
     meta: {
       speaker: null,
       cabinet: null,

@@ -13,6 +13,7 @@ datasource db {
 model Speakers {
   id              Int               @id @default(autoincrement())
   label           String            @unique
+  size            Decimal
   coilResistance  Decimal
   description     String?
   MeasurementMeta MeasurementMeta[]

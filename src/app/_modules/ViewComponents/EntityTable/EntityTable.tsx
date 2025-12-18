@@ -7,6 +7,7 @@ import {ActEntityForm} from "@/app/_modules/ViewComponents/ActEntityForm/ActEnti
 import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
 import {EntityCategoryName} from "@/app/_modules/Constants/EntityCategoryName";
 import {EntityTableActionBar} from "@/app/_modules/ViewComponents/EntityTableActionBar/EntityTableActionBar";
+import {toaster} from "@/app/_modules/components/ui/toaster";
 
 interface EntityTableProps<T extends Record<string, any>> {
   dialogNamePrefix: EntityCategoryName;
@@ -56,17 +57,27 @@ export function EntityTable<T extends Record<string, any>> ({
        return;
     }
 
+    toaster.create({
+      title: `${dialogNamePrefix} успешно создан`,
+      type: "success",
+    })
+
     await commonDialog.close(getDialogFullName('new'))
 
     await getEntities()
   }
 
-  const onEntityEdit = async (values: T, id: number) => {
+  const onEntityEdit = async (id: number, values: T) => {
     const res = await entityService.update(values);
 
     if (res?.isError) {
       return;
     }
+
+    toaster.create({
+      title: `${dialogNamePrefix} успешно изменён`,
+      type: "success",
+    })
 
     await commonDialog.close(getDialogFullName(id))
 
@@ -79,6 +90,11 @@ export function EntityTable<T extends Record<string, any>> ({
     if (res?.isError) {
       return;
     }
+
+    toaster.create({
+      title: `${dialogNamePrefix} успешно удалён`,
+      type: "success",
+    })
 
     await getEntities()
   }
@@ -141,7 +157,7 @@ export function EntityTable<T extends Record<string, any>> ({
                                   content: (
                                     <ActEntityForm
                                       values={item}
-                                      onSave={(values: T) => onEntityEdit(values, item.id)}
+                                      onSave={(values: T) => onEntityEdit(item.id, values, )}
                                       columns={columns}
                                       onDeleteConfirmPopoverExit={exitCallback}
                                       confirmText={'Сохранить изменения?'}
@@ -151,7 +167,7 @@ export function EntityTable<T extends Record<string, any>> ({
                                   exitCallback
                                 })
                               }}
-                              onEntityDelete={() => onEntityDelete(item.id)}
+                              onEntityClick={() => onEntityDelete(item.id)}
                             />
                           </HStack>
                         )

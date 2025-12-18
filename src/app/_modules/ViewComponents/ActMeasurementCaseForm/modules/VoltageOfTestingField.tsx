@@ -1,18 +1,18 @@
-"use client"
+'use client'
 
 import * as React from "react";
 import {Field, HStack, NumberInput} from "@chakra-ui/react"
 import {Control, Controller} from "react-hook-form";
-import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {isNaN} from "lodash";
 
 interface DoorOpenStateFieldProps {
   fieldName: 'meta.voltageOfTesting',
   fieldLabel: string,
   control: Control<
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    EditableMeasurementCaseFromCatalogue,
     unknown,
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+    EditableMeasurementCaseFromCatalogue
   >
 }
 

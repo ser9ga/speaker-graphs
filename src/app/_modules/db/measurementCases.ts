@@ -5,7 +5,7 @@ import {cabinetMapper} from './cabinets'
 import {portMapper} from './ports'
 import {carMapper} from './cars'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.measurementCases
 
 type EntityFromCatalogue = MeasurementCaseFromCatalogue

@@ -1,7 +1,7 @@
 import {PrismaClient} from "@prisma/client";
 import {PortFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.ports
 
 type EntityFromCatalogue = PortFromCatalogue
@@ -34,7 +34,7 @@ export const getOne = async (id: EntityFromCatalogue['id']) => {
 }
 
 export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
-  const resultedItem =  await model.create({
+  const resultedItem = await model.create({
     data: initialItem,
   });
 

@@ -1,9 +1,11 @@
+import {isNaN} from "lodash";
+
 export const normalizeRawNumber = (rawNumber: unknown) => {
   if (rawNumber === null) {
     return null;
   }
 
-  if (Number.isNaN(rawNumber)) {
+  if (isNaN(rawNumber)) {
     return null;
   }
 

@@ -2,7 +2,7 @@ import { DataFromJsonFile } from '@/app/_modules/Types/dataFromJsonFile';
 import { GraphOptionSet, MeasurementMeta, StoreGraphDataItem } from '@/app/_modules/Types/GraphDataTypes';
 import { LegendColors } from '@/app/_modules/Constants/Colors';
 
-export const parseDataFromFile = (
+export const parseDataFromFileToGraph = (
   rawData: DataFromJsonFile,
   params: {
     strokeColor: LegendColors;

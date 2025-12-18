@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
 import * as React from "react";
 import {Field, SegmentGroup} from "@chakra-ui/react"
 import {Control, Controller} from "react-hook-form";
-import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {DOOR_STATE_NAME, DoorStateName} from "@/app/_modules/Constants";
 import {DOOR_STATE_LABEL} from "@/app/_modules/Constants/Translations/DoorStateLabel";
 import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
@@ -12,9 +12,9 @@ interface DoorOpenStateFieldProps {
   fieldName: 'meta.isDoorOpened',
   fieldLabel: string,
   control: Control<
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    EditableMeasurementCaseFromCatalogue,
     unknown,
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+    EditableMeasurementCaseFromCatalogue
   >
 }
 
@@ -29,6 +29,7 @@ export const DoorOpenStateField = ({
   control,
 }: DoorOpenStateFieldProps) => {
   const getSegmentValue = (segmentValue: boolean | null) => {
+    console.log('segmentValue', segmentValue)
     switch (segmentValue) {
       case null: return undefined;
       case true: return DOOR_STATE_NAME.OPENED;
@@ -50,7 +51,10 @@ export const DoorOpenStateField = ({
       control={control}
       name={fieldName}
       rules={{
-        required: true
+        // required: true,
+        validate: {
+          isFilled: (value) => typeof value === 'boolean'
+        },
       }}
       render={({
         field: {
@@ -58,21 +62,25 @@ export const DoorOpenStateField = ({
           value
         },
         fieldState: {error}
-      }) => (
-        <Field.Root invalid={!!error}>
-          <Field.Label {...(!!error && {color: 'red'})}>
-            {fieldLabel}
-          </Field.Label>
-          <SegmentGroup.Root
-            value={getSegmentValue(value)}
-            onValueChange={(e) => onChange(getFormValue(e.value as DoorStateName))}
-          >
-            <SegmentGroup.Indicator />
-            <SegmentGroup.Items
-              items={values} />
-          </SegmentGroup.Root>
-        </Field.Root>
-      )}
+      }) => {
+        console.log('error', error)
+
+        return (
+          <Field.Root invalid={!!error}>
+            <Field.Label {...(!!error && {color: 'red'})}>
+              {fieldLabel}
+            </Field.Label>
+            <SegmentGroup.Root
+              value={getSegmentValue(value)}
+              onValueChange={(e) => onChange(getFormValue(e.value as DoorStateName))}
+            >
+              <SegmentGroup.Indicator />
+              <SegmentGroup.Items
+                items={values} />
+            </SegmentGroup.Root>
+          </Field.Root>
+        )
+      }}
     />
   )
 }

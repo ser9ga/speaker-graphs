@@ -1,7 +1,7 @@
 import {PrismaClient} from "@prisma/client";
 import {CarFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.cars
 
 type EntityFromCatalogue = CarFromCatalogue
@@ -32,11 +32,11 @@ export const getOne = async (id: EntityFromCatalogue['id']) => {
 }
 
 export const add = async (initialItem: Omit<EntityFromCatalogue, 'id'>) => {
-  const resultedItem =  await model.create({
+  const resultedItem = await model.create({
     data: initialItem,
   });
 
-  return mapper(resultedItem);;
+  return mapper(resultedItem);
 }
 
 export const update = async (id: EntityFromCatalogue['id'], initialItem: Omit<EntityFromCatalogue, 'id'>) => {

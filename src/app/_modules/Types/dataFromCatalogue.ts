@@ -1,8 +1,9 @@
-import {NulledRecord} from "@/app/_modules/Types/TypeUtils";
+import {NullableRecord, NulledRecord} from "@/app/_modules/Types/TypeUtils";
 
 export interface SpeakerFromCatalogue {
   id: number
   label: string
+  size: number
   coilResistance: number
   description: string | null
 }
@@ -61,3 +62,9 @@ export interface EmptyMeasurementCaseFromCatalogue {
   meta: NulledRecord<MeasurementCaseFromCatalogue['meta']>
   data: Record<number, EmptyMeasurementFrameFromCatalogue>
 }
+
+export interface EditableMeasurementCaseFromCatalogue {
+  meta: NullableRecord<MeasurementCaseFromCatalogue['meta']>
+  data: Record<number, MeasurementFrameFromCatalogue>
+}
+

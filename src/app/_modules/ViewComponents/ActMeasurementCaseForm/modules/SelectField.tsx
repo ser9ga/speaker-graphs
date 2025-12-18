@@ -2,7 +2,11 @@ import {Control, Controller} from "react-hook-form"
 import * as React from "react";
 import {useMemo} from "react";
 import {createListCollection, Field, Select} from "@chakra-ui/react";
-import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {
+  EditableMeasurementCaseFromCatalogue,
+  EmptyMeasurementCaseFromCatalogue,
+  MeasurementCaseFromCatalogue
+} from "@/app/_modules/Types/dataFromCatalogue";
 
 type SelectFieldProps<T extends {id: number}[]> = {
   collection: T;
@@ -13,9 +17,9 @@ type SelectFieldProps<T extends {id: number}[]> = {
     | 'meta.car'
   fieldLabel: string,
   control: Control<
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    EditableMeasurementCaseFromCatalogue,
     unknown,
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+    EditableMeasurementCaseFromCatalogue
   >
   getItemLabel: (collectionItem: T[number]) => string;
 }

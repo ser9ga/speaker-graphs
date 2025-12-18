@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
 import {Grid, Text} from "@chakra-ui/react"
 import * as React from "react";
 import {Fragment} from "react";
-import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {
   MEASUREMENT_CASE_ACT_FORM_FIELD_NAME_LABEL
 } from "@/app/_modules/Constants/Translations/MeasurementCaseFormFieldNameLabel";
@@ -12,17 +12,17 @@ import {MeasuredValueField} from "@/app/_modules/ViewComponents/ActMeasurementCa
 import {Control, FieldErrors, FieldPath, TriggerConfig} from "react-hook-form";
 import {get} from "lodash";
 
-interface ActEntityFormProps {
+interface FrameSetProps {
   control: Control<
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    EditableMeasurementCaseFromCatalogue,
     unknown,
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+    EditableMeasurementCaseFromCatalogue
   >
-  errors: FieldErrors<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>
+  errors: FieldErrors<EditableMeasurementCaseFromCatalogue>
   trigger: (
     name?: (
-      | FieldPath<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>
-      | FieldPath<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>[]
+      | FieldPath<EditableMeasurementCaseFromCatalogue>
+      | FieldPath<EditableMeasurementCaseFromCatalogue>[]
     ),
     options?: TriggerConfig
   ) => Promise<boolean>
@@ -32,7 +32,7 @@ export const FrameSet = ({
   control,
   errors,
   trigger
-}: ActEntityFormProps) => {
+}: FrameSetProps) => {
   const getIsErrors = (key: number) => {
     return !!get(errors, `data.${key}`)
   }

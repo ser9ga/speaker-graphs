@@ -8,6 +8,11 @@ import {
 
 export const columns = [
     {
+      keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR,
+      width: 30,
+      label: 'Цвет'
+    },
+    {
       keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID,
       width: 60,
       label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID]
@@ -21,12 +26,12 @@ export const columns = [
     {
       keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE,
       path: 'meta.speaker.coilResistance',
-      width: 120,
+      width: 60,
       label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE]
     },
     {
       keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE,
-      path: 'meta.cabinet.speakerSize',
+      path: 'meta.speaker.size',
       width: 120,
       label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE]
     },
@@ -51,7 +56,7 @@ export const columns = [
     {
       keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL,
       path: 'meta.car.label',
-      width: 200,
+      width: 160,
       label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL]
     },
     {

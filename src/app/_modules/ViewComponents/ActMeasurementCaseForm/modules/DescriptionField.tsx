@@ -1,17 +1,17 @@
-"use client"
+'use client'
 
 import * as React from "react";
 import {Field, Textarea} from "@chakra-ui/react"
 import {Control, Controller} from "react-hook-form";
-import {EmptyMeasurementCaseFromCatalogue, MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 interface DoorOpenStateFieldProps {
   fieldName: 'meta.description',
   fieldLabel: string,
   control: Control<
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+    EditableMeasurementCaseFromCatalogue,
     unknown,
-    MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue
+    EditableMeasurementCaseFromCatalogue
   >
 }
 

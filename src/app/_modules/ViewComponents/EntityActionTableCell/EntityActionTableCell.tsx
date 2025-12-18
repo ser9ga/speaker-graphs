@@ -8,12 +8,12 @@ import classNames from "classnames";
 
 interface Props {
   width?: number,
-  onEntityDelete: () => void;
+  onEntityClick: () => void;
   onEditClick: (exitCallback?: () => void) => void;
 }
 
 export const EntityActionTableCell: FC<Props> = ({
-  onEntityDelete,
+  onEntityClick,
   onEditClick
 }) => {
   const [isOpened, setIsOpened] = useState(false);
@@ -38,7 +38,7 @@ export const EntityActionTableCell: FC<Props> = ({
         </Button>
         <ConfirmActionPopover
           header={'Выполнить удаление?'}
-          onConfirm={onEntityDelete}
+          onConfirm={onEntityClick}
           onExitComplete={() => setIsOpened(false)}
         >
           <Button

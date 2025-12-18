@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {Button, HStack, Stack} from "@chakra-ui/react"
 import {useForm} from "react-hook-form"
@@ -8,7 +8,7 @@ import {ConfirmActionPopover} from "@/app/_modules/ViewComponents/ConfirmActionP
 import {
   CabinetFromCatalogue,
   CarFromCatalogue,
-  EmptyMeasurementCaseFromCatalogue,
+  EditableMeasurementCaseFromCatalogue,
   MeasurementCaseFromCatalogue,
   PortFromCatalogue,
   SpeakerFromCatalogue
@@ -27,12 +27,8 @@ import {DescriptionField} from "@/app/_modules/ViewComponents/ActMeasurementCase
 import {FrameSet} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/modules/FrameSet";
 
 interface ActEntityFormProps {
-  values: MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue,
+  values: EditableMeasurementCaseFromCatalogue,
   onSave: (values: MeasurementCaseFromCatalogue) => void
-  columns: {
-    keyName: string
-    label: string
-  }[],
   confirmText?: string
   confirmButtonLabel?: string
   onDeleteConfirmPopoverExit?: () => void,
@@ -50,7 +46,7 @@ export function ActMeasurementCaseForm ({
     control,
     formState: { errors },
     trigger
-  } = useForm<MeasurementCaseFromCatalogue | EmptyMeasurementCaseFromCatalogue>({values});
+  } = useForm<EditableMeasurementCaseFromCatalogue>({values});
 
   const onSubmit = handleSubmit((data) => onSave(data as MeasurementCaseFromCatalogue))
 
