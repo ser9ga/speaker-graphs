@@ -6,12 +6,14 @@ import {useRef, useState} from 'react';
 import {HiUpload} from "react-icons/hi";
 
 interface actEntityDialogProps {
+  maxFiles?: number;
   onClose: () => void;
   onSubmit: (rawStringCollection: string[]) => void;
 }
 
-export const importSingleFileInFormDialog = createOverlay<actEntityDialogProps>((props) => {
+export const importFilesDialog = createOverlay<actEntityDialogProps>((props) => {
   const {
+    maxFiles = 1,
     onClose,
     onSubmit,
     open,
@@ -91,6 +93,7 @@ export const importSingleFileInFormDialog = createOverlay<actEntityDialogProps>(
                 <FileUpload.Root
                   maxW="xl"
                   alignItems="stretch"
+                  maxFiles={maxFiles}
                   accept={['text/csv']}
                   onFileAccept={onFileAccept}
                 >

@@ -1,35 +1,21 @@
 import {
-  generateEmptyMeasurementCase,
+  generateEmptyGraphMeasurementCase,
   getIsFrameEmptyAndValid,
   getIsFrameFilledAndValid
 } from "@/app/_modules/Utils/measurementCaseFormUtils";
-import {
-  CabinetFromCatalogue,
-  CarFromCatalogue,
-  EditableMeasurementCaseFromCatalogue,
-  PortFromCatalogue,
-  SpeakerFromCatalogue
-} from "@/app/_modules/Types/dataFromCatalogue";
 import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
 import {isNaN} from "lodash";
 import {normalizeRawNumber} from "@/app/_modules/Utils/calculateAndPackUnitData/utils";
+import {MeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
 
 interface ParseRawCSVStringValueParams {
-  rawString: string,
-  speakers: SpeakerFromCatalogue[],
-  cabinets: CabinetFromCatalogue[],
-  ports: PortFromCatalogue[],
-  cars: CarFromCatalogue[]
+  rawString: string
+  getRandomColor: () => string
 }
 
-export const parseRawCSVStringValue = ({
-  rawString,
-  speakers,
-  cabinets,
-  ports,
-  cars
-}: ParseRawCSVStringValueParams) => {
-  const emptyMeasurementCase = generateEmptyMeasurementCase() as EditableMeasurementCaseFromCatalogue;
+export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseRawCSVStringValueParams):
+  [MeasurementCaseForGraph, string[]] => {
+  const emptyMeasurementCase = generateEmptyGraphMeasurementCase(getRandomColor());
 
   const splitStrings = rawString
     .split('\r\n')
@@ -40,24 +26,21 @@ export const parseRawCSVStringValue = ({
   const errors: string[] = []
 
   const maybeSpeaker = head?.[1]?.[0]
-  const speaker = speakers.find(currentSpeaker => {
-    return currentSpeaker.label.toLowerCase() === maybeSpeaker?.trim()?.toLowerCase()
-  });
 
-  if (speaker) {
-    emptyMeasurementCase.meta.speaker = speaker
+  if (typeof maybeSpeaker === 'string' && maybeSpeaker.length > 0) {
+    emptyMeasurementCase.meta.speaker = {
+      label: maybeSpeaker?.trim()
+    }
   } else {
     errors.push(`Не удалось распознать динамик ${maybeSpeaker}`)
   }
 
   const maybeCabinet = head?.[1]?.[1]
 
-  const cabinet = cabinets.find(currentCabinet => {
-    return currentCabinet.volume === Number(maybeCabinet?.trim())
-  });
-
-  if (cabinet) {
-    emptyMeasurementCase.meta.cabinet = cabinet
+  if (typeof maybeCabinet === 'string' && maybeCabinet.length > 0) {
+    emptyMeasurementCase.meta.cabinet = {
+      volume: Number(maybeCabinet)
+    }
   } else {
     errors.push(`Не удалось распознать короб ${maybeCabinet}`)
   }
@@ -65,27 +48,26 @@ export const parseRawCSVStringValue = ({
   const maybePortDiameter = head?.[1]?.[2]
   const maybePortLength = head?.[1]?.[2]
 
-  const port = ports.find(currentPort => {
-    return (
-      currentPort.diameter === Number(maybePortDiameter?.trim())
-      && currentPort.length === Number(maybePortLength?.trim())
-    )
-  });
+  const portPredicate = typeof maybeSpeaker === 'string'
+    && maybeCabinet.length > 0
+    && typeof maybePortLength === 'string'
+    && maybePortLength.length > 0
 
-  if (port) {
-    emptyMeasurementCase.meta.port = port
+  if (portPredicate) {
+    emptyMeasurementCase.meta.port = {
+      diameter: Number(maybePortDiameter?.trim()),
+      length: Number(maybePortLength?.trim())
+    }
   } else {
     errors.push(`Не удалось распознать порт ${maybePortDiameter}мм, ${maybePortLength}см`)
   }
 
   const maybeCar = head?.[1]?.[4]
 
-  const car = cars.find(currentCar => {
-    return currentCar.label?.toLowerCase() === maybeCar?.trim()?.toLowerCase()
-  });
-
-  if (car) {
-    emptyMeasurementCase.meta.car = car
+  if (typeof maybeCar === 'string' && maybeCar.length > 0) {
+    emptyMeasurementCase.meta.car = {
+      label: maybeCar?.trim()
+    }
   } else {
     errors.push(`Не удалось распознать автомобиль ${maybeCar}`)
   }
@@ -146,5 +128,16 @@ export const parseRawCSVStringValue = ({
     }
   })
 
-  return [emptyMeasurementCase, errors] as const
+  emptyMeasurementCase.id = [
+    emptyMeasurementCase.meta.speaker?.label,
+    emptyMeasurementCase.meta.cabinet?.volume,
+    `${emptyMeasurementCase.meta.port?.diameter}_${emptyMeasurementCase.meta.port?.length}`,
+    emptyMeasurementCase.meta.car?.label,
+    emptyMeasurementCase.meta.isDoorOpened,
+    emptyMeasurementCase.meta.voltageOfTesting,
+    Math.random().toFixed(5)
+  ]
+    .join('_');
+
+  return [emptyMeasurementCase as MeasurementCaseForGraph, errors] as const
 }

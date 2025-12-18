@@ -1,6 +1,7 @@
 import { valueof } from '@/app/_modules/Types/TypeUtils';
 import { GRAPH_NAME } from '@/app/_modules/Constants/GraphName';
 
+// TODO camelCase
 export const DISPLAYED_GRAPH = {
   ALL: 'all',
   [GRAPH_NAME.PRESSURE_FROM_TARGET_VOLTAGE]: 'pressure-from-target-voltage',

@@ -1,22 +1,22 @@
 import { Unit } from '@/app/_modules/Constants/Unit';
-import { StoreGraphDataItem } from '@/app/_modules/Types/GraphDataTypes';
-import {GraphDataItem} from "@/app/_modules/Types/Types";
+import { MeasurementCaseForGraph } from '@/app/_modules/Types/dataForGraphs';
+import {GraphDrawDataItem} from "@/app/_modules/Types/graphDraw";
 
-// TODO
+// TODO возможно не нужно
 export const pickUnitData = (
-  storeGraphData: StoreGraphDataItem[] | null,
+  storeGraphData: MeasurementCaseForGraph[] | null,
   unit: Unit
 ) =>
   [...Array(51)].map((_, i) => {
     const currentFrequency = i + 20
 
-    const result: GraphDataItem  = {
+    const result: GraphDrawDataItem  = {
       argument: currentFrequency.toString()
     }
 
     storeGraphData?.forEach((storeGraphDataItem) => {
       // @ts-ignore
-      const rawUnitValue  = storeGraphDataItem.graphData[currentFrequency][unit]
+      const rawUnitValue  = storeGraphDataItem.data[currentFrequency][unit]
 
       let finalValue: number | null = null;
 
@@ -33,7 +33,7 @@ export const pickUnitData = (
         finalValue = rawUnitValue
       }
 
-      result[storeGraphDataItem.uniqName] = finalValue
+      result[storeGraphDataItem.id] = finalValue
     })
 
     return result;

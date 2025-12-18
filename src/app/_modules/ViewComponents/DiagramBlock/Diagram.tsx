@@ -11,14 +11,14 @@ import {
   isCleanLookEnabledSelector,
   isGraphExpandedSelector,
   verticalScaleOptionSelector
-} from '@/app/_modules/Store/AppControl/AppControlSelectors';
-import {setCurrentMouseOnGraph, toggleCleanLook, toggleGraphExpansion} from '@/app/_modules/Store/AppControl/AppControlSlice';
+} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
+import {setCurrentMouseOnGraph, toggleCleanLook, toggleGraphExpansion} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSlice';
 import {DiagramTooltip} from "@/app/_modules/ViewComponents/DiagramBlock/DiagramTooltip";
-import {GraphDataItem} from "@/app/_modules/Types/Types";
+import {GraphDrawDataItem} from "@/app/_modules/Types/graphDraw";
 
 interface DiagramBlockInnerProps {
   graphName: GraphName
-  data: GraphDataItem[]
+  data: GraphDrawDataItem[]
   buttonCollection?: JSX.Element[]
 }
 

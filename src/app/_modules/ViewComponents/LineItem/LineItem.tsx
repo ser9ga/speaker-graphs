@@ -6,20 +6,20 @@ import {
 } from '@/app/_modules/Store/GraphData/GraphDataSelectors';
 
 interface LineItemProps {
-  uniqName: string
+  id: string
 }
 
 export const LineItem = ({
-  uniqName,
+  id,
 }: LineItemProps) => {
-  const strokeColor = useAppSelector(state => getLineColorSelector(state, uniqName))
-  const isVisible = useAppSelector(state => getIsLineVisibleSelector(state, uniqName))
+  const strokeColor = useAppSelector(state => getLineColorSelector(state, id))
+  const isVisible = useAppSelector(state => getIsLineVisibleSelector(state, id))
 
   return (
     <Line
       style={{outline: 'none'}}
       name={' '}
-      dataKey={uniqName}
+      dataKey={id}
       stroke={strokeColor}
       type="monotone"
       dot={false}

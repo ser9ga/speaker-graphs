@@ -6,7 +6,7 @@ import {_exhaustiveCheck} from '@/app/_modules/Utils/Common';
 import {GRAPH_LITERALS} from '@/app/_modules/Constants/Translations/GraphLiterals';
 import {GraphName} from '@/app/_modules/Constants/GraphName';
 import {useAppSelector} from '@/app/_modules/Store/Hooks';
-import {currentDisplayedGraphSelector, horizontalScaleOptionSelector} from '@/app/_modules/Store/AppControl/AppControlSelectors';
+import {currentDisplayedGraphSelector, horizontalScaleOptionSelector} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
 import {Unit} from '@/app/_modules/Constants/Unit';
 import {getUnitDataByUnitName} from '@/app/_modules/Store/GraphData/GraphDataSelectors';
 import {getFilteredNotEmptyUnitData} from "@/app/_modules/Utils/getFlteredNotEmptyUnitData";

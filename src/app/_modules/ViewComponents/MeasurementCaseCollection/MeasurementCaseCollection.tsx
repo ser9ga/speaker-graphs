@@ -120,7 +120,9 @@ export const MeasurementCaseCollection = () => {
           )
         }}
       />
-      <MeasurementCaseSelectedCollectionTableActionBar />
+      <MeasurementCaseSelectedCollectionTableActionBar
+        checkedMeasurementCases={checkedMeasurementCases}
+      />
       <MeasurementCaseTable
         measurementCases={checkedMeasurementCases}
         getDialogFullName={getDialogFullName}

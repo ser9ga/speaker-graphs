@@ -3,9 +3,9 @@
 import {Icon, Show, Tabs} from '@chakra-ui/react';
 import {GoGraph, GoListUnordered} from 'react-icons/go';
 import {DiagramTab} from '@/app/_modules/ViewComponents/DiagramTab/DiagramTab';
-import {useAppSelector} from '@/app/_modules/Store/Hooks';
-import {isCleanLookEnabledSelector} from '@/app/_modules/Store/AppControl/AppControlSelectors';
-import React, {useState} from "react";
+import {useAppDispatch, useAppSelector} from '@/app/_modules/Store/Hooks';
+import {isCleanLookEnabledSelector} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
+import React from "react";
 import {MAIN_TAB_NAME, MainTabName} from "@/app/_modules/Constants/MainTabName";
 import {
   MeasurementCaseCollection
@@ -13,13 +13,14 @@ import {
 import flags from "@/app/feature-flags.json";
 import {EntityRegistryTab} from "@/app/_modules/ViewComponents/EntityRegistryTab/EntityRegistryTab";
 import {VscGraph} from "react-icons/vsc";
+import {activeTabSelector} from "@/app/_modules/Store/AppControl/AppControlSelectors";
+import {setActiveTab} from "@/app/_modules/Store/AppControl/AppControlSlice";
 
 export const TabContainer = () => {
   const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector);
+  const activeTab = useAppSelector(activeTabSelector);
 
-  //TODO разобраться с ошибками recharts
-  // const [activeTab, setActiveTab] = useState<MainTabName>(MAIN_TAB_NAME.GRAPH_VIEWS)
-  const [activeTab, setActiveTab] = useState<MainTabName>(MAIN_TAB_NAME.GRAPH_VIEWS)
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -32,12 +33,12 @@ export const TabContainer = () => {
         display="grid"
         gridTemplateRows={'auto 1fr'}
         value={activeTab}
-        onValueChange={(details) => setActiveTab(details.value as MainTabName)}
+        onValueChange={(details) => dispatch(setActiveTab(details.value as MainTabName))}
       >
 
         <Tabs.List>
           <Show <boolean> when={!isCleanLookEnabled}>
-            <Tabs.Trigger value={MAIN_TAB_NAME.GRAPH_VIEWS}>
+            <Tabs.Trigger value={MAIN_TAB_NAME.GRAPH_DRAWS}>
               <Icon size="sm">
                 <GoGraph />
               </Icon>
@@ -62,14 +63,14 @@ export const TabContainer = () => {
           </Show>
         </Tabs.List>
         <Tabs.Content
-          value={MAIN_TAB_NAME.GRAPH_VIEWS}
+          value={MAIN_TAB_NAME.GRAPH_DRAWS}
           height={'100%'}
           width={'100%'}
           minHeight={'0px'}
           minWidth={'0px'}
           paddingTop={'0px'}
         >
-          <Show <boolean> when={activeTab === MAIN_TAB_NAME.GRAPH_VIEWS}>
+          <Show <boolean> when={activeTab === MAIN_TAB_NAME.GRAPH_DRAWS}>
             <DiagramTab />
           </Show>
         </Tabs.Content>

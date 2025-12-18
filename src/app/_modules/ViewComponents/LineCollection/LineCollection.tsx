@@ -9,8 +9,8 @@ export const LineCollection = () => {
     measurements?.map((measurement) => {
       return (
         <LineItem
-          key={measurement.uniqName}
-          uniqName={measurement.uniqName}
+          key={measurement.id}
+          id={measurement.id}
         />
     )})
   )

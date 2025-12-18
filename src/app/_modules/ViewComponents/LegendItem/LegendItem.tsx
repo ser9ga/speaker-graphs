@@ -10,11 +10,12 @@ import {getIsLineVisibleSelector, getLineColorSelector} from '@/app/_modules/Sto
 import {changeVisibilityOfCase} from '@/app/_modules/Store/GraphData/GraphDataSlice';
 import {Tooltip} from "@/app/_modules/components/ui/tooltip";
 import * as React from "react";
+import {MeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
 
 interface LegendItemProps {
-  uniqName: string
+  id: MeasurementCaseForGraph['id']
   speakerLabel: string
-  cabinetLabel: string
+  cabinetVolume: number
   portDiameter: string
   portLength: string
   carLabel: string
@@ -23,23 +24,23 @@ interface LegendItemProps {
 }
 
 export const LegendItem = ({
-  uniqName,
+  id,
   speakerLabel,
-  cabinetLabel,
+  cabinetVolume,
   portDiameter,
   portLength,
   carLabel,
   doorState,
   voltageOfTesting
 }: LegendItemProps) => {
-  const isVisible = useAppSelector(state => getIsLineVisibleSelector(state, uniqName))
-  const strokeColor = useAppSelector(state => getLineColorSelector(state, uniqName))
+  const isVisible = useAppSelector(state => getIsLineVisibleSelector(state, id))
+  const strokeColor = useAppSelector(state => getLineColorSelector(state, id))
 
   const dispatch = useAppDispatch()
 
   const onCheckedChange = (params: {checked: boolean}) => {
     dispatch(changeVisibilityOfCase({
-      targetGraphName: uniqName,
+      targetGraphName: id,
       flag: params.checked
     }))
   }
@@ -98,7 +99,7 @@ export const LegendItem = ({
       >
         <RiSpeaker2Line />
         <Tooltip
-          content={cabinetLabel}
+          content={cabinetVolume}
           positioning={{placement: 'top'}}
           openDelay={1000}
         >
@@ -106,7 +107,7 @@ export const LegendItem = ({
             textStyle="sm"
             truncate
           >
-            {cabinetLabel}
+            {cabinetVolume}
           </Text>
         </Tooltip>
       </Flex>

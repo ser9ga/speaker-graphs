@@ -1,9 +1,9 @@
-import { Flex, Text } from '@chakra-ui/react';
-import { LegendItem } from '@/app/_modules/ViewComponents/LegendItem/LegendItem';
-import { MeasurementUnitWithUniqName } from '@/app/_modules/Types/GraphDataTypes';
+import {Flex, Text} from '@chakra-ui/react';
+import {LegendItem} from '@/app/_modules/ViewComponents/LegendItem/LegendItem';
+import {MeasurementUnitWithId} from '@/app/_modules/Types/dataForGraphs';
 
 interface LegendCasesProps {
-  items: MeasurementUnitWithUniqName[] | null;
+  items: MeasurementUnitWithId[] | null;
 }
 export const LegendCases = (
   {items}: LegendCasesProps
@@ -22,17 +22,17 @@ export const LegendCases = (
       gap={'3px'}
       alignSelf={'flex-end'}
     >
-      {items.map((item) => (
+      {items.map((meta) => (
         <LegendItem
-          key={item.uniqName}
-          uniqName={item.uniqName}
-          speakerLabel={item.speakerLabel}
-          cabinetLabel={item.cabinetLabel}
-          portDiameter={item.portDiameter + 'мм'}
-          portLength={item.portLength + 'мм'}
-          carLabel={item.carLabel}
-          doorState={item.isDoorOpened ? 'Открыта' : 'Закрыта'}
-          voltageOfTesting={`${item.voltageOfTesting}v`}
+          key={meta.id}
+          id={meta.id}
+          speakerLabel={meta.speaker.label}
+          cabinetVolume={meta.cabinet.volume}
+          portDiameter={meta.port.diameter + 'мм'}
+          portLength={meta.port.length + 'мм'}
+          carLabel={meta.car.label}
+          doorState={meta.isDoorOpened ? 'Открыта' : 'Закрыта'}
+          voltageOfTesting={`${meta.voltageOfTesting}v`}
         />
       ))}
     </Flex>

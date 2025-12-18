@@ -1,5 +1,6 @@
 import { valueof } from '@/app/_modules/Types/TypeUtils';
 
+// TODO camelCase
 export const GRAPH_NAME = {
   PRESSURE_FROM_TARGET_VOLTAGE: 'pressure-from-target-voltage',
   IMPEDANCE_FROM_TARGET_VOLTAGE: 'impedance-from-target-voltage',

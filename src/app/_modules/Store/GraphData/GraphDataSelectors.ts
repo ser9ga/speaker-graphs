@@ -1,42 +1,42 @@
 import {createDraftSafeSelector} from '@reduxjs/toolkit';
 import {RootState} from '@/app/_modules/Store/Store';
-import {MeasurementUnitWithUniqName} from '@/app/_modules/Types/GraphDataTypes';
+import {MeasurementCaseForGraph, MeasurementUnitWithId} from '@/app/_modules/Types/dataForGraphs';
 import {UNIT, Unit} from '@/app/_modules/Constants/Unit';
 import {calculateAndPackUnitData} from '@/app/_modules/Utils/calculateAndPackUnitData/calculateAndPackUnitData';
 import {graphDataDomainSelector} from "@/app/_modules/Store/GraphData/GraphDataDomainSelector";
-import {appControlDomainSelector} from "@/app/_modules/Store/AppControl/AppControlDomainSelector";
+import {graphSetControlDomainSelector} from "@/app/_modules/Store/GraphSetControl/GraphSetControlDomainSelector";
 
 export const measurementMetasSelector = createDraftSafeSelector(
   graphDataDomainSelector,
-  (graphDataState): MeasurementUnitWithUniqName[] | null => graphDataState
+  (graphDataState): MeasurementUnitWithId[] | null => graphDataState
     .graphDataCollection?.map(
       (graphDataItem) => ({
-        ...graphDataItem.measurementMeta,
-        uniqName: graphDataItem.uniqName,
+        id: graphDataItem.id,
+        ...graphDataItem.meta,
       })
   ) || null
 );
 
 export const getIsLineVisibleSelector = createDraftSafeSelector(
   graphDataDomainSelector,
-  (_: RootState, uniqName: string ) => uniqName,
-  (graphDataState, uniqName) => graphDataState
+  (_: RootState, id: MeasurementCaseForGraph['id'] ) => id,
+  (graphDataState, id) => graphDataState
     .graphDataCollection?.find(
-      (graphDataItem) => graphDataItem.uniqName === uniqName
-    )?.graphOptions.isVisible
+      (graphDataItem) => graphDataItem.id === id
+    )?.options.isVisible
 ) || null;
 
 export const getLineColorSelector = createDraftSafeSelector(
   graphDataDomainSelector,
-  (_: RootState, uniqName: string ) => uniqName,
-  (graphDataState, uniqName) => graphDataState
+  (_: RootState, id: MeasurementCaseForGraph['id'] ) => id,
+  (graphDataState, id) => graphDataState
     .graphDataCollection?.find(
-      (graphDataItem) => graphDataItem.uniqName === uniqName
-    )?.graphOptions.strokeColor
+      (graphDataItem) => graphDataItem.id === id
+    )?.options.strokeColor
 ) || null;
 
 export const substitutedVoltageOfTesting = createDraftSafeSelector(
-  appControlDomainSelector,
+  graphSetControlDomainSelector,
   ({substitutedVoltageOfTesting}) => substitutedVoltageOfTesting
 )
 

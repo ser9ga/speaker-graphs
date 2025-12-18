@@ -5,9 +5,9 @@ import { Tooltip } from '@/app/_modules/components/ui/tooltip';
 import { BsArrowsCollapse, BsArrowsExpand } from 'react-icons/bs';
 import { VERTICAL_SCALE_OPTION } from '@/app/_modules/Constants/VerticalScaleOption';
 import { _exhaustiveCheck } from '@/app/_modules/Utils/Common';
-import { verticalScaleOptionSelector } from '@/app/_modules/Store/AppControl/AppControlSelectors';
+import { verticalScaleOptionSelector } from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
 import { useAppDispatch, useAppSelector } from '@/app/_modules/Store/Hooks';
-import { toggleVerticalScaleOption } from '@/app/_modules/Store/AppControl/AppControlSlice';
+import { toggleVerticalScaleOption } from '@/app/_modules/Store/GraphSetControl/GraphSetControlSlice';
 
 export const VerticalScaleControlButton = () => {
   const verticalScaleOption = useAppSelector(verticalScaleOptionSelector)

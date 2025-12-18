@@ -6,6 +6,7 @@ import {
 } from "@/app/_modules/Types/dataFromCatalogue";
 import {MEASURED_UNIT} from "@/app/_modules/Constants";
 import {isEqual, isNaN, isNumber} from "lodash";
+import {EditableMeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
 
 const validateEntity = (
   entity: unknown,
@@ -160,7 +161,7 @@ export const validateMeasurementCase = (
   return validationErrors
 }
 
-export const generateEmptyMeasurementCase = () => {
+export const generateEmptyCatalogMeasurementCase = () => {
   const emptyMeasurementCase: EditableMeasurementCaseFromCatalogue =  {
     meta: {
       speaker: null,
@@ -186,3 +187,19 @@ export const generateEmptyMeasurementCase = () => {
 
   return emptyMeasurementCase
 }
+
+export function addOptionsToMeasurementCaseForGraph <T extends object>(initMeasurementCase: T, color: string) {
+  return {
+    ...initMeasurementCase,
+    options: {
+      isCompensationEnabled: false,
+      isVisible: true,
+      strokeColor: color
+    }
+  }
+}
+
+export const generateEmptyGraphMeasurementCase = (color: string) => {
+  return addOptionsToMeasurementCaseForGraph(generateEmptyCatalogMeasurementCase(), color)
+}
+

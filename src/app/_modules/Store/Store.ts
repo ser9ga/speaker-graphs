@@ -1,10 +1,12 @@
-import { combineSlices, configureStore } from '@reduxjs/toolkit';
-import { graphDataSlice } from '@/app/_modules/Store/GraphData/GraphDataSlice';
-import { appControlSlice } from '@/app/_modules/Store/AppControl/AppControlSlice';
+import {combineSlices, configureStore} from '@reduxjs/toolkit';
+import {graphDataSlice} from '@/app/_modules/Store/GraphData/GraphDataSlice';
+import {graphSetControlSlice} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSlice';
+import {appControlSlice} from '@/app/_modules/Store/AppControl/AppControlSlice';
 
 const rootReducer = combineSlices({
   [appControlSlice.name]: appControlSlice.reducer,
-  [graphDataSlice.name]: graphDataSlice.reducer
+  [graphSetControlSlice.name]: graphSetControlSlice.reducer,
+  [graphDataSlice.name]: graphDataSlice.reducer,
 });
 
 export const store = configureStore({

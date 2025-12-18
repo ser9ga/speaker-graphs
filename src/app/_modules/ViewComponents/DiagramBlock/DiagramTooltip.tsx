@@ -1,7 +1,7 @@
 import {GRAPH_LITERALS} from '@/app/_modules/Constants/Translations/GraphLiterals';
 import {GraphName} from '@/app/_modules/Constants/GraphName';
 import {Tooltip} from "recharts";
-import {currentMouseOnGraphSelector} from "@/app/_modules/Store/AppControl/AppControlSelectors";
+import {currentMouseOnGraphSelector} from "@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors";
 import {useAppSelector} from "@/app/_modules/Store/Hooks";
 
 interface DiagramTooltipProps {

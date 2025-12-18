@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { StoreGraphDataItem } from '@/app/_modules/Types/GraphDataTypes';
+import { MeasurementCaseForGraph } from '@/app/_modules/Types/dataForGraphs';
 
 interface GraphDataState {
-  graphDataCollection: StoreGraphDataItem[] | null;
+  graphDataCollection: MeasurementCaseForGraph[] | null;
 }
 
 const initialState: GraphDataState = {
@@ -15,62 +15,27 @@ export const graphDataSlice = createSlice({
   reducers: {
     setGraphData: (
       state,
-      {payload}: {payload: StoreGraphDataItem[]}
+      {payload}: {payload: MeasurementCaseForGraph[]}
     ) => {
       state.graphDataCollection = payload;
-    },
-
-    addStoreGraphItem: (
-      state,
-      {payload}: {payload: StoreGraphDataItem}
-    ) => {
-      if (state.graphDataCollection?.length && state.graphDataCollection?.length >= 6) {
-        console.error('graphDataCollection if full');
-
-        return;
-      }
-
-        state.graphDataCollection = (state.graphDataCollection || []).concat(payload);
-    },
-    deleteGraphItem: (
-      state,
-      {payload}: {payload: string}
-    ) => {
-      const existencePredicate = state
-        state.graphDataCollection
-          ?.some((storeGraphDataItem) => storeGraphDataItem.uniqName === payload);
-
-      if (!existencePredicate) {
-        console.error(`StoreGraphItem with Id ${payload} is not exist`);
-
-        return;
-      }
-
-      state.graphDataCollection = state
-        .graphDataCollection?.filter((storeGraphDataItem) => {
-          return storeGraphDataItem.uniqName !== payload
-        }) || null;
-    },
-    eraseStoreGraphData: (state) => {
-      state.graphDataCollection = initialState.graphDataCollection;
     },
     changeVisibilityOfCase: (
       state,
       {payload}: {payload: {
-        targetGraphName: string,
+        targetGraphName: MeasurementCaseForGraph['id'],
         flag: boolean,
       }}
     ) => {
       state.graphDataCollection = state.graphDataCollection
         ?.map((graphDataItem) => {
-          if (graphDataItem.uniqName !== payload.targetGraphName) {
+          if (graphDataItem.id !== payload.targetGraphName) {
             return graphDataItem
           }
 
           return {
             ...graphDataItem,
-            graphOptions: {
-              ...graphDataItem.graphOptions,
+            options: {
+              ...graphDataItem.options,
               isVisible: payload.flag
             }
           };
@@ -81,8 +46,5 @@ export const graphDataSlice = createSlice({
 
 export const {
   setGraphData,
-  addStoreGraphItem,
-  deleteGraphItem,
-  eraseStoreGraphData,
   changeVisibilityOfCase
 } = graphDataSlice.actions

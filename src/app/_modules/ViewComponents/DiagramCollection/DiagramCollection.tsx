@@ -4,7 +4,7 @@ import { GiElectricalResistance } from 'react-icons/gi';
 import { GRAPH_NAME } from '@/app/_modules/Constants/GraphName';
 import { UNIT } from '@/app/_modules/Constants/Unit';
 import { useAppSelector } from '@/app/_modules/Store/Hooks';
-import { isGraphExpandedSelector } from '@/app/_modules/Store/AppControl/AppControlSelectors';
+import { isGraphExpandedSelector } from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
 import {useEffect} from "react";
 
 export const DiagramCollection = () => {

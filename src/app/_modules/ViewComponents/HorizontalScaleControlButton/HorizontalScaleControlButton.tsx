@@ -6,8 +6,8 @@ import { BsArrowsCollapseVertical, BsArrowsExpandVertical } from 'react-icons/bs
 import { _exhaustiveCheck } from '@/app/_modules/Utils/Common';
 import { HORIZONTAL_SCALE_OPTION } from '@/app/_modules/Constants/HorizontalScaleOption';
 import { useAppDispatch, useAppSelector } from '@/app/_modules/Store/Hooks';
-import { horizontalScaleOptionSelector } from '@/app/_modules/Store/AppControl/AppControlSelectors';
-import { toggleHorizontalScaleOption } from '@/app/_modules/Store/AppControl/AppControlSlice';
+import { horizontalScaleOptionSelector } from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
+import { toggleHorizontalScaleOption } from '@/app/_modules/Store/GraphSetControl/GraphSetControlSlice';
 
 export const HorizontalScaleControlButton = () => {
   const horizontalScaleOption = useAppSelector(horizontalScaleOptionSelector);

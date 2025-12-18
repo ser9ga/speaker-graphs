@@ -1,5 +1,5 @@
 import { UNIT, Unit } from '@/app/_modules/Constants/Unit';
-import { StoreGraphDataItem } from '@/app/_modules/Types/GraphDataTypes';
+import { MeasurementCaseForGraph } from '@/app/_modules/Types/dataForGraphs';
 import { calculateAndPackImpedance } from '@/app/_modules/Utils/calculateAndPackUnitData/calculateAndPackImpedance';
 import {
   calculateAndPackSensitivity
@@ -11,7 +11,7 @@ import {
 import {calculateAndPackPower} from "@/app/_modules/Utils/calculateAndPackUnitData/calculateAndPackPower";
 
 export const calculateAndPackUnitData = (
-  storeGraphData: StoreGraphDataItem[] | null,
+  storeGraphData: MeasurementCaseForGraph[] | null,
   targetUnit: Unit,
   params: {
     substitutedVoltageOfTesting: number | null | undefined
