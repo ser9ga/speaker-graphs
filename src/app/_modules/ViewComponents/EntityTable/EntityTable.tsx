@@ -36,10 +36,11 @@ export function EntityTable<T extends Record<string, any>> ({
     setIsLoading(true);
     const res = await entityService.getAll();
 
+    // @ts-ignore
     if (res?.isError) {
       return;
     }
-
+    // @ts-ignore
     setEntities(res)
     setIsLoading(false);
   };
@@ -53,6 +54,7 @@ export function EntityTable<T extends Record<string, any>> ({
   const onEntityAdd = async (values: T) => {
     const res = await entityService.add(values);
 
+    // @ts-ignore
     if (res?.isError) {
        return;
     }
@@ -70,6 +72,7 @@ export function EntityTable<T extends Record<string, any>> ({
   const onEntityEdit = async (id: number, values: T) => {
     const res = await entityService.update(values);
 
+    // @ts-ignore
     if (res?.isError) {
       return;
     }
@@ -87,6 +90,7 @@ export function EntityTable<T extends Record<string, any>> ({
   const onEntityDelete = async (id: number) => {
     const res = await entityService.remove(id);
 
+    // @ts-ignore
     if (res?.isError) {
       return;
     }

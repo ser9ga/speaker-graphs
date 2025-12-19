@@ -1,7 +1,7 @@
 import {PrismaClient} from "@prisma/client";
 import {CabinetFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {prisma} from "@/app/_modules/db/prismaClient";
 
-const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.cabinets
 
 type EntityFromCatalogue = CabinetFromCatalogue
@@ -57,21 +57,5 @@ export const remove = async (id: EntityFromCatalogue['id']) => {
 
   return mapper(resultedItem);
 }
-
-(async () => {
-  const count = await prisma.cabinets.count();
-  if (count === 0) {
-    await prisma.cabinets.createMany({
-      data: [
-        { volume: 45, speakerSize: 12, description: null},
-        { volume: 50, speakerSize: 12, description: 'Описание короба'},
-        { volume: 55, speakerSize: 12, description: null},
-        { volume: 115, speakerSize: 15, description: 'Еще одно описание короба'},
-        { volume: 120, speakerSize: 15, description: null},
-        { volume: 125, speakerSize: 15, description: null},
-      ],
-    });
-  }
-})();
 
 export {mapper as cabinetMapper}

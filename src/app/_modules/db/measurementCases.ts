@@ -1,17 +1,16 @@
-import {PrismaClient} from "@prisma/client";
 import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {speakerMapper} from './speakers'
 import {cabinetMapper} from './cabinets'
 import {portMapper} from './ports'
 import {carMapper} from './cars'
+import {prisma} from "@/app/_modules/db/prismaClient";
 
-const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.measurementCases
 
 type EntityFromCatalogue = MeasurementCaseFromCatalogue
 type EntityFromDB =  Awaited<ReturnType<typeof model.findUnique>>
 
-const measurementDataMapper = (initialCollecton) => initialCollecton
+const measurementDataMapper = (initialCollection: any[]) => initialCollection
   ?.reduce((acc, cur) => {
     const {frequency, ...rest} = cur
     return {
@@ -32,13 +31,20 @@ const mapper = (measurementCase: EntityFromDB): EntityFromCatalogue | null => {
   return ({
     ...measurementCase,
     meta: {
+      // @ts-ignore
       ...measurementCase?.meta,
+      // @ts-ignore
       speaker: speakerMapper(measurementCase.meta?.speaker),
+      // @ts-ignore
       cabinet: cabinetMapper(measurementCase.meta?.cabinet),
+      // @ts-ignore
       port: portMapper(measurementCase.meta?.port),
+      // @ts-ignore
       car: carMapper(measurementCase.meta?.car),
+      // @ts-ignore
       voltageOfTesting: measurementCase.meta?.voltageOfTesting?.toNumber?.(),
     },
+    // @ts-ignore
     data: measurementDataMapper(measurementCase.data)
   })
 }

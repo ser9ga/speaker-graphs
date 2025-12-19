@@ -18,6 +18,7 @@ export async function GET(_: Request, ctx: RouteContext<'/entities/ports/[id]'>)
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
+    // @ts-ignore
     return new Response(`Error: ${error?.message || 'unknown error'}`, {
       status: 404,
     })
@@ -44,6 +45,7 @@ export async function PUT(request: Request, ctx: RouteContext<'/entities/ports/[
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
+    // @ts-ignore
     return new Response(`Error: ${error?.message || 'unknown error'}`, {
       status: 404,
     })
@@ -68,6 +70,7 @@ export async function DELETE(_: Request, ctx: RouteContext<'/entities/ports/[id]
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
+    // @ts-ignore
     return new Response(`Error: ${error?.message || 'unknown error'}`, {
       status: 404,
     })

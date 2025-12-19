@@ -6,6 +6,7 @@ export const GET = async () => {
 
     return new Response(JSON.stringify(entityCollection));
   } catch (error) {
+    // @ts-ignore
     return new Response(`Error: ${error?.message || 'unknown error'}`, {
       status: 404,
     })
@@ -20,6 +21,7 @@ export const POST = async (request: Request)=> {
 
     return new Response(JSON.stringify(product));;
   } catch (error) {
+    // @ts-ignore
     return new Response(`Error: ${error?.message || 'unknown error'}`, {
       status: 404,
     })

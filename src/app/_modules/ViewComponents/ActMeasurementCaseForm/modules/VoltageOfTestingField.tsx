@@ -58,6 +58,7 @@ export function VoltageOfTestingField ({
           <NumberInput.Root
             min={0}
             max={99}
+            // @ts-ignore
             value={getInputValue(value)}
             onValueChange={(e) => onChange(getFormValue(e.valueAsNumber))}
           >

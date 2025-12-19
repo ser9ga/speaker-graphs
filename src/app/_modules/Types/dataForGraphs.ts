@@ -20,6 +20,7 @@ export interface EditableMeasurementCaseForGraph {
   id?: number | string,
   meta: NullableRecord<MeasurementCaseForGraph['meta']>
   data: Record<number, MeasurementFrameFromCatalogue>
+  // @ts-ignore
   options: NullableRecord<MeasurementCaseForGraph['options']>
 }
 

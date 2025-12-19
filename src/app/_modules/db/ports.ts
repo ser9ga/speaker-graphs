@@ -1,7 +1,6 @@
-import {PrismaClient} from "@prisma/client";
 import {PortFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {prisma} from "@/app/_modules/db/prismaClient";
 
-const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.ports
 
 type EntityFromCatalogue = PortFromCatalogue
@@ -57,21 +56,5 @@ export const remove = async (id: EntityFromCatalogue['id']) => {
 
   return mapper(resultedItem);
 }
-
-(async () => {
-  const count = await prisma.ports.count();
-  if (count === 0) {
-    await prisma.ports.createMany({
-      data: [
-        { diameter: 100, length: 200, description: null },
-        { diameter: 100, length: 300, description: null },
-        { diameter: 100, length: 400, description: 'Какое-то описание порта' },
-        { diameter: 200, length: 200, description: null },
-        { diameter: 200, length: 300, description: null },
-        { diameter: 250, length: 400, description: 'Еще акое-то описание порта' },
-      ],
-    });
-  }
-})();
 
 export {mapper as portMapper}

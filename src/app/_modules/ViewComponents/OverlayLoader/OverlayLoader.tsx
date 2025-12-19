@@ -1,6 +1,12 @@
 import {Box, Center, Spinner} from "@chakra-ui/react";
+import {FC, ReactNode} from "react";
 
-export const OverlayLoader = ({
+interface OverlayLoaderProps {
+  children: ReactNode,
+  isLoading: boolean
+}
+
+export const OverlayLoader: FC<OverlayLoaderProps> = ({
   children,
   isLoading
 }) => {

@@ -35,7 +35,6 @@ export const TabContainer = () => {
         value={activeTab}
         onValueChange={(details) => dispatch(setActiveTab(details.value as MainTabName))}
       >
-
         <Tabs.List>
           <Show <boolean> when={!isCleanLookEnabled}>
             <Tabs.Trigger value={MAIN_TAB_NAME.GRAPH_DRAWS}>
@@ -70,9 +69,7 @@ export const TabContainer = () => {
           minWidth={'0px'}
           paddingTop={'0px'}
         >
-          <Show <boolean> when={activeTab === MAIN_TAB_NAME.GRAPH_DRAWS}>
-            <DiagramTab />
-          </Show>
+          <DiagramTab />
         </Tabs.Content>
         {flags.feature__catalog && (
           <Tabs.Content

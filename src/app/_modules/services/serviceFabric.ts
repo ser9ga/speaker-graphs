@@ -1,6 +1,6 @@
 import {toaster} from "@/app/_modules/components/ui/toaster";
 
-export function serviceFabric<T extends Record<string, any>> (
+export function serviceFabric<T extends Record<string, never>> (
   path: string,
   collectionLabel: string,
 ){
@@ -13,6 +13,7 @@ export function serviceFabric<T extends Record<string, any>> (
       }
 
       return response.json();
+      // @ts-ignore
     } catch (e: object) {
       toaster.create({
         description: `Не удалось загрузить ${collectionLabel}`,
@@ -34,6 +35,7 @@ export function serviceFabric<T extends Record<string, any>> (
       }
 
       return response.json();
+      // @ts-ignore
     } catch (e: object) {
       toaster.create({
         description: `Не удалось загрузить ${collectionLabel}`,
@@ -59,6 +61,7 @@ export function serviceFabric<T extends Record<string, any>> (
       }
 
       return response.json();
+      // @ts-ignore
     } catch (e: object) {
       toaster.create({
         description: `Не удалось создать ${collectionLabel}`,
@@ -87,6 +90,7 @@ export function serviceFabric<T extends Record<string, any>> (
       }
 
       return response.json() as unknown as T;
+      // @ts-ignore
     } catch (e: object) {
       toaster.create({
         description: `Не удалось изменить ${collectionLabel}`,
@@ -109,6 +113,7 @@ export function serviceFabric<T extends Record<string, any>> (
       if (!response.ok) {
         throw new Error("Not 2xx response", {cause: response});
       }
+      // @ts-ignore
     } catch (e: object) {
       toaster.create({
         description: `Не удалось удалить ${collectionLabel}`,

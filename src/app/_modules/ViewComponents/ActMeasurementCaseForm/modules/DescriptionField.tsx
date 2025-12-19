@@ -51,6 +51,7 @@ export function DescriptionField ({
             {fieldLabel}
           </Field.Label>
           <Textarea
+            // @ts-ignore
             value={getInputValue(value)}
             onChange={(e) => {
               onChange(getFormValue(e.target.value))

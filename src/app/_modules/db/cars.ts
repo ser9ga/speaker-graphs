@@ -1,7 +1,7 @@
 import {PrismaClient} from "@prisma/client";
 import {CarFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {prisma} from "@/app/_modules/db/prismaClient";
 
-const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.cars
 
 type EntityFromCatalogue = CarFromCatalogue
@@ -55,19 +55,5 @@ export const remove = async (id: EntityFromCatalogue['id']) => {
 
   return mapper(resultedItem);
 }
-
-(async () => {
-  const count = await prisma.cars.count();
-  if (count === 0) {
-    const res = await prisma.cars.createMany({
-      data: [
-        { label: "Приора седан", description: null },
-        { label: "Гранта седан", description: 'Какое-то описание машины' },
-        { label: "Матиз", description: null },
-        { label: "Веста", description: null },
-      ],
-    });
-  }
-})();
 
 export {mapper as carMapper}

@@ -1,3 +1,5 @@
+'use client'
+
 import {CartesianGrid, LineChart, ResponsiveContainer, XAxis, YAxis} from 'recharts';
 import {Box, Show} from '@chakra-ui/react';
 import {DiagramBlockMenu} from '@/app/_modules/ViewComponents/DiagramIconMenu/DiagramBlockMenu';
@@ -12,7 +14,11 @@ import {
   isGraphExpandedSelector,
   verticalScaleOptionSelector
 } from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
-import {setCurrentMouseOnGraph, toggleCleanLook, toggleGraphExpansion} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSlice';
+import {
+  setCurrentMouseOnGraph,
+  toggleCleanLook,
+  toggleGraphExpansion
+} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSlice';
 import {DiagramTooltip} from "@/app/_modules/ViewComponents/DiagramBlock/DiagramTooltip";
 import {GraphDrawDataItem} from "@/app/_modules/Types/graphDraw";
 
@@ -48,7 +54,6 @@ export const Diagram = ({
   }, [verticalScaleOption])
 
   return (
-    // @ts-ignore
     <ResponsiveContainer style={{position: 'relative'}}>
       <LineChart
         data={data}

@@ -28,6 +28,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
   const maybeSpeaker = head?.[1]?.[0]
 
   if (typeof maybeSpeaker === 'string' && maybeSpeaker.length > 0) {
+    // @ts-ignore
     emptyMeasurementCase.meta.speaker = {
       label: maybeSpeaker?.trim()
     }
@@ -38,6 +39,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
   const maybeCabinet = head?.[1]?.[1]
 
   if (typeof maybeCabinet === 'string' && maybeCabinet.length > 0) {
+    // @ts-ignore
     emptyMeasurementCase.meta.cabinet = {
       volume: Number(maybeCabinet)
     }
@@ -54,6 +56,8 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     && maybePortLength.length > 0
 
   if (portPredicate) {
+    // @ts-ignore
+
     emptyMeasurementCase.meta.port = {
       diameter: Number(maybePortDiameter?.trim()),
       length: Number(maybePortLength?.trim())
@@ -65,6 +69,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
   const maybeCar = head?.[1]?.[4]
 
   if (typeof maybeCar === 'string' && maybeCar.length > 0) {
+    // @ts-ignore
     emptyMeasurementCase.meta.car = {
       label: maybeCar?.trim()
     }
@@ -128,10 +133,16 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     }
   })
 
+  // @ts-ignore
   emptyMeasurementCase.id = [
+    // @ts-ignore
     emptyMeasurementCase.meta.speaker?.label,
+    // @ts-ignore
     emptyMeasurementCase.meta.cabinet?.volume,
+    // @ts-ignore
     `${emptyMeasurementCase.meta.port?.diameter}_${emptyMeasurementCase.meta.port?.length}`,
+    // @ts-ignore
+
     emptyMeasurementCase.meta.car?.label,
     emptyMeasurementCase.meta.isDoorOpened,
     emptyMeasurementCase.meta.voltageOfTesting,

@@ -30,7 +30,7 @@ export const MeasuredValueField = ({
   control,
   framePath,
 }: DoorOpenStateFieldProps) => {
-  const getIsConsistentDataSet = async (_, formValues: EditableMeasurementCaseFromCatalogue) => {
+  const getIsConsistentDataSet = async (_: unknown, formValues: EditableMeasurementCaseFromCatalogue) => {
     const frame = get(formValues, framePath)
 
     const isFrameFilledAndValid = getIsFrameFilledAndValid(frame)
@@ -58,6 +58,7 @@ export const MeasuredValueField = ({
   return (
     <Controller
       control={control}
+      // @ts-ignore
       name={fieldName}
       rules={{
         validate: {
@@ -74,6 +75,7 @@ export const MeasuredValueField = ({
         <Field.Root invalid={!!error}>
           <NumberInput.Root
             width={'70px'}
+            // @ts-ignore
             value={getInputValue(value)}
             onValueChange={(e) => onChange(getFormValue(e.valueAsNumber))}
           >

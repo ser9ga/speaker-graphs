@@ -24,13 +24,11 @@ import {services} from "@/app/_modules/services";
 import {useAppDispatch} from "@/app/_modules/Store/Hooks";
 
 interface Props {
-  checkedMeasurementCases: MeasurementCaseFromCatalogue[]
   getDialogFullName: (param: number | 'new') => string
   onEntityAdd: (values: MeasurementCaseFromCatalogue) => void
 }
 
 export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
-  checkedMeasurementCases,
   getDialogFullName,
   onEntityAdd
 }) => {
@@ -54,8 +52,6 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
     })()
   }, [])
 
-  const dispatch = useAppDispatch();
-
   return (
     <HStack
       justifySelf={'end'}
@@ -73,6 +69,7 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
                 confirmButtonLabel={'Подтвердить'}
               />
             ),
+            // @ts-ignore
             size: "cover"
           })
         }}
@@ -130,6 +127,7 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
                 confirmButtonLabel={'Подтвердить'}
               />
             ),
+            // @ts-ignore
             size: "cover"
           })
         }}

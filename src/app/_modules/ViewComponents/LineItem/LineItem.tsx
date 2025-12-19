@@ -4,9 +4,10 @@ import {
   getIsLineVisibleSelector,
   getLineColorSelector,
 } from '@/app/_modules/Store/GraphData/GraphDataSelectors';
+import {MeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
 
 interface LineItemProps {
-  id: string
+  id: MeasurementCaseForGraph['id']
 }
 
 export const LineItem = ({

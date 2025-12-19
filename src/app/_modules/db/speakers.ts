@@ -1,7 +1,6 @@
-import {PrismaClient} from "@prisma/client";
 import {SpeakerFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {prisma} from "@/app/_modules/db/prismaClient";
 
-const prisma = new PrismaClient({errorFormat: 'minimal',});
 const model = prisma.speakers
 
 type EntityFromCatalogue = SpeakerFromCatalogue
@@ -57,22 +56,5 @@ export const remove = async (id: EntityFromCatalogue['id']) => {
 
   return mapper(resultedItem);
 }
-
-(async () => {
-  const count = await prisma.speakers.count();
-
-  if (count === 0) {
-    await prisma.speakers.createMany({
-      data: [
-        { label: "М25.15", size: '15', coilResistance: 0.7, description: null },
-        { label: "M45_15", size: '15',coilResistance: 0.35, description: null },
-        { label: "М25.15 корч", size: '15',  coilResistance: 0.7, description: 'Какое-то описание' },
-        { label: "M45_12 корч1", size: '12', coilResistance: 0.2, description: 'Какое-то другое описание' },
-        { label: "М25.12 корч2", size: '12',coilResistance: 1, description: 'Какое-то описание' },
-        { label: "M45_12 корч3", size: '12', coilResistance: 2, description: 'Какое-то другое описание' },
-      ],
-    });
-  }
-})();
 
 export {mapper as speakerMapper}

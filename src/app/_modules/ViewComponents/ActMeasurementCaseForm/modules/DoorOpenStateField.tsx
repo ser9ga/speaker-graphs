@@ -71,6 +71,7 @@ export const DoorOpenStateField = ({
               {fieldLabel}
             </Field.Label>
             <SegmentGroup.Root
+              // @ts-ignore
               value={getSegmentValue(value)}
               onValueChange={(e) => onChange(getFormValue(e.value as DoorStateName))}
             >

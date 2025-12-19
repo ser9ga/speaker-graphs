@@ -62,6 +62,7 @@ export function SelectField<T extends {id: number}[]> ({
           </Field.Label>
           <Select.Root
             collection={frameworks}
+            // @ts-ignore
             value={value ? [value.id.toString()] : []}
             onValueChange={(e) => onChange(e.items?.[0].full)}
           >

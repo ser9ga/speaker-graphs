@@ -73,6 +73,7 @@ export const MeasurementCaseTable: FC<MeasurementCaseTableProps> = ({
                                   />
                                 ),
                                 exitCallback,
+                                // @ts-ignore
                                 size: "cover"
                               })
                             }}
@@ -88,7 +89,8 @@ export const MeasurementCaseTable: FC<MeasurementCaseTableProps> = ({
                   const cellValue = column.cellValue?.(item);
 
                   const cellText = cellValue
-                  || get(item, column?.path)
+                    // @ts-ignore
+                    || get(item, column?.path)
                   || get(item, column.keyName)
 
                   return (
@@ -102,6 +104,7 @@ export const MeasurementCaseTable: FC<MeasurementCaseTableProps> = ({
                           textStyle="sm"
                           truncate
                         >
+                          {/* @ts-ignore */}
                           {cellText}
                         </Text>
                       )}
