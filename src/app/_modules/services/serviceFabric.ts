@@ -1,6 +1,6 @@
 import {toaster} from "@/app/_modules/components/ui/toaster";
 
-export function serviceFabric<T extends Record<string, never>> (
+export function serviceFabric<T extends object> (
   path: string,
   collectionLabel: string,
 ){
@@ -75,10 +75,9 @@ export function serviceFabric<T extends Record<string, never>> (
     }
   }
 
-
-
   const update = async (entity: T) => {
     try {
+      // @ts-ignore
       const  {id, ...rest} = entity;
       const response = await fetch(`${path}/${id}`,{
         method: 'PUT',

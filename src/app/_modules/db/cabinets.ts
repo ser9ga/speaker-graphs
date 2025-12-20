@@ -1,4 +1,3 @@
-import {PrismaClient} from "@prisma/client";
 import {CabinetFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {prisma} from "@/app/_modules/db/prismaClient";
 

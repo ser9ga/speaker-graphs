@@ -43,4 +43,5 @@ next-env.d.ts
 # IDE configs
 .idea
 
+/src/generated/prisma
 /app.db
