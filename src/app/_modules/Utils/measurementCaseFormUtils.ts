@@ -6,7 +6,6 @@ import {
 } from "@/app/_modules/Types/dataFromCatalogue";
 import {MEASURED_UNIT} from "@/app/_modules/Constants";
 import {isEqual, isNaN, isNumber} from "lodash";
-import {EditableMeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
 
 const validateEntity = (
   entity: unknown,

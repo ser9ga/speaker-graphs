@@ -2,11 +2,7 @@ import {Control, Controller} from "react-hook-form"
 import * as React from "react";
 import {useMemo} from "react";
 import {createListCollection, Field, Select} from "@chakra-ui/react";
-import {
-  EditableMeasurementCaseFromCatalogue,
-  EmptyMeasurementCaseFromCatalogue,
-  MeasurementCaseFromCatalogue
-} from "@/app/_modules/Types/dataFromCatalogue";
+import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
 type SelectFieldProps<T extends {id: number}[]> = {
   collection: T;

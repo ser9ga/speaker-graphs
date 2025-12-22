@@ -6,9 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "db:deploy": "npx prisma migrate deploy && npx prisma generate",
-    "build:prod": "npm run build && npm run db:deploy"
+    "eslint": "eslint \"src/app/**/*.@(ts|tsx)\" ",
+    "eslint:fix": "eslint \"src/app/**/*.@(ts|tsx)\" --fix",
+    "lint": "tsc && eslint"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.26.0",
