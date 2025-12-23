@@ -12,6 +12,7 @@ import {toaster} from "@/app/_modules/components/ui/toaster";
 import {
   MeasurementCaseSelectedCollectionTableActionBar
 } from "@/app/_modules/ViewComponents/MeasurementCaseSelectedCollectionTableActionBar/MeasurementCaseSelectedCollectionTableActionBar";
+import {SpinnerWrapper} from "@/app/_modules/ViewComponents/SpinnerWrapper/SpinnerWrapper";
 
 export const MeasurementCaseCollection = () => {
   const [measurementCases, setMeasurementCases] = useState<MeasurementCaseFromCatalogue[]>([])
@@ -32,9 +33,13 @@ export const MeasurementCaseCollection = () => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    getMeasurementCases()
-  }, []);
+  useEffect(
+    () => {
+      getMeasurementCases()
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const getDialogFullName = (id: number | 'new') => `measurementCase_${id}`
 
@@ -89,53 +94,55 @@ export const MeasurementCaseCollection = () => {
 
 
   return (
-    <Grid
-      templateRows={"auto 1fr auto 500px"}
-      gap={'15px'}
-      width={'100%'}
-      height={'100%'}
-      minHeight={'0px'}
-      minWidth={'0px'}
-      padding={'15px'}
-      overflow={'hidden'}
-    >
-      <MeasurementCaseCollectionTableActionBar
-        getDialogFullName={getDialogFullName}
-        onEntityAdd={onEntityAdd}
-      />
-      <MeasurementCaseTable
-        measurementCases={measurementCases}
-        getDialogFullName={getDialogFullName}
-        onEntityEdit={onEntityEdit}
-        onEntityDelete={onEntityDelete}
-        onRowDoubleClick={(measurementCase) => {
-          setCheckedMeasurementCases(
-            prev => {
-              if (prev.some(prevMeasurementCase => prevMeasurementCase.id === measurementCase.id)) {
-                return prev
-              }
+    <SpinnerWrapper isSpinning={isLoading}>
+      <Grid
+        templateRows={"auto 1fr auto 500px"}
+        gap={'15px'}
+        width={'100%'}
+        height={'100%'}
+        minHeight={'0px'}
+        minWidth={'0px'}
+        padding={'15px'}
+        overflow={'hidden'}
+      >
+        <MeasurementCaseCollectionTableActionBar
+          getDialogFullName={getDialogFullName}
+          onEntityAdd={onEntityAdd}
+        />
+        <MeasurementCaseTable
+          measurementCases={measurementCases}
+          getDialogFullName={getDialogFullName}
+          onEntityEdit={onEntityEdit}
+          onEntityDelete={onEntityDelete}
+          onRowDoubleClick={(measurementCase) => {
+            setCheckedMeasurementCases(
+              prev => {
+                if (prev.some(prevMeasurementCase => prevMeasurementCase.id === measurementCase.id)) {
+                  return prev
+                }
 
-              return [...prev, measurementCase]
-            }
-          )
-        }}
-      />
-      <MeasurementCaseSelectedCollectionTableActionBar
-        checkedMeasurementCases={checkedMeasurementCases}
-      />
-      <MeasurementCaseTable
-        measurementCases={checkedMeasurementCases}
-        getDialogFullName={getDialogFullName}
-        onEntityEdit={onEntityEdit}
-        onEntityDelete={onEntityDelete}
-        onRowDoubleClick={(measurementCase) => {
-          setCheckedMeasurementCases(
-            prev => {
-              return prev.filter(prevMeasurementCase => prevMeasurementCase.id !== measurementCase.id)
-            }
-          )
-        }}
-      />
-    </Grid>
+                return [...prev, measurementCase]
+              }
+            )
+          }}
+        />
+        <MeasurementCaseSelectedCollectionTableActionBar
+          checkedMeasurementCases={checkedMeasurementCases}
+        />
+        <MeasurementCaseTable
+          measurementCases={checkedMeasurementCases}
+          getDialogFullName={getDialogFullName}
+          onEntityEdit={onEntityEdit}
+          onEntityDelete={onEntityDelete}
+          onRowDoubleClick={(measurementCase) => {
+            setCheckedMeasurementCases(
+              prev => {
+                return prev.filter(prevMeasurementCase => prevMeasurementCase.id !== measurementCase.id)
+              }
+            )
+          }}
+        />
+      </Grid>
+    </SpinnerWrapper>
   )
 }

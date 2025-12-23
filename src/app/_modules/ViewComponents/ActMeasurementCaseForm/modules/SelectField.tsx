@@ -27,13 +27,17 @@ export function SelectField<T extends {id: number}[]> ({
   control,
   getItemLabel
 }: SelectFieldProps<T>) {
-  const frameworks = useMemo(() => createListCollection({
-    items: collection.map((item) => ({
-        value: item.id.toString(),
-        label: getItemLabel(item),
-        full: item
-      }))
-  }), [collection])
+  const frameworks = useMemo(
+    () => createListCollection({
+      items: collection.map((item) => ({
+          value: item.id.toString(),
+          label: getItemLabel(item),
+          full: item
+        }))
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [collection]
+  )
 
   return (
     <Controller

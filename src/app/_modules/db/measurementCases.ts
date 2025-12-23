@@ -4,21 +4,26 @@ import {cabinetMapper} from './cabinets'
 import {portMapper} from './ports'
 import {carMapper} from './cars'
 import {prisma} from "@/app/_modules/db/prismaClient";
-
-const model = prisma.measurementCases
+import {Decimal} from "@prisma/client-runtime-utils";
 
 type EntityFromCatalogue = MeasurementCaseFromCatalogue
-type EntityFromDB =  Awaited<ReturnType<typeof model.findUnique>>
+type EntityFromDB =  Awaited<ReturnType<typeof prisma.measurementCases.findUnique>>
 
-const measurementDataMapper = (initialCollection: any[]) => initialCollection
+const measurementDataMapper = (initialCollection: {
+  frequency: number,
+  Uin: Decimal | null,
+  I: Decimal | null,
+  Pa: Decimal | null,
+}[]) => initialCollection
   ?.reduce((acc, cur) => {
     const {frequency, ...rest} = cur
+
     return {
       ...acc,
       [frequency]: {
+        Uin: rest.Uin?.toNumber() || null,
         I: rest.I?.toNumber() || null,
         Pa: rest.Pa?.toNumber() || null,
-        Uin: rest.Uin?.toNumber() || null,
       },
     }
   }, {})

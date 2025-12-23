@@ -43,9 +43,12 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    getEntities()
-  }, []);
+  useEffect(
+    () => {
+      getEntities()
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []);
 
   const getDialogFullName = (id: number | 'new') => `${dialogNamePrefix}_${id}`
 

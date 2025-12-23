@@ -74,68 +74,82 @@ export const validateMeasurementCase = (
 ) => {
   const validationErrors = [];
 
-  validateEntity(
+  if (validateEntity(
     measurementCase.meta?.speaker,
     {
       validType: 'object',
       isCreating,
       isRequired: true
     }
-  ) && validationErrors.push('Некорректные данные в поле "Динамик"')
+  )) {
+    validationErrors.push('Некорректные данные в поле "Динамик"')
+  }
 
-  validateEntity(
+  if (validateEntity(
     measurementCase.meta?.cabinet,
     {
       validType: 'object',
       isCreating,
       isRequired: true
     }
-  ) && validationErrors.push('Некорректные данные в поле "Короб"')
+  )) {
+    validationErrors.push('Некорректные данные в поле "Короб"')
+  }
 
-  validateEntity(
+  if (validateEntity(
     measurementCase.meta?.port,
     {
       validType: 'object',
       isCreating,
       isRequired: true
     }
-  ) && validationErrors.push('Некорректные данные в поле "Порт"')
+  )) {
+    validationErrors.push('Некорректные данные в поле "Порт"')
+  }
 
-  validateEntity(
+  if (validateEntity(
     measurementCase.meta?.car,
     {
       validType: 'object',
       isCreating,
       isRequired: true
     }
-  ) && validationErrors.push('Некорректные данные в поле "Автомобиль"')
+  )) {
+    validationErrors.push('Некорректные данные в поле "Автомобиль"')
+  }
 
-  validateEntity(
+  if (validateEntity(
     measurementCase.meta?.isDoorOpened,
     {
       validType: 'boolean',
       isCreating,
       isRequired: true
     }
-  ) && validationErrors.push('Некорректные данные в поле "Дверь"')
+  )) {
+    validationErrors.push('Некорректные данные в поле "Дверь"')
+  }
 
-  validateEntity(
+  if (validateEntity(
     measurementCase.meta?.voltageOfTesting,
     {
       validType: 'number',
       isCreating,
       isRequired: true
     }
-  ) && validationErrors.push('Некорректные данные в поле "Напряжение тестирования"')
+  )) {
+    validationErrors.push('Некорректные данные в поле "Напряжение тестирования"')
+  }
 
-  validateEntity(
+  if (validateEntity(
     measurementCase.meta?.description,
     {
       validType: 'string',
       isCreating,
       isRequired: false
     }
-  ) && validationErrors.push('Некорректные данные в поле "Описание"')
+  )) {
+    validationErrors.push('Некорректные данные в поле "Описание"')
+  }
 
   const buffData = {...measurementCase?.data}
 
