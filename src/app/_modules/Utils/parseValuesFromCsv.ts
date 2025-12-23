@@ -1,4 +1,4 @@
-export const parseMetaFromCsv = (rawString: string) => {
+export const parseValuesFromCsv = (rawString: string) => {
   const splitStrings = rawString
     .split('\r\n')
     .map(row => row.split(';'))

@@ -13,7 +13,7 @@ import {
 import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
 import {isNaN} from "lodash";
 import {normalizeRawNumber} from "@/app/_modules/Utils/calculateAndPackUnitData/utils";
-import {parseMetaFromCsv} from "@/app/_modules/Utils/parseMetaFromCsv";
+import {parseValuesFromCsv} from "@/app/_modules/Utils/parseValuesFromCsv";
 
 interface ParseRawCSVStringValueParams {
   rawString: string,
@@ -30,6 +30,8 @@ export const parseRawCSVStringToMeasurementCase = ({
   ports,
   cars
 }: ParseRawCSVStringValueParams) => {
+  const parsedValues = parseValuesFromCsv(rawString);
+
   const {
     maybeSpeaker,
     maybeCabinet,
@@ -39,7 +41,7 @@ export const parseRawCSVStringToMeasurementCase = ({
     maybeDoorSate,
     maybeVoltageOfTesting,
     dataRows
-  }  = parseMetaFromCsv(rawString)
+  } = parsedValues;
 
   const emptyMeasurementCase = generateEmptyCatalogMeasurementCase() as EditableMeasurementCaseFromCatalogue;
 
@@ -52,7 +54,7 @@ export const parseRawCSVStringToMeasurementCase = ({
   if (speaker) {
     emptyMeasurementCase.meta.speaker = speaker
   } else {
-    errors.push(`Не удалось распознать динамик ${maybeSpeaker}`)
+    errors.push(`Не удалось распознать динамик "${maybeSpeaker}"`)
   }
 
   const cabinet = cabinets.find(currentCabinet => {
@@ -62,7 +64,7 @@ export const parseRawCSVStringToMeasurementCase = ({
   if (cabinet) {
     emptyMeasurementCase.meta.cabinet = cabinet
   } else {
-    errors.push(`Не удалось распознать короб ${maybeCabinet}`)
+    errors.push(`Не удалось распознать короб "${maybeCabinet}"`)
   }
 
   const port = ports.find(currentPort => {
@@ -75,7 +77,7 @@ export const parseRawCSVStringToMeasurementCase = ({
   if (port) {
     emptyMeasurementCase.meta.port = port
   } else {
-    errors.push(`Не удалось распознать порт ${maybePortDiameter}мм, ${maybePortLength}см`)
+    errors.push(`Не удалось распознать порт "${maybePortDiameter}"мм, "${maybePortLength}"см`)
   }
 
   const car = cars.find(currentCar => {
@@ -85,7 +87,7 @@ export const parseRawCSVStringToMeasurementCase = ({
   if (car) {
     emptyMeasurementCase.meta.car = car
   } else {
-    errors.push(`Не удалось распознать автомобиль ${maybeCar}`)
+    errors.push(`Не удалось распознать автомобиль "${maybeCar}"`)
   }
 
   const closedState = (maybeDoorSate?.toLowerCase() as 'открыта' | 'закрыта')
@@ -102,7 +104,7 @@ export const parseRawCSVStringToMeasurementCase = ({
     }
 
     default: {
-      errors.push(`Не удалось распознать состоние двери: ${maybeDoorSate}`)
+      errors.push(`Не удалось распознать состоние двери: "${maybeDoorSate}"`)
 
       _exhaustiveCheck(closedState, {fallBack: null})
     }
@@ -111,14 +113,14 @@ export const parseRawCSVStringToMeasurementCase = ({
   if (!isNaN(maybeVoltageOfTesting)) {
     emptyMeasurementCase.meta.voltageOfTesting = Number(maybeVoltageOfTesting)
   } else {
-    errors.push(`Не удалось распознать напряжение тестирования ${maybeVoltageOfTesting}`)
+    errors.push(`Не удалось распознать напряжение тестирования "${maybeVoltageOfTesting}"`)
   }
 
   dataRows.forEach((item) => {
     const maybeFrequency = Number(item[0]);
 
     if (isNaN(maybeFrequency)) {
-      errors.push(`Не удалось распознать частоту кадра измерения ${maybeFrequency}`)
+      errors.push(`Не удалось распознать частоту кадра измерения : "${maybeFrequency}"`)
     }
 
     const maybeFrame = {
@@ -131,7 +133,7 @@ export const parseRawCSVStringToMeasurementCase = ({
     const isFrameEmptyAndValid = getIsFrameEmptyAndValid(maybeFrame);
 
     if (!isFrameFilledAndValid && !isFrameEmptyAndValid) {
-      errors.push(`Не удалось распознать частоту кадра измерения ${maybeFrequency}`)
+      errors.push(`Некорректный кадр измерения для частоты ${maybeFrequency} гц`)
     }
 
     if (isFrameFilledAndValid) {

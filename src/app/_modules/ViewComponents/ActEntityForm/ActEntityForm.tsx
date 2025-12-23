@@ -28,7 +28,6 @@ export function ActEntityForm<T extends FieldValues, N extends Path<T>> ({
   const {
     handleSubmit,
     control,
-    getValues,
     trigger
   } = useForm<T>({values});
 
@@ -106,13 +105,6 @@ export function ActEntityForm<T extends FieldValues, N extends Path<T>> ({
             {'Сохранить'}
           </Button>
         </ConfirmActionPopover>
-        <Button
-          onClick={() => {
-            console.log('values', getValues())
-          }}
-        >
-          Получить данные
-        </Button>
       </Stack>
     </form>
   )

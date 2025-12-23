@@ -7,15 +7,18 @@ import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
 import {isNaN} from "lodash";
 import {normalizeRawNumber} from "@/app/_modules/Utils/calculateAndPackUnitData/utils";
 import {MeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
-import {parseMetaFromCsv} from "@/app/_modules/Utils/parseMetaFromCsv";
+import {parseValuesFromCsv} from "@/app/_modules/Utils/parseValuesFromCsv";
 
 interface ParseRawCSVStringValueParams {
   rawString: string
   getRandomColor: () => string
 }
 
-export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseRawCSVStringValueParams):
-  [MeasurementCaseForGraph, string[]] => {
+export const parseRawCSVStringToGraphData = (
+  {rawString, getRandomColor}: ParseRawCSVStringValueParams
+): [MeasurementCaseForGraph, string[]] => {
+  const parsedValues = parseValuesFromCsv(rawString);
+
   const {
     maybeSpeaker,
     maybeCabinet,
@@ -25,7 +28,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     maybeDoorSate,
     maybeVoltageOfTesting,
     dataRows
-  }  = parseMetaFromCsv(rawString)
+  } = parsedValues;
 
   const emptyMeasurementCase = generateEmptyGraphMeasurementCase(getRandomColor());
 
@@ -37,7 +40,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
       label: maybeSpeaker?.trim()
     }
   } else {
-    errors.push(`Не удалось распознать динамик ${maybeSpeaker}`)
+    errors.push(`Не удалось распознать динамик "${maybeSpeaker}"`)
   }
 
   if (typeof maybeCabinet === 'string' && maybeCabinet.length > 0) {
@@ -46,7 +49,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
       volume: Number(maybeCabinet)
     }
   } else {
-    errors.push(`Не удалось распознать короб ${maybeCabinet}`)
+    errors.push(`Не удалось распознать короб "${maybeCabinet}"`)
   }
 
   const portPredicate = typeof maybeSpeaker === 'string'
@@ -62,7 +65,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
       length: Number(maybePortLength?.trim())
     }
   } else {
-    errors.push(`Не удалось распознать порт ${maybePortDiameter}мм, ${maybePortLength}см`)
+    errors.push(`Не удалось распознать порт "${maybePortDiameter}"мм, "${maybePortLength}"см`)
   }
 
   if (typeof maybeCar === 'string' && maybeCar.length > 0) {
@@ -71,7 +74,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
       label: maybeCar?.trim()
     }
   } else {
-    errors.push(`Не удалось распознать автомобиль ${maybeCar}`)
+    errors.push(`Не удалось распознать автомобиль "${maybeCar}"`)
   }
 
   const closedState = (maybeDoorSate?.toLowerCase() as 'открыта' | 'закрыта')
@@ -88,7 +91,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     }
 
     default: {
-      errors.push(`Не удалось распознать состоние двери: ${maybeDoorSate}`)
+      errors.push(`Не удалось распознать состоние двери: "${maybeDoorSate}"`)
 
       _exhaustiveCheck(closedState, {fallBack: null})
     }
@@ -97,14 +100,14 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
   if (!isNaN(maybeVoltageOfTesting)) {
     emptyMeasurementCase.meta.voltageOfTesting = maybeVoltageOfTesting
   } else {
-    errors.push(`Не удалось распознать напряжение тестирования ${maybeVoltageOfTesting}`)
+    errors.push(`Не удалось распознать напряжение тестирования "${maybeVoltageOfTesting}"`)
   }
 
   dataRows.forEach((item) => {
     const maybeFrequency = Number(item[0]);
 
     if (isNaN(maybeFrequency)) {
-      errors.push(`Не удалось распознать частоту кадра измерения ${maybeFrequency}`)
+      errors.push(`Не удалось распознать частоту кадра измерения "${maybeFrequency}"`)
     }
 
     const maybeFrame = {
@@ -117,7 +120,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     const isFrameEmptyAndValid = getIsFrameEmptyAndValid(maybeFrame);
 
     if (!isFrameFilledAndValid && !isFrameEmptyAndValid) {
-      errors.push(`Не удалось распознать частоту кадра измерения ${maybeFrequency}`)
+      errors.push(`Некорректный кадр измерения для частоты ${maybeFrequency} гц`)
     }
 
     if (isFrameFilledAndValid) {

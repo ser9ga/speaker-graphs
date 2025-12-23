@@ -95,49 +95,67 @@ export const getOne = async (id: MeasurementCaseFromCatalogue['id']) => {
   return mapper(item)
 }
 
-export const add = async (measurementCase: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
-  const parsedMeasurementCase = {
-    meta: {
-      create: {
-        speaker: {
-          connect: {
-            id: measurementCase.meta.speaker.id,
-          }
-        },
-        cabinet: {
-          connect: {
-            id: measurementCase.meta.cabinet.id,
-          }
-        },
-        port: {
-          connect: {
-            id: measurementCase.meta.port.id,
-          }
-        },
-        car: {
-          connect: {
-            id: measurementCase.meta.car.id,
-          }
-        },
-        voltageOfTesting: Number(measurementCase.meta.voltageOfTesting),
-        isDoorOpened: measurementCase.meta.isDoorOpened,
-        description: measurementCase.meta.description,
+export const add = async (inputParams: Omit<MeasurementCaseFromCatalogue, 'id'> | Omit<MeasurementCaseFromCatalogue, 'id'>[]) => {
+  const addMapper = (measurementCase: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
+    return  {
+      meta: {
+        create: {
+          speaker: {
+            connect: {
+              id: measurementCase.meta.speaker.id,
+            }
+          },
+          cabinet: {
+            connect: {
+              id: measurementCase.meta.cabinet.id,
+            }
+          },
+          port: {
+            connect: {
+              id: measurementCase.meta.port.id,
+            }
+          },
+          car: {
+            connect: {
+              id: measurementCase.meta.car.id,
+            }
+          },
+          voltageOfTesting: Number(measurementCase.meta.voltageOfTesting),
+          isDoorOpened: measurementCase.meta.isDoorOpened,
+          description: measurementCase.meta.description,
+        }
+      },
+      data: {
+        create:
+          Object.entries(measurementCase.data)
+            .map(([measurementCaseId, data]) => ({
+              frequency: Number(measurementCaseId),
+              Uin: Number(data.Uin),
+              I: Number(data.I),
+              Pa: Number(data.Pa),
+            }))
       }
-    },
-    data: {
-      create:
-        Object.entries(measurementCase.data)
-          .map(([measurementCaseId, data]) => ({
-            frequency: Number(measurementCaseId),
-            Uin: Number(data.Uin),
-            I: Number(data.I),
-            Pa: Number(data.Pa),
-          }))
     }
   }
 
+  const buff: Promise<unknown>[] = []
+
+  if (Array.isArray(inputParams)) {
+    inputParams.forEach((measurementCase) => {
+      buff.push(
+        prisma.measurementCases.create({
+          data: addMapper(measurementCase),
+          include: inclusion,
+        })
+      )
+    });
+
+    return Promise.all(buff)
+
+  }
+
   const item = await prisma.measurementCases.create({
-    data: parsedMeasurementCase,
+    data: addMapper(inputParams),
     include: inclusion,
   });
 

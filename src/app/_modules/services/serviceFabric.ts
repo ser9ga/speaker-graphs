@@ -6,7 +6,7 @@ export function serviceFabric<T extends object> (
 ){
   const getAll = async () => {
     try {
-      const response = await fetch(`${path}`);
+      const response = await fetch(path);
 
       if (!response.ok) {
         throw new Error("Not 2xx response", {cause: response});
@@ -51,7 +51,7 @@ export function serviceFabric<T extends object> (
 
   const add = async (entity: Omit<T, 'id'>) => {
     try {
-      const response = await fetch(`${path}`,{
+      const response = await fetch(path,{
         method: 'POST',
         body: JSON.stringify(entity),
       });

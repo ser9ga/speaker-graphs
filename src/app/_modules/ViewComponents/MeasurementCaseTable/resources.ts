@@ -26,7 +26,7 @@ export const columns = [
     {
       keyName: MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE,
       path: 'meta.speaker.coilResistance',
-      width: 60,
+      width: 120,
       label: MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE]
     },
     {

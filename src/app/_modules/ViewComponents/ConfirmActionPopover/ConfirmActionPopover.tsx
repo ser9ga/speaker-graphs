@@ -28,8 +28,8 @@ export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({
       onExitComplete={onExitComplete}
       open={open}
       onOpenChange={async (e) => {
-        if (e.open) {
-          const releaseFlag = await beforePopover?.();
+        if (e.open && typeof beforePopover === "function") {
+          const releaseFlag = await beforePopover();
 
           if (releaseFlag) {
             setOpen(e.open)

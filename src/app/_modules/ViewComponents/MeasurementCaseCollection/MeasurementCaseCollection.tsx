@@ -43,7 +43,7 @@ export const MeasurementCaseCollection = () => {
 
   const getDialogFullName = (id: number | 'new') => `measurementCase_${id}`
 
-  const onEntityAdd = async (values: MeasurementCaseFromCatalogue) => {
+  const onEntityAdd = async (values: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
     const res = await measurementCaseService.add(values);
 
     if (res?.isError) {
@@ -108,6 +108,7 @@ export const MeasurementCaseCollection = () => {
         <MeasurementCaseCollectionTableActionBar
           getDialogFullName={getDialogFullName}
           onEntityAdd={onEntityAdd}
+          getMeasurementCases={getMeasurementCases}
         />
         <MeasurementCaseTable
           measurementCases={measurementCases}

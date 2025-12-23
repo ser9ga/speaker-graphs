@@ -17,7 +17,7 @@ export const ChooseImportFilesButton = () => {
       onClick={async () => {
         const importDialogKey = 'importFilesDirectToGraphs'
 
-        const rawCSVCollection = await importFilesDialog.open(importDialogKey, {
+        const rawCSVCollection: CSVFileAttributes[] = await importFilesDialog.open(importDialogKey, {
           onClose: () => {
             importFilesDialog.close(importDialogKey);
           },
