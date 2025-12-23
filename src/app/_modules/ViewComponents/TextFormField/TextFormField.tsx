@@ -41,7 +41,7 @@ export function TextFormField <T extends FieldValues, N extends Path<T>>({
     return inputValue
   }
 
-  const Asd = isTextarea
+  const Component = isTextarea
     ? Textarea
     : Input
 
@@ -50,7 +50,7 @@ export function TextFormField <T extends FieldValues, N extends Path<T>>({
       control={control}
       name={fieldName}
       rules={{
-        ...(typeof required === 'boolean' && {required})
+        ...(required === true && {required})
       }}
       render={({
         field: {
@@ -63,8 +63,8 @@ export function TextFormField <T extends FieldValues, N extends Path<T>>({
           <Field.Label {...(!!error && {color: 'red'})}>
             {fieldLabel}
           </Field.Label>
-          <Asd
-            {...(typeof disabled === 'boolean' && {disabled})}
+          <Component
+            {...(disabled === true && {disabled})}
             value={getInputValue(value)}
             onChange={(e) => {
               onChange(getFormValue(e.target.value))

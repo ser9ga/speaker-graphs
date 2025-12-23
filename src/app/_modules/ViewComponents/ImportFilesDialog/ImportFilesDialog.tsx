@@ -4,25 +4,29 @@ import {Button, CloseButton, createOverlay, Dialog, FileUpload, Flex, Portal} fr
 import * as React from 'react';
 import {useRef, useState} from 'react';
 import {HiUpload} from "react-icons/hi";
+import {CSVFileAttributes} from "@/app/_modules/Types/csv";
 
 interface actEntityDialogProps {
-  maxFiles?: number;
   onClose: () => void;
-  onSubmit: (rawStringCollection: string[]) => void;
+  onSubmit: (rawStringCollection: CSVFileAttributes[]) => void;
+  params?: {
+    directory?: boolean
+    maxFiles?: number
+  }
 }
 
 export const importFilesDialog = createOverlay<actEntityDialogProps>((props) => {
   const {
-    maxFiles = 1,
     onClose,
     onSubmit,
     open,
     onOpenChange,
+    params
   } = props;
-  const tempDataStorage = useRef<string[]>(null)
+  const tempDataStorage = useRef<CSVFileAttributes[]>(null)
   const [isSubmitButtonActive, setIsSubmitButtonActive] = useState(false)
 
-  const onFileAccept  = async ({files}: {files: Blob[]}) => {
+  const onFileAccept  = async ({files}: {files: File[]}) => {
     tempDataStorage.current = [];
     setIsSubmitButtonActive(false);
 
@@ -36,7 +40,10 @@ export const importFilesDialog = createOverlay<actEntityDialogProps>((props) => 
       const file = files[index];
 
       reader.onload = async function(e) {
-        tempDataStorage.current?.push(e.target?.result as string)
+        tempDataStorage.current?.push({
+          name: file.name,
+          content: e.target?.result as string
+        })
 
         setIsSubmitButtonActive(true)
 
@@ -93,9 +100,11 @@ export const importFilesDialog = createOverlay<actEntityDialogProps>((props) => 
                 <FileUpload.Root
                   maxW="xl"
                   alignItems="stretch"
-                  maxFiles={maxFiles}
                   accept={['text/csv']}
                   onFileAccept={onFileAccept}
+                  {...(params?.directory === true && {directory: true})}
+                  {...(typeof params?.maxFiles === 'number' && {maxFiles: params.maxFiles})}
+                  directory
                 >
                   <FileUpload.HiddenInput />
                   <FileUpload.Trigger asChild>

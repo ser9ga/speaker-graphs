@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import {Field, HStack, NumberInput} from "@chakra-ui/react"
-import {Control, Controller, FieldValues, Path, Validate} from "react-hook-form";
+import {Control, Controller, FieldValues, Path} from "react-hook-form";
 import {isNaN} from "lodash";
 
 type NumericalFormFieldProps<T extends FieldValues, N extends Path<T>> = {
@@ -59,7 +59,7 @@ export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
       name={fieldName}
       // @ts-ignore
       rules={{
-      ...(typeof required === 'boolean' && {required}),
+      ...(required === true && {required}),
       ...(typeof validate === 'object' && {validate})
       }}
       render={({
@@ -76,7 +76,7 @@ export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
             </Field.Label>
           )}
           <NumberInput.Root
-            {...(typeof disabled === 'boolean' && {disabled})}
+            {...(disabled === true && {disabled})}
             {...(typeof min === 'number' && {min})}
             {...(typeof max === 'number' && {max})}
             value={getInputValue(value)}

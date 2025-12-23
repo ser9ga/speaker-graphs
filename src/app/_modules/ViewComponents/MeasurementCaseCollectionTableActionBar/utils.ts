@@ -79,7 +79,7 @@ export const parseRawCSVStringToMeasurementCase = ({
   }
 
   const car = cars.find(currentCar => {
-    return currentCar.label?.toLowerCase() === maybeCar?.trim()?.toLowerCase()
+    return currentCar.label?.toLowerCase() === maybeCar?.replace(/\s+/g, ' ')?.trim()?.toLowerCase()
   });
 
   if (car) {

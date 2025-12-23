@@ -80,17 +80,20 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
         variant={"solid"}
         onClick={async () => {
           const importDialogKey = 'importSingleFileInFormDialog'
-          const rawCSVString = await importFilesDialog.open(importDialogKey, {
+          const rawCSVCollection = await importFilesDialog.open(importDialogKey, {
             onClose: () => {
               importFilesDialog.close(importDialogKey);
             },
             onSubmit: async (qweqwe) => {
               importFilesDialog.close(importDialogKey, qweqwe)
             },
+            params: {
+              directory: true,
+            }
           })
 
           const [parsedMeasurementCase, errors] = parseRawCSVStringToMeasurementCase({
-            rawString: rawCSVString?.[0],
+            rawString: rawCSVCollection?.[0].content,
             speakers,
             cabinets,
             ports,
