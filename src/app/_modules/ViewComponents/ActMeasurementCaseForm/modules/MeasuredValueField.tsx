@@ -1,88 +1,39 @@
 'use client'
 
 import * as React from "react";
-import {Field, NumberInput} from "@chakra-ui/react"
-import {Control, Controller, FieldPath, TriggerConfig} from "react-hook-form";
+import {Control, FieldValues, Path} from "react-hook-form";
 import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
-import {get, isNaN} from "lodash";
+import {get} from "lodash";
 import {getIsFrameEmptyAndValid, getIsFrameFilledAndValid} from "@/app/_modules/Utils/measurementCaseFormUtils";
+import {NumericalFormField} from "@/app/_modules/ViewComponents/NumericalFormField/NumericalFormField";
 
-interface DoorOpenStateFieldProps {
-  fieldName: string,
-  fieldLabel: string,
-  control: Control<
-    EditableMeasurementCaseFromCatalogue,
-    unknown,
-    EditableMeasurementCaseFromCatalogue
-  >
+type DoorOpenStateFieldProps<T extends FieldValues> = {
+  fieldName: string
+  control: Control<T, unknown, T>
   framePath: string
-  trigger: (
-    name?: (
-      | FieldPath<EditableMeasurementCaseFromCatalogue>
-      | FieldPath<EditableMeasurementCaseFromCatalogue>[]
-      ),
-    options?: TriggerConfig
-  ) => Promise<boolean>
 }
 
-export const MeasuredValueField = ({
+export function MeasuredValueField <T extends FieldValues, N extends Path<T>>({
   fieldName,
   control,
   framePath,
-}: DoorOpenStateFieldProps) => {
+}: DoorOpenStateFieldProps<T>){
   const getIsConsistentDataSet = async (_: unknown, formValues: EditableMeasurementCaseFromCatalogue) => {
-    const frame = get(formValues, framePath)
+    const frame = get(formValues, framePath);
 
-    const isFrameFilledAndValid = getIsFrameFilledAndValid(frame)
-    const isFrameEmptyAndValid = getIsFrameEmptyAndValid(frame)
-
-    return isFrameFilledAndValid || isFrameEmptyAndValid
-  }
-
-  const getInputValue = (formValue: number | null) => {
-    if (isNaN(formValue) || formValue === null) {
-      return ''
-    }
-
-    return String(formValue)
-  }
-
-  const getFormValue = (inputValue: number) => {
-    if (isNaN(inputValue)) {
-      return undefined
-    }
-
-    return Number(inputValue)
+    return getIsFrameFilledAndValid(frame) || getIsFrameEmptyAndValid(frame)
   }
 
   return (
-    <Controller
+    <NumericalFormField
+      fieldName={fieldName as N}
       control={control}
-      // @ts-ignore
-      name={fieldName}
-      rules={{
+      params={{
+        width: '70px',
         validate: {
           isConsistentDataSet: getIsConsistentDataSet,
         },
       }}
-      render={({
-        field: {
-          onChange,
-          value
-        },
-        fieldState: {error}
-      }) => (
-        <Field.Root invalid={!!error}>
-          <NumberInput.Root
-            width={'70px'}
-            // @ts-ignore
-            value={getInputValue(value)}
-            onValueChange={(e) => onChange(getFormValue(e.valueAsNumber))}
-          >
-            <NumberInput.Input/>
-          </NumberInput.Root>
-        </Field.Root>
-      )}
     />
   )
 }

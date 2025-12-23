@@ -1,32 +1,23 @@
-import {Control, Controller} from "react-hook-form"
+import {Control, Controller, FieldValues, Path} from "react-hook-form"
 import * as React from "react";
 import {useMemo} from "react";
 import {createListCollection, Field, Select} from "@chakra-ui/react";
-import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 
-type SelectFieldProps<T extends {id: number}[]> = {
-  collection: T;
-  fieldName:
-    | 'meta.speaker'
-    | 'meta.cabinet'
-    | 'meta.port'
-    | 'meta.car'
+type SelectFieldProps<C extends {id: number}[], T extends FieldValues, N extends Path<T>> = {
+  collection: C;
+  fieldName: N
   fieldLabel: string,
-  control: Control<
-    EditableMeasurementCaseFromCatalogue,
-    unknown,
-    EditableMeasurementCaseFromCatalogue
-  >
-  getItemLabel: (collectionItem: T[number]) => string;
+  control: Control<T, unknown, T>
+  getItemLabel: (collectionItem: C[number]) => string;
 }
 
-export function SelectField<T extends {id: number}[]> ({
+export function SelectField<C extends {id: number}[], T extends FieldValues, N extends Path<T>> ({
   collection,
   fieldName,
   fieldLabel,
   control,
   getItemLabel
-}: SelectFieldProps<T>) {
+}: SelectFieldProps<C, T, N>) {
   const frameworks = useMemo(
     () => createListCollection({
       items: collection.map((item) => ({
@@ -62,7 +53,6 @@ export function SelectField<T extends {id: number}[]> ({
           </Field.Label>
           <Select.Root
             collection={frameworks}
-            // @ts-ignore
             value={value ? [value.id.toString()] : []}
             onValueChange={(e) => onChange(e.items?.[0].full)}
           >

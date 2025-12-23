@@ -121,6 +121,7 @@ export function ActMeasurementCaseForm ({
               width: '50px',
               min: 0,
               max: 99,
+              required: true
             }}
           />
           <TextFormField
@@ -136,6 +137,7 @@ export function ActMeasurementCaseForm ({
             onConfirm={onSubmit}
             onExitComplete={onDeleteConfirmPopoverExit}
             confirmButtonLabel={confirmButtonLabel || 'Сохранить'}
+            beforePopover={trigger}
           >
             <Button alignSelf={'end'}>
               {'Сохранить'}
@@ -145,7 +147,6 @@ export function ActMeasurementCaseForm ({
         <FrameSet
           control={control}
           errors={errors}
-          trigger={trigger}
         />
       </HStack>
     </form>

@@ -4,35 +4,19 @@ import {Grid, Text} from "@chakra-ui/react"
 import * as React from "react";
 import {Fragment} from "react";
 import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
-import {
-  MEASUREMENT_CASE_ACT_FORM_FIELD_NAME_LABEL
-} from "@/app/_modules/Constants/Translations/MeasurementCaseFormFieldNameLabel";
-import {MEASUREMENT_CASE_ACT_FORM_FIELD_NAME} from "@/app/_modules/Constants/MeasurementCaseFormFieldName";
 import {MeasuredValueField} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/modules/MeasuredValueField";
-import {Control, FieldErrors, FieldPath, TriggerConfig} from "react-hook-form";
+import {Control, FieldErrors, FieldValues} from "react-hook-form";
 import {get} from "lodash";
 
-interface FrameSetProps {
-  control: Control<
-    EditableMeasurementCaseFromCatalogue,
-    unknown,
-    EditableMeasurementCaseFromCatalogue
-  >
+type FrameSetProps <T extends FieldValues> = {
+  control: Control<T, unknown, T>
   errors: FieldErrors<EditableMeasurementCaseFromCatalogue>
-  trigger: (
-    name?: (
-      | FieldPath<EditableMeasurementCaseFromCatalogue>
-      | FieldPath<EditableMeasurementCaseFromCatalogue>[]
-    ),
-    options?: TriggerConfig
-  ) => Promise<boolean>
 }
 
-export const FrameSet = ({
+export function FrameSet <T extends FieldValues>({
   control,
   errors,
-  trigger
-}: FrameSetProps) => {
+}: FrameSetProps<T>){
   const getIsErrors = (key: number) => {
     return !!get(errors, `data.${key}`)
   }
@@ -70,7 +54,7 @@ export const FrameSet = ({
                       if (frequency > 70) {
                         return null
                       }
-
+                      
                       return (
                         <Fragment key={frequency}>
                           <Text
@@ -82,24 +66,18 @@ export const FrameSet = ({
                           </Text>
                           <MeasuredValueField
                             fieldName={`data.${key}.Uin`}
-                            fieldLabel={MEASUREMENT_CASE_ACT_FORM_FIELD_NAME_LABEL[MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.DATA]}
                             control={control}
                             framePath={`data.${key}`}
-                            trigger={trigger}
                           />
                           <MeasuredValueField
                             fieldName={`data.${key}.I`}
-                            fieldLabel={MEASUREMENT_CASE_ACT_FORM_FIELD_NAME_LABEL[MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.DATA]}
                             control={control}
                             framePath={`data.${key}`}
-                            trigger={trigger}
                           />
                           <MeasuredValueField
                             fieldName={`data.${key}.Pa`}
-                            fieldLabel={MEASUREMENT_CASE_ACT_FORM_FIELD_NAME_LABEL[MEASUREMENT_CASE_ACT_FORM_FIELD_NAME.DATA]}
                             control={control}
                             framePath={`data.${key}`}
-                            trigger={trigger}
                           />
                         </Fragment>
                       )}

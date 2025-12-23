@@ -2,20 +2,15 @@
 
 import * as React from "react";
 import {Field, SegmentGroup} from "@chakra-ui/react"
-import {Control, Controller} from "react-hook-form";
-import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {Control, Controller, FieldValues, Path} from "react-hook-form";
 import {DOOR_STATE_NAME, DoorStateName} from "@/app/_modules/Constants";
 import {DOOR_STATE_LABEL} from "@/app/_modules/Constants/Translations/DoorStateLabel";
 import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
 
-interface DoorOpenStateFieldProps {
-  fieldName: 'meta.isDoorOpened',
+type DoorOpenStateFieldProps<T extends FieldValues, N extends Path<T>> = {
+  fieldName: N,
   fieldLabel: string,
-  control: Control<
-    EditableMeasurementCaseFromCatalogue,
-    unknown,
-    EditableMeasurementCaseFromCatalogue
-  >
+  control: Control<T, unknown, T>
 }
 
 const values = [
@@ -23,16 +18,17 @@ const values = [
   {value: DOOR_STATE_NAME.CLOSED, label: DOOR_STATE_LABEL[DOOR_STATE_NAME.CLOSED]}
 ]
 
-export const DoorOpenStateField = ({
+export function DoorOpenStateField <T extends FieldValues, N extends Path<T>>({
   fieldName,
   fieldLabel,
   control,
-}: DoorOpenStateFieldProps) => {
+}: DoorOpenStateFieldProps<T, N>){
   const getSegmentValue = (segmentValue: boolean | null) => {
     switch (segmentValue) {
       case null: return undefined;
       case true: return DOOR_STATE_NAME.OPENED;
       case false: return DOOR_STATE_NAME.CLOSED;
+
       default: _exhaustiveCheck(segmentValue, {fallBack: ''});
     }
   }
@@ -41,6 +37,7 @@ export const DoorOpenStateField = ({
     switch (formValue) {
       case DOOR_STATE_NAME.OPENED: return true;
       case DOOR_STATE_NAME.CLOSED: return false;
+
       default: _exhaustiveCheck(formValue, {fallBack: null});
     }
   }
@@ -50,7 +47,6 @@ export const DoorOpenStateField = ({
       control={control}
       name={fieldName}
       rules={{
-        // required: true,
         validate: {
           isFilled: (value) => typeof value === 'boolean'
         },
@@ -68,7 +64,6 @@ export const DoorOpenStateField = ({
               {fieldLabel}
             </Field.Label>
             <SegmentGroup.Root
-              // @ts-ignore
               value={getSegmentValue(value)}
               onValueChange={(e) => onChange(getFormValue(e.value as DoorStateName))}
             >

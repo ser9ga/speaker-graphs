@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import {Field, HStack, NumberInput} from "@chakra-ui/react"
-import {Control, Controller, FieldValues, Path} from "react-hook-form";
+import {Control, Controller, FieldValues, Path, Validate} from "react-hook-form";
 import {isNaN} from "lodash";
 
 type NumericalFormFieldProps<T extends FieldValues, N extends Path<T>> = {
   fieldName: N,
-  fieldLabel: string,
+  fieldLabel?: string,
   control: Control<T, unknown, T>
   params?: {
     disabled?: boolean
@@ -16,6 +16,8 @@ type NumericalFormFieldProps<T extends FieldValues, N extends Path<T>> = {
     min?: number
     max?: number
     required?: boolean
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    validate?: Record<string, Function> // TODO
   }
 }
 
@@ -32,6 +34,7 @@ export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
     min,
     max,
     required,
+    validate
   } = params || {};
 
   const getInputValue = (formValue: number | null) => {
@@ -54,8 +57,10 @@ export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
     <Controller
       control={control}
       name={fieldName}
+      // @ts-ignore
       rules={{
-      ...(typeof required === 'boolean' && {required})
+      ...(typeof required === 'boolean' && {required}),
+      ...(typeof validate === 'object' && {validate})
       }}
       render={({
         field: {
@@ -65,9 +70,11 @@ export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
          fieldState: {error}
       }) => (
         <Field.Root invalid={!!error}>
-          <Field.Label {...(!!error && {color: 'red'})}>
-            {fieldLabel}
-          </Field.Label>
+          {!!fieldLabel && (
+            <Field.Label {...(!!error && {color: 'red'})}>
+              {fieldLabel}
+            </Field.Label>
+          )}
           <NumberInput.Root
             {...(typeof disabled === 'boolean' && {disabled})}
             {...(typeof min === 'number' && {min})}
