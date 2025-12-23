@@ -17,21 +17,30 @@ export const SpeakersEntityTable = () => {
         {
           keyName: SPEAKERS_ENTITIES_FIELD_NAME.LABEL,
           width: 400,
-          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.LABEL]
+          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.LABEL],
+          fieldType: 'text',
+          required: true
         },
         {
           keyName: SPEAKERS_ENTITIES_FIELD_NAME.SIZE,
           width: 150,
-          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.SIZE]
+          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.SIZE],
+          fieldType: 'decimal',
+          suffix: 'дюймов',
+          required: true
         },
         {
           keyName: SPEAKERS_ENTITIES_FIELD_NAME.COIL_RESISTANCE,
           width: 150,
-          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.COIL_RESISTANCE]
+          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.COIL_RESISTANCE],
+          fieldType: 'decimal',
+          suffix: 'ом',
+          required: true
         },
         {
           keyName: SPEAKERS_ENTITIES_FIELD_NAME.DESCRIPTION,
-          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.DESCRIPTION]
+          label: SPEAKERS_FIELD_LABEL[SPEAKERS_ENTITIES_FIELD_NAME.DESCRIPTION],
+          fieldType: 'textArea'
         },
       ]}
       entityService={services.speakers}

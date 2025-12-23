@@ -17,16 +17,23 @@ export const CabinetsEntityTable = () => {
         {
           keyName: CABINETS_ENTITIES_FIELD_NAME.SPEAKER_SIZE,
           width: 150,
-          label: CABINETS_FIELD_LABEL[CABINETS_ENTITIES_FIELD_NAME.SPEAKER_SIZE]
+          label: CABINETS_FIELD_LABEL[CABINETS_ENTITIES_FIELD_NAME.SPEAKER_SIZE],
+          fieldType: 'decimal',
+          suffix: 'дюймов',
+          required: true
         },
         {
           keyName: CABINETS_ENTITIES_FIELD_NAME.VOLUME,
           width: 150,
-          label: CABINETS_FIELD_LABEL[CABINETS_ENTITIES_FIELD_NAME.VOLUME]
+          label: CABINETS_FIELD_LABEL[CABINETS_ENTITIES_FIELD_NAME.VOLUME],
+          fieldType: 'decimal',
+          suffix: 'литров',
+          required: true
         },
         {
           keyName: CABINETS_ENTITIES_FIELD_NAME.DESCRIPTION,
-          label: CABINETS_FIELD_LABEL[CABINETS_ENTITIES_FIELD_NAME.DESCRIPTION]
+          label: CABINETS_FIELD_LABEL[CABINETS_ENTITIES_FIELD_NAME.DESCRIPTION],
+          fieldType: 'textArea'
         },
       ]}
       entityService={services.cabinets}

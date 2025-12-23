@@ -1,5 +1,5 @@
 import {Button, HStack, Popover, Portal, Text} from "@chakra-ui/react"
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 
 interface ConfirmActionPopoverProps {
   header: React.ReactNode,
@@ -8,7 +8,8 @@ interface ConfirmActionPopoverProps {
   onConfirm?: () => void,
   onReject?: () => void,
   onExitComplete?: () => void,
-  children: React.ReactNode,
+  beforePopover?: () => Promise<boolean>
+  children: React.ReactNode
 }
 
 export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({
@@ -17,11 +18,26 @@ export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({
   confirmButtonLabel,
   onConfirm,
   children,
-  onExitComplete
+  onExitComplete,
+  beforePopover
 }) => {
+  const [open, setOpen] = useState(false)
+
   return (
     <Popover.Root
       onExitComplete={onExitComplete}
+      open={open}
+      onOpenChange={async (e) => {
+        if (e.open) {
+          const releaseFlag = await beforePopover?.();
+
+          if (releaseFlag) {
+            setOpen(e.open)
+          }
+        } else {
+          setOpen(e.open)
+        }
+      }}
     >
       <Popover.Trigger>
         {children}
@@ -33,9 +49,7 @@ export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({
             width={'270px'}
           >
             <Popover.Arrow />
-            <Popover.Body
-              width={'100%'}
-            >
+            <Popover.Body width={'100%'}>
               <Popover.Title fontWeight="medium">
                 {header}
               </Popover.Title>

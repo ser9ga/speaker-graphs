@@ -29,7 +29,6 @@ export const DoorOpenStateField = ({
   control,
 }: DoorOpenStateFieldProps) => {
   const getSegmentValue = (segmentValue: boolean | null) => {
-    console.log('segmentValue', segmentValue)
     switch (segmentValue) {
       case null: return undefined;
       case true: return DOOR_STATE_NAME.OPENED;
@@ -63,8 +62,6 @@ export const DoorOpenStateField = ({
         },
         fieldState: {error}
       }) => {
-        console.log('error', error)
-
         return (
           <Field.Root invalid={!!error}>
             <Field.Label {...(!!error && {color: 'red'})}>

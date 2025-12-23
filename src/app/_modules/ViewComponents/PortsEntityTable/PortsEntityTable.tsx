@@ -17,16 +17,23 @@ export const PortsEntityTable = () => {
         {
           keyName: PORTS_ENTITIES_FIELD_NAME.DIAMETER,
           width: 150,
-          label: PORTS_FIELD_LABEL[PORTS_ENTITIES_FIELD_NAME.DIAMETER]
+          label: PORTS_FIELD_LABEL[PORTS_ENTITIES_FIELD_NAME.DIAMETER],
+          fieldType: 'decimal',
+          suffix: 'миллиметров',
+          required: true
         },
         {
           keyName: PORTS_ENTITIES_FIELD_NAME.LENGTH,
           width: 150,
-          label: PORTS_FIELD_LABEL[PORTS_ENTITIES_FIELD_NAME.LENGTH]
+          label: PORTS_FIELD_LABEL[PORTS_ENTITIES_FIELD_NAME.LENGTH],
+          fieldType: 'decimal',
+          suffix: 'сантиметров',
+          required: true
         },
         {
           keyName: PORTS_ENTITIES_FIELD_NAME.DESCRIPTION,
-          label: PORTS_FIELD_LABEL[PORTS_ENTITIES_FIELD_NAME.DESCRIPTION]
+          label: PORTS_FIELD_LABEL[PORTS_ENTITIES_FIELD_NAME.DESCRIPTION],
+          fieldType: 'textArea'
         },
       ]}
       entityService={services.ports}

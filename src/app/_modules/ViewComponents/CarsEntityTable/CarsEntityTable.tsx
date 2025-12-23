@@ -17,11 +17,13 @@ export const CarsEntityTable = () => {
         {
           keyName: CARS_ENTITIES_FIELD_NAME.LABEL,
           width: 300,
-          label: CARS_FIELD_LABEL[CARS_ENTITIES_FIELD_NAME.LABEL]
+          label: CARS_FIELD_LABEL[CARS_ENTITIES_FIELD_NAME.LABEL],
+          required: true
         },
         {
           keyName: CARS_ENTITIES_FIELD_NAME.DESCRIPTION,
-          label: CARS_FIELD_LABEL[CARS_ENTITIES_FIELD_NAME.DESCRIPTION]
+          label: CARS_FIELD_LABEL[CARS_ENTITIES_FIELD_NAME.DESCRIPTION],
+          fieldType: 'textArea'
         },
       ]}
       entityService={services.cars}

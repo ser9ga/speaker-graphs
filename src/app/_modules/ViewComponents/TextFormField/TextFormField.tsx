@@ -1,25 +1,31 @@
 'use client'
 
 import * as React from "react";
-import {Field, Textarea} from "@chakra-ui/react"
-import {Control, Controller} from "react-hook-form";
-import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {Field, Input, Textarea} from "@chakra-ui/react"
+import {Control, Controller, FieldValues, Path} from "react-hook-form";
 
-interface DoorOpenStateFieldProps {
-  fieldName: 'meta.description',
+type DoorOpenStateFieldProps<T extends FieldValues, N extends Path<T>> = {
+  fieldName: N,
   fieldLabel: string,
-  control: Control<
-    EditableMeasurementCaseFromCatalogue,
-    unknown,
-    EditableMeasurementCaseFromCatalogue
-  >
+  control: Control<T, unknown, T>
+  params?: {
+    disabled?: boolean
+    required?: boolean
+    isTextarea?: boolean
+  }
 }
 
-export function DescriptionField ({
+export function TextFormField <T extends FieldValues, N extends Path<T>>({
   fieldName,
   fieldLabel,
   control,
-}: DoorOpenStateFieldProps) {
+  params
+}: DoorOpenStateFieldProps<T, N>) {
+  const {
+    disabled,
+    required,
+    isTextarea
+  } = params || {}
   const getInputValue = (formValue: string | null) => {
     if (formValue === null) {
       return ''
@@ -35,31 +41,37 @@ export function DescriptionField ({
     return inputValue
   }
 
+  const Asd = isTextarea
+    ? Textarea
+    : Input
+
   return (
     <Controller
       control={control}
       name={fieldName}
+      rules={{
+        ...(typeof required === 'boolean' && {required})
+      }}
       render={({
         field: {
-          onChange,
-          value
+         onChange,
+         value
         },
-        fieldState: {error}
+        fieldState: {error},
       }) => (
         <Field.Root invalid={!!error}>
           <Field.Label {...(!!error && {color: 'red'})}>
             {fieldLabel}
           </Field.Label>
-          <Textarea
-            // @ts-ignore
+          <Asd
+            {...(typeof disabled === 'boolean' && {disabled})}
             value={getInputValue(value)}
             onChange={(e) => {
               onChange(getFormValue(e.target.value))
             }}
           />
         </Field.Root>
-        )
-      }
+      )}
     />
   )
 }

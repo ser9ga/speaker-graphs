@@ -48,7 +48,7 @@ export const MeasuredValueField = ({
   }
 
   const getFormValue = (inputValue: number) => {
-    if (Number.isNaN(inputValue)) {
+    if (isNaN(inputValue)) {
       return undefined
     }
 

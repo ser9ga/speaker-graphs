@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Flex, HStack, Table, Text} from '@chakra-ui/react';
 import {useEffect, useState} from "react";
+import {Flex, HStack, Table, Text} from '@chakra-ui/react';
 import {OverlayLoader} from "@/app/_modules/ViewComponents/OverlayLoader/OverlayLoader";
 import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 import {ActEntityForm} from "@/app/_modules/ViewComponents/ActEntityForm/ActEntityForm";
@@ -8,14 +8,12 @@ import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDia
 import {EntityCategoryName} from "@/app/_modules/Constants/EntityCategoryName";
 import {EntityTableActionBar} from "@/app/_modules/ViewComponents/EntityTableActionBar/EntityTableActionBar";
 import {toaster} from "@/app/_modules/components/ui/toaster";
+import {EntityTableColumn} from "@/app/_modules/Types/entityTable";
+import {FieldValues, Path} from "react-hook-form";
 
-interface EntityTableProps<T extends Record<string, any>> {
+interface EntityTableProps<T extends FieldValues, N extends Path<T>> {
   dialogNamePrefix: EntityCategoryName;
-  columns: {
-    keyName: string,
-    width?: number,
-    label: string
-  }[]
+  columns: EntityTableColumn<T, N>[]
   entityService: {
     getAll:() => Promise<T[] | Error>;
     add: (entity: Omit<T, 'id'>) => Promise<T | Error>;
@@ -24,11 +22,11 @@ interface EntityTableProps<T extends Record<string, any>> {
   }
 }
 
-export function EntityTable<T extends Record<string, any>> ({
+export function EntityTable<T extends FieldValues, N extends Path<T>> ({
   dialogNamePrefix,
   columns,
   entityService
-}: EntityTableProps<T> ) {
+}: EntityTableProps<T, N> ) {
   const [entities, setEntities] = useState<T[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -117,6 +115,16 @@ export function EntityTable<T extends Record<string, any>> ({
               title: 'Создание',
               content: (
                 <ActEntityForm
+                  values={columns.reduce((acc, column) => {
+                    if (column.keyName === 'id') {
+                      return acc
+                    }
+
+                    return {
+                      ...acc,
+                      [column.keyName]: null
+                    }
+                  }, {} as T)}
                   onSave={(values: T) => onEntityAdd(values)}
                   columns={columns}
                   confirmText={'Подтвердить создание?'}
@@ -145,23 +153,29 @@ export function EntityTable<T extends Record<string, any>> ({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {entities.map((item) => {
+            {entities.map((entity) => {
               return (
-                <Table.Row key={item.id}>
+                <Table.Row key={entity.id}>
                   {columns.map((column) => {
-                    const getCellContent = (child: React.ReactNode) => {
+                    const getCellContent = (value: string) => {
                       if (column.keyName === 'id') {
                         return (
                           <HStack gap={0}>
-                            {child}
+                            <Text
+                              {...(column.width && {width: `${column.width - 30}px`})}
+                              textStyle="sm"
+                              truncate
+                            >
+                              {value}
+                            </Text>
                             <EntityActionTableCell
                               onEditClick={(exitCallback) => {
-                                commonDialog.open(getDialogFullName(item.id), {
-                                  title: `Редактирование ${item.label}`,
+                                commonDialog.open(getDialogFullName(entity.id), {
+                                  title: `Редактирование ${entity.label}`,
                                   content: (
                                     <ActEntityForm
-                                      values={item}
-                                      onSave={(values: T) => onEntityEdit(item.id, values, )}
+                                      values={entity}
+                                      onSave={(values: T) => onEntityEdit(entity.id, values, )}
                                       columns={columns}
                                       onDeleteConfirmPopoverExit={exitCallback}
                                       confirmText={'Сохранить изменения?'}
@@ -171,13 +185,21 @@ export function EntityTable<T extends Record<string, any>> ({
                                   exitCallback
                                 })
                               }}
-                              onEntityClick={() => onEntityDelete(item.id)}
+                              onEntityClick={() => onEntityDelete(entity.id)}
                             />
                           </HStack>
                         )
                       }
 
-                      return child
+                      return (
+                        <Text
+                          {...(column.width && {width: `${column.width - 30}px`})}
+                          textStyle="sm"
+                          truncate
+                        >
+                          {value}
+                        </Text>
+                      )
                     }
 
                     return (
@@ -185,13 +207,7 @@ export function EntityTable<T extends Record<string, any>> ({
                         key={column.keyName}
                         {...(column.width && {width: `${column.width}px`})}
                       >
-                        {getCellContent(<Text
-                          {...(column.width && {width: `${column.width - 30}px`})}
-                          textStyle="sm"
-                          truncate
-                        >
-                          {item[column.keyName]}
-                        </Text>)}
+                        {getCellContent(entity[column.keyName])}
                       </Table.Cell>
                     )
                   })}

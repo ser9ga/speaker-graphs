@@ -114,8 +114,6 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
             })
           }
 
-          console.log('parsedMeasurementCase', parsedMeasurementCase)
-
           commonDialog.open(getDialogFullName('new'), {
             title: 'Создание нового случая изменрения',
             content: (
