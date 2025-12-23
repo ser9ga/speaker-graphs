@@ -19,7 +19,6 @@ import {setActiveTab} from "@/app/_modules/Store/AppControl/AppControlSlice";
 export const TabContainer = () => {
   const isCleanLookEnabled = useAppSelector(isCleanLookEnabledSelector);
   const activeTab = useAppSelector(activeTabSelector);
-
   const dispatch = useAppDispatch();
 
   return (

@@ -1,6 +1,6 @@
 import {db} from "@/app/_modules/db";
 
-export async function GET(_: Request, ctx: RouteContext<'/entities/ports/[id]'>) {
+export async function GET(_: Request, ctx: RouteContext<'/api/measurementCases/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -14,7 +14,7 @@ export async function GET(_: Request, ctx: RouteContext<'/entities/ports/[id]'>)
       )
     }
 
-    const collection = await db.ports.getOne(Number(id))
+    const collection = await db.measurementCases.getOne(Number(id))
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
@@ -25,7 +25,7 @@ export async function GET(_: Request, ctx: RouteContext<'/entities/ports/[id]'>)
   }
 }
 
-export async function PUT(request: Request, ctx: RouteContext<'/entities/ports/[id]'>) {
+export async function PUT(request: Request, ctx: RouteContext<'/api/measurementCases/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -41,7 +41,7 @@ export async function PUT(request: Request, ctx: RouteContext<'/entities/ports/[
 
     const body = await request.json();
 
-    const collection = await db.ports.update(Number(id), body)
+    const collection = await db.measurementCases.update(Number(id), body)
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
@@ -52,7 +52,7 @@ export async function PUT(request: Request, ctx: RouteContext<'/entities/ports/[
   }
 }
 
-export async function DELETE(_: Request, ctx: RouteContext<'/entities/ports/[id]'>) {
+export async function DELETE(_: Request, ctx: RouteContext<'/api/measurementCases/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -66,7 +66,7 @@ export async function DELETE(_: Request, ctx: RouteContext<'/entities/ports/[id]
       )
     }
 
-    const collection = await db.ports.remove(Number(id))
+    const collection = await db.measurementCases.remove(Number(id))
 
     return new Response(JSON.stringify(collection));
   } catch (error) {

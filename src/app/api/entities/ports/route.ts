@@ -19,7 +19,7 @@ export const POST = async (request: Request)=> {
 
     const product = await db.ports.add(body);
 
-    return new Response(JSON.stringify(product));;
+    return new Response(JSON.stringify(product));
   } catch (error) {
     // @ts-ignore
     return new Response(`Error: ${error?.message || 'unknown error'}`, {

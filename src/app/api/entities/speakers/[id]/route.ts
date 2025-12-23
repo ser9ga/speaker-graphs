@@ -1,6 +1,6 @@
 import {db} from "@/app/_modules/db";
 
-export async function GET(_: Request, ctx: RouteContext<'/entities/cars/[id]'>) {
+export async function GET(_: Request, ctx: RouteContext<'/api/entities/speakers/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -14,7 +14,7 @@ export async function GET(_: Request, ctx: RouteContext<'/entities/cars/[id]'>) 
       )
     }
 
-    const collection = await db.cars.getOne(Number(id))
+    const collection = await db.speakers.getOne(Number(id))
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
@@ -25,7 +25,7 @@ export async function GET(_: Request, ctx: RouteContext<'/entities/cars/[id]'>) 
   }
 }
 
-export async function PUT(request: Request, ctx: RouteContext<'/entities/cars/[id]'>) {
+export async function PUT(request: Request, ctx: RouteContext<'/api/entities/speakers/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -41,7 +41,7 @@ export async function PUT(request: Request, ctx: RouteContext<'/entities/cars/[i
 
     const body = await request.json();
 
-    const collection = await db.cars.update(Number(id), body)
+    const collection = await db.speakers.update(Number(id), body)
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
@@ -52,7 +52,7 @@ export async function PUT(request: Request, ctx: RouteContext<'/entities/cars/[i
   }
 }
 
-export async function DELETE(_: Request, ctx: RouteContext<'/entities/cars/[id]'>) {
+export async function DELETE(_: Request, ctx: RouteContext<'/api/entities/speakers/[id]'>) {
   try {
     const {id} = await ctx.params
     const isTrueNumber = /\d/.test(id);
@@ -66,7 +66,7 @@ export async function DELETE(_: Request, ctx: RouteContext<'/entities/cars/[id]'
       )
     }
 
-    const collection = await db.cars.remove(Number(id))
+    const collection = await db.speakers.remove(Number(id))
 
     return new Response(JSON.stringify(collection));
   } catch (error) {
