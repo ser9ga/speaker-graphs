@@ -88,7 +88,7 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
               importFilesDialog.close(importDialogKey, qweqwe)
             },
             params: {
-              directory: true,
+              maxFiles: 1
             }
           })
 

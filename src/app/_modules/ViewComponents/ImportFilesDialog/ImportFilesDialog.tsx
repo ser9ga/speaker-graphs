@@ -104,7 +104,6 @@ export const importFilesDialog = createOverlay<actEntityDialogProps>((props) => 
                   onFileAccept={onFileAccept}
                   {...(params?.directory === true && {directory: true})}
                   {...(typeof params?.maxFiles === 'number' && {maxFiles: params.maxFiles})}
-                  directory
                 >
                   <FileUpload.HiddenInput />
                   <FileUpload.Trigger asChild>
