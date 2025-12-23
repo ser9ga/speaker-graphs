@@ -7,6 +7,7 @@ import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
 import {isNaN} from "lodash";
 import {normalizeRawNumber} from "@/app/_modules/Utils/calculateAndPackUnitData/utils";
 import {MeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
+import {parseMetaFromCsv} from "@/app/_modules/Utils/parseMetaFromCsv";
 
 interface ParseRawCSVStringValueParams {
   rawString: string
@@ -15,17 +16,20 @@ interface ParseRawCSVStringValueParams {
 
 export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseRawCSVStringValueParams):
   [MeasurementCaseForGraph, string[]] => {
+  const {
+    maybeSpeaker,
+    maybeCabinet,
+    maybePortDiameter,
+    maybePortLength,
+    maybeCar,
+    maybeDoorSate,
+    maybeVoltageOfTesting,
+    dataRows
+  }  = parseMetaFromCsv(rawString)
+
   const emptyMeasurementCase = generateEmptyGraphMeasurementCase(getRandomColor());
 
-  const splitStrings = rawString
-    .split('\r\n')
-    .map(row => row.split(';'))
-
-  const head = splitStrings.splice(0,3);
-
   const errors: string[] = []
-
-  const maybeSpeaker = head?.[1]?.[0]
 
   if (typeof maybeSpeaker === 'string' && maybeSpeaker.length > 0) {
     // @ts-ignore
@@ -36,8 +40,6 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     errors.push(`Не удалось распознать динамик ${maybeSpeaker}`)
   }
 
-  const maybeCabinet = head?.[1]?.[1]
-
   if (typeof maybeCabinet === 'string' && maybeCabinet.length > 0) {
     // @ts-ignore
     emptyMeasurementCase.meta.cabinet = {
@@ -46,9 +48,6 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
   } else {
     errors.push(`Не удалось распознать короб ${maybeCabinet}`)
   }
-
-  const maybePortDiameter = head?.[1]?.[2]
-  const maybePortLength = head?.[1]?.[2]
 
   const portPredicate = typeof maybeSpeaker === 'string'
     && maybeCabinet.length > 0
@@ -66,8 +65,6 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     errors.push(`Не удалось распознать порт ${maybePortDiameter}мм, ${maybePortLength}см`)
   }
 
-  const maybeCar = head?.[1]?.[4]
-
   if (typeof maybeCar === 'string' && maybeCar.length > 0) {
     // @ts-ignore
     emptyMeasurementCase.meta.car = {
@@ -77,9 +74,7 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     errors.push(`Не удалось распознать автомобиль ${maybeCar}`)
   }
 
-  const maybeDoorSate = head?.[1]?.[5]
-
-  const closedState = (head?.[1]?.[5]?.toLowerCase() as 'открыта' | 'закрыта')
+  const closedState = (maybeDoorSate?.toLowerCase() as 'открыта' | 'закрыта')
 
   switch (closedState) {
     case 'открыта': {
@@ -99,15 +94,13 @@ export const parseRawCSVStringToGraphData = ({rawString, getRandomColor}: ParseR
     }
   }
 
-  const maybeVoltageOfTesting = Number(head?.[1]?.[6])
-
   if (!isNaN(maybeVoltageOfTesting)) {
     emptyMeasurementCase.meta.voltageOfTesting = maybeVoltageOfTesting
   } else {
     errors.push(`Не удалось распознать напряжение тестирования ${maybeVoltageOfTesting}`)
   }
 
-  splitStrings.forEach((item) => {
+  dataRows.forEach((item) => {
     const maybeFrequency = Number(item[0]);
 
     if (isNaN(maybeFrequency)) {

@@ -13,6 +13,7 @@ import {
 import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
 import {isNaN} from "lodash";
 import {normalizeRawNumber} from "@/app/_modules/Utils/calculateAndPackUnitData/utils";
+import {parseMetaFromCsv} from "@/app/_modules/Utils/parseMetaFromCsv";
 
 interface ParseRawCSVStringValueParams {
   rawString: string,
@@ -29,17 +30,21 @@ export const parseRawCSVStringToMeasurementCase = ({
   ports,
   cars
 }: ParseRawCSVStringValueParams) => {
+  const {
+    maybeSpeaker,
+    maybeCabinet,
+    maybePortDiameter,
+    maybePortLength,
+    maybeCar,
+    maybeDoorSate,
+    maybeVoltageOfTesting,
+    dataRows
+  }  = parseMetaFromCsv(rawString)
+
   const emptyMeasurementCase = generateEmptyCatalogMeasurementCase() as EditableMeasurementCaseFromCatalogue;
-
-  const splitStrings = rawString
-    .split('\r\n')
-    .map(row => row.split(';'))
-
-  const head = splitStrings.splice(0,3);
 
   const errors: string[] = []
 
-  const maybeSpeaker = head?.[1]?.[0]
   const speaker = speakers.find(currentSpeaker => {
     return currentSpeaker.label.toLowerCase() === maybeSpeaker?.trim()?.toLowerCase()
   });
@@ -50,8 +55,6 @@ export const parseRawCSVStringToMeasurementCase = ({
     errors.push(`Не удалось распознать динамик ${maybeSpeaker}`)
   }
 
-  const maybeCabinet = head?.[1]?.[1]
-
   const cabinet = cabinets.find(currentCabinet => {
     return currentCabinet.volume === Number(maybeCabinet?.trim())
   });
@@ -61,9 +64,6 @@ export const parseRawCSVStringToMeasurementCase = ({
   } else {
     errors.push(`Не удалось распознать короб ${maybeCabinet}`)
   }
-
-  const maybePortDiameter = head?.[1]?.[2]
-  const maybePortLength = head?.[1]?.[2]
 
   const port = ports.find(currentPort => {
     return (
@@ -78,8 +78,6 @@ export const parseRawCSVStringToMeasurementCase = ({
     errors.push(`Не удалось распознать порт ${maybePortDiameter}мм, ${maybePortLength}см`)
   }
 
-  const maybeCar = head?.[1]?.[4]
-
   const car = cars.find(currentCar => {
     return currentCar.label?.toLowerCase() === maybeCar?.trim()?.toLowerCase()
   });
@@ -90,9 +88,7 @@ export const parseRawCSVStringToMeasurementCase = ({
     errors.push(`Не удалось распознать автомобиль ${maybeCar}`)
   }
 
-  const maybeDoorSate = head?.[1]?.[5]
-
-  const closedState = (head?.[1]?.[5]?.toLowerCase() as 'открыта' | 'закрыта')
+  const closedState = (maybeDoorSate?.toLowerCase() as 'открыта' | 'закрыта')
 
   switch (closedState) {
     case 'открыта': {
@@ -112,15 +108,13 @@ export const parseRawCSVStringToMeasurementCase = ({
     }
   }
 
-  const maybeVoltageOfTesting = Number(head?.[1]?.[6])
-
   if (!isNaN(maybeVoltageOfTesting)) {
-    emptyMeasurementCase.meta.voltageOfTesting = maybeVoltageOfTesting
+    emptyMeasurementCase.meta.voltageOfTesting = Number(maybeVoltageOfTesting)
   } else {
     errors.push(`Не удалось распознать напряжение тестирования ${maybeVoltageOfTesting}`)
   }
 
-  splitStrings.forEach((item) => {
+  dataRows.forEach((item) => {
     const maybeFrequency = Number(item[0]);
 
     if (isNaN(maybeFrequency)) {
