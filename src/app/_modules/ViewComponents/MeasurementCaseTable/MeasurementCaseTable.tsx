@@ -1,16 +1,18 @@
 'use client'
 
-import {HStack, Table, Text} from '@chakra-ui/react';
-import {get} from 'lodash';
+import {HStack, Table, Text, VStack} from '@chakra-ui/react';
 import * as React from "react";
-import {FC} from "react";
 import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
 import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 import {ActMeasurementCaseForm} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/ActMeasurementCaseForm";
-import {columns} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
+import {flexRender, Table as TanstackTable} from "@tanstack/react-table";
+import {MEASUREMENT_CASE_TABLE_COLUMN_NAME} from "@/app/_modules/Constants";
+import {HeaderSort} from "@/app/_modules/ViewComponents/MeasurementCaseTable/modules/HeaderSort";
+import {FilterContent} from "@/app/_modules/ViewComponents/MeasurementCaseTable/modules/HeaderFilter";
 
 interface MeasurementCaseTableProps {
+  table: TanstackTable<MeasurementCaseFromCatalogue>
   measurementCases: MeasurementCaseFromCatalogue[]
   getDialogFullName: (param: number | 'new') => string
   onEntityEdit: (id: MeasurementCaseFromCatalogue['id'], value: MeasurementCaseFromCatalogue) => void,
@@ -18,55 +20,104 @@ interface MeasurementCaseTableProps {
   onRowDoubleClick?: (item: MeasurementCaseFromCatalogue) => void
 }
 
-export const MeasurementCaseTable: FC<MeasurementCaseTableProps> = ({
-  measurementCases,
+export function MeasurementCaseTable ({
+  table,
   getDialogFullName,
   onEntityEdit,
   onEntityDelete,
   onRowDoubleClick
-}) => {
+}: MeasurementCaseTableProps) {
   return (
     <Table.ScrollArea borderWidth="1px" rounded="md" >
       <Table.Root
         width="100%"
         interactive
         stickyHeader
+        css={{'table-layout': 'fixed'}}
       >
         <Table.Header>
-          <Table.Row>
-            {columns.map((column) => {
-              return (
-                <Table.ColumnHeader
-                  key={column.keyName}
-                  {...(column.width && {width: `${column.width}px`})}
-                >
-                  {column.label}
-                </Table.ColumnHeader>
-              )
-            })}
-          </Table.Row>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Table.Row key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                const size = header.column.columnDef.size
+
+                return (
+                  <Table.ColumnHeader
+                    key={header.id}
+                    height={'76px'}
+                    {...(size && {width: `${size}px`})}
+                  >
+                    <VStack
+                      width={'100%'}
+                      height={'100%'}
+                      justifyContent={'start'}
+                      alignItems={'start'}
+                    >
+                      <HStack height={'32px'}>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        <HeaderSort
+                          getCanSort={header.column.getCanSort}
+                          getIsSorted={header.column.getIsSorted}
+                          getToggleSortingHandler={header.column.getToggleSortingHandler}
+                        />
+                      </HStack>
+                      <FilterContent
+                        // @ts-ignore
+                        accessorKey={header.column.columnDef.accessorKey}
+                        // @ts-ignore
+                        filterVariant={(header.column.columnDef.meta ?? {})?.filterVariant}
+                        getFacetedUniqueValues={header.column.getFacetedUniqueValues}
+                        getCanFilter={header.column.getCanFilter}
+                        setFilterValue={header.column.setFilterValue}
+                        getFilterValue={header.column.getFilterValue}
+                      />
+                    </VStack>
+                  </Table.ColumnHeader>
+                )}
+              )}
+            </Table.Row>
+          ))}
         </Table.Header>
         <Table.Body>
-          {measurementCases.map((item) => {
+          {table.getRowModel().rows.map((row) => {
             return (
               <Table.Row
-                key={item.id}
-                onDoubleClick={() => onRowDoubleClick?.(item) }
+                key={row.id}
+                onDoubleClick={() => onRowDoubleClick?.(row.original) }
               >
-                {columns.map((column) => {
-                  const getCellContent = (child: React.ReactNode) => {
-                    if (column.keyName === 'id') {
-                      return (
+                {row.getVisibleCells().map((cell) => {
+                  const size = cell.column.columnDef.size
+
+                  const mainCellDataComponent = (
+                    <Text
+                      {...(size && {width: `${size - 24}px`})}
+                      textStyle="sm"
+                      truncate
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </Text>
+                  )
+
+                  // @ts-ignore
+                  if (cell.column.columnDef?.accessorKey === MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID) {
+                    return (
+                      <Table.Cell
+                        key={cell.id}
+                        {...(size && {width: `${size}px`})}
+                      >
                         <HStack gap={0}>
-                          {child}
+                          {mainCellDataComponent}
                           <EntityActionTableCell
                             onEditClick={(exitCallback) => {
-                              commonDialog.open(getDialogFullName(item.id), {
+                              commonDialog.open(getDialogFullName(row.original.id), {
                                 title: `Редактирование случая измерения`,
                                 content: (
                                   <ActMeasurementCaseForm
-                                    values={item}
-                                    onSave={(values) => onEntityEdit(item.id, values)}
+                                    values={row.original}
+                                    onSave={(values) => onEntityEdit(row.original.id, values)}
                                     onDeleteConfirmPopoverExit={exitCallback}
                                     confirmText={'Подтвердить создание?'}
                                     confirmButtonLabel={'Подтвердить'}
@@ -77,37 +128,19 @@ export const MeasurementCaseTable: FC<MeasurementCaseTableProps> = ({
                                 size: "cover"
                               })
                             }}
-                            onEntityClick={() => onEntityDelete(item.id)}
+                            onEntityClick={() => onEntityDelete(row.original.id)}
                           />
                         </HStack>
-                      )
-                    }
-
-                    return child
+                      </Table.Cell>
+                    )
                   }
-
-                  const cellValue = column.cellValue?.(item);
-
-                  const cellText = cellValue
-                    // @ts-ignore
-                    || get(item, column?.path)
-                  || get(item, column.keyName)
 
                   return (
                     <Table.Cell
-                      key={column.keyName}
-                      {...(column.width && {width: `${column.width}px`})}
+                      key={cell.id}
+                      {...(size && {width: `${size}px`})}
                     >
-                      {getCellContent(
-                        <Text
-                          {...(column.width && {width: `${column.width - 24}px`})}
-                          textStyle="sm"
-                          truncate
-                        >
-                          {/* @ts-ignore */}
-                          {cellText}
-                        </Text>
-                      )}
+                      {mainCellDataComponent}
                     </Table.Cell>
                   )
                 })}

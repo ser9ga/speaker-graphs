@@ -1,7 +1,8 @@
+import {ReactNode} from "react";
 import type {Metadata} from "next";
-import "./globals.css";
 import StoreProvider from "@/app/_modules/Store/StoreProvider";
 import {ChakraProvider} from "@/app/_modules/Chakra/ChakraProvider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Speaker Graphs",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="ru">

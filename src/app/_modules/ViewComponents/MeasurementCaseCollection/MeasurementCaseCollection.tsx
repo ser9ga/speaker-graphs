@@ -13,6 +13,14 @@ import {
   MeasurementCaseSelectedCollectionTableActionBar
 } from "@/app/_modules/ViewComponents/MeasurementCaseSelectedCollectionTableActionBar/MeasurementCaseSelectedCollectionTableActionBar";
 import {SpinnerWrapper} from "@/app/_modules/ViewComponents/SpinnerWrapper/SpinnerWrapper";
+import {
+  getCoreRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getSortedRowModel, Row,
+  useReactTable
+} from "@tanstack/react-table";
+import {columns} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
 
 export const MeasurementCaseCollection = () => {
   const [measurementCases, setMeasurementCases] = useState<MeasurementCaseFromCatalogue[]>([])
@@ -92,6 +100,42 @@ export const MeasurementCaseCollection = () => {
     await getMeasurementCases()
   }
 
+  function multiSelectFilter(rows: Row<MeasurementCaseFromCatalogue>, columnIds: string, filterValue: (string | number)[]) {
+    if (!filterValue?.length) {
+      return true
+    }
+
+    const cellValue = rows.getValue(columnIds) as (string | number)
+
+    return filterValue?.includes(cellValue)
+  }
+
+  const table = useReactTable
+  ({
+    data: measurementCases,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    filterFns: {
+      myCustomFilterFn: multiSelectFilter,
+    },
+  })
+
+  const table2 = useReactTable
+  ({
+    data: checkedMeasurementCases,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    filterFns: {
+      myCustomFilterFn: multiSelectFilter,
+    },
+  })
+
 
   return (
     <SpinnerWrapper isSpinning={isLoading}>
@@ -106,11 +150,13 @@ export const MeasurementCaseCollection = () => {
         overflow={'hidden'}
       >
         <MeasurementCaseCollectionTableActionBar
+          table={table}
           getDialogFullName={getDialogFullName}
           onEntityAdd={onEntityAdd}
           getMeasurementCases={getMeasurementCases}
         />
         <MeasurementCaseTable
+          table={table}
           measurementCases={measurementCases}
           getDialogFullName={getDialogFullName}
           onEntityEdit={onEntityEdit}
@@ -131,6 +177,7 @@ export const MeasurementCaseCollection = () => {
           checkedMeasurementCases={checkedMeasurementCases}
         />
         <MeasurementCaseTable
+          table={table2}
           measurementCases={checkedMeasurementCases}
           getDialogFullName={getDialogFullName}
           onEntityEdit={onEntityEdit}

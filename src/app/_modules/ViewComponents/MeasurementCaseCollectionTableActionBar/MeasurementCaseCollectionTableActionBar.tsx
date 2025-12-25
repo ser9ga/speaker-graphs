@@ -24,8 +24,11 @@ import {toaster} from "@/app/_modules/components/ui/toaster";
 import {services} from "@/app/_modules/services";
 import {CSVFileAttributes} from "@/app/_modules/Types/csv";
 import {errorListDrawer} from "@/app/_modules/ViewComponents/ErrorListDrawer/ErrorListDrawer";
+import {TbFilterOff} from "react-icons/tb";
+import {Table as TanstackTable} from "@tanstack/react-table";
 
 interface Props {
+  table: TanstackTable<MeasurementCaseFromCatalogue>
   getDialogFullName: (param: number | 'new') => string
   onEntityAdd: (values: Omit<MeasurementCaseFromCatalogue, 'id'>) => void
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -33,15 +36,16 @@ interface Props {
 }
 
 export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
+  table,
   getDialogFullName,
   onEntityAdd,
   getMeasurementCases
 }) => {
   // TODO переделать на RTQ
-  const [speakers, setSpeakers] = useState<SpeakerFromCatalogue[]>([])
-  const [cabinets, setCabinets] = useState<CabinetFromCatalogue[]>([])
-  const [ports, setPorts] = useState<PortFromCatalogue[]>([])
-  const [cars, setCars] = useState<CarFromCatalogue[]>([])
+  const [speakers, setSpeakers] = useState<SpeakerFromCatalogue[]>([]);
+  const [cabinets, setCabinets] = useState<CabinetFromCatalogue[]>([]);
+  const [ports, setPorts] = useState<PortFromCatalogue[]>([]);
+  const [cars, setCars] = useState<CarFromCatalogue[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -56,6 +60,11 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
       setCars(carsRes)
     })()
   }, [])
+
+  const resetFilters = () => {
+    table.resetColumnFilters();
+    table.resetSorting();
+  }
 
   const createMeasurementCase = () => {
     commonDialog.open(getDialogFullName('new'), {
@@ -232,29 +241,41 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
 
   return (
     <HStack
-      justifySelf={'end'}
+      width={'100%'}
+      justifyContent={'space-between'}
     >
-      <Button
-        variant={"solid"}
-        onClick={createMeasurementCase}
-      >
-        <IoIosAdd />
-        Создать
-      </Button >
-      <Button
-        variant={"outline"}
-        onClick={importSingleFile}
-      >
-        <PiFileCsvLight />
-        Импортировать файл
-      </Button >
-      <Button
-        variant={"outline"}
-        onClick={importFileCollection}
-      >
-        <PiFolderLight />
-        Импортировать коллекцию
-      </Button >
+      <HStack>
+        <Button
+          variant={"outline"}
+          onClick={resetFilters}
+        >
+          <TbFilterOff />
+          Сбросить фильтры
+        </Button >
+      </HStack>
+      <HStack>
+        <Button
+          variant={"solid"}
+          onClick={createMeasurementCase}
+        >
+          <IoIosAdd />
+          Создать
+        </Button >
+        <Button
+          variant={"outline"}
+          onClick={importSingleFile}
+        >
+          <PiFileCsvLight />
+          Импортировать файл
+        </Button >
+        <Button
+          variant={"outline"}
+          onClick={importFileCollection}
+        >
+          <PiFolderLight />
+          Импортировать коллекцию
+        </Button >
+      </HStack>
     </HStack>
   )
 }

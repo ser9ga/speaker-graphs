@@ -1,0 +1,225 @@
+'use client'
+
+import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+import {MEASUREMENT_CASE_TABLE_COLUMN_NAME} from "@/app/_modules/Constants";
+import {
+  MEASUREMENT_CASE_TABLE_COLUMN_LABEL
+} from "@/app/_modules/Constants/Translations/MeasurementCaseTableColumnLabel";
+import {createColumnHelper} from "@tanstack/react-table";
+import * as React from "react";
+import {Tooltip} from "@/app/_modules/components/ui/tooltip";
+import {MEASUREMENT_CASE_TABLE_COLUMN_ICON} from "@/app/_modules/Constants/MeasurementCaseTableColumnIcon";
+
+const columnHelper = createColumnHelper<MeasurementCaseFromCatalogue>()
+
+export const columns = [
+// @ts-ignore
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    width: 20,
+    enableSorting: true,
+    enableColumnFilter: false,
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 150,
+    enableSorting: false,
+    enableColumnFilter: false,
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_LABEL, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_LABEL]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_LABEL]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 300,
+    enableSorting: true,
+    enableColumnFilter: true,
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 100,
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 100,
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 100,
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 100,
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 100,
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 160,
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue()
+      ? "открыта"
+      : "закрыта",
+    size: 130,
+    enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    size: 100,
+    enableSorting: true,
+    enableColumnFilter: true,
+    filterFn: 'myCustomFilterFn',
+    meta: {
+      filterVariant: 'select',
+    }
+  }),
+  columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION, {
+    header: (
+      <Tooltip
+        positioning={{placement: 'top'}}
+        content={MEASUREMENT_CASE_TABLE_COLUMN_LABEL[MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION]}
+      >
+        {MEASUREMENT_CASE_TABLE_COLUMN_ICON[MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION]}
+      </Tooltip>
+    ),
+    cell: (info) => info.getValue(),
+    enableSorting: true,
+    enableColumnFilter: true,
+    size: 500,
+    meta: {
+      filterVariant: 'search',
+    }
+  }),
+]
