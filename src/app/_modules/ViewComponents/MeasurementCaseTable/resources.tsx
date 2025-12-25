@@ -42,6 +42,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -51,7 +52,7 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    size: 150,
+    size: 100,
     enableSorting: false,
     enableColumnFilter: false,
     meta: {
@@ -59,6 +60,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_LABEL, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -77,6 +79,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -89,6 +92,7 @@ export const columns = [
     size: 80,
     enableSorting: true,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
@@ -96,6 +100,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -108,6 +113,7 @@ export const columns = [
     size: 80,
     enableSorting: true,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
@@ -115,6 +121,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -127,6 +134,7 @@ export const columns = [
     size: 80,
     enableSorting: true,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
@@ -134,6 +142,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -146,6 +155,7 @@ export const columns = [
     size: 80,
     enableSorting: true,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
@@ -153,6 +163,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -165,6 +176,7 @@ export const columns = [
     size: 80,
     enableSorting: true,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
@@ -172,6 +184,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -184,12 +197,14 @@ export const columns = [
     size: 160,
     enableSorting: true,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -204,6 +219,7 @@ export const columns = [
     size: 110,
     enableSorting: false,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
@@ -211,6 +227,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}
@@ -223,6 +240,7 @@ export const columns = [
     size: 80,
     enableSorting: true,
     enableColumnFilter: true,
+    // @ts-ignore
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
@@ -230,6 +248,7 @@ export const columns = [
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION, {
+    // @ts-ignore
     header: (
       <Tooltip
         positioning={{placement: 'top'}}

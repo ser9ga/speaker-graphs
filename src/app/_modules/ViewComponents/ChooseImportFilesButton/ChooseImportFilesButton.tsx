@@ -6,7 +6,7 @@ import {importFilesDialog} from "@/app/_modules/ViewComponents/ImportFilesDialog
 import {toaster} from "@/app/_modules/components/ui/toaster";
 import {parseRawCSVStringToGraphData} from "@/app/_modules/ViewComponents/ChooseImportFilesButton/utils";
 import {setGraphData} from "@/app/_modules/Store/GraphData/GraphDataSlice";
-import {getRandomColorFactory} from "@/app/_modules/Utils/colorRandomaizer";
+import {colorRandomaizerFactory} from "@/app/_modules/Utils/colorRandomaizer";
 import {CSVFileAttributes} from "@/app/_modules/Types/csv";
 
 export const ChooseImportFilesButton = () => {
@@ -31,11 +31,14 @@ export const ChooseImportFilesButton = () => {
 
         let errors: string[] = []
 
-        const getRandomColor = getRandomColorFactory()
+        const colorRandomaizer = colorRandomaizerFactory()
 
         const parsedRaws = rawCSVCollection
           .map((rawCSV: CSVFileAttributes) => {
-            const [parsedMeasurementCase, error] = parseRawCSVStringToGraphData({rawString: rawCSV.content, getRandomColor})
+            const [parsedMeasurementCase, error] = parseRawCSVStringToGraphData({
+              rawString: rawCSV.content,
+              color: colorRandomaizer.getColor()
+            })
             errors = error.concat(error)
 
             return parsedMeasurementCase

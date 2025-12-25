@@ -8,14 +8,15 @@ import {isNaN} from "lodash";
 import {normalizeRawNumber} from "@/app/_modules/Utils/calculateAndPackUnitData/utils";
 import {MeasurementCaseForGraph} from "@/app/_modules/Types/dataForGraphs";
 import {parseValuesFromCsv} from "@/app/_modules/Utils/parseValuesFromCsv";
+import {LegendColors} from "@/app/_modules/Constants";
 
 interface ParseRawCSVStringValueParams {
   rawString: string
-  getRandomColor: () => string
+  color: LegendColors
 }
 
 export const parseRawCSVStringToGraphData = (
-  {rawString, getRandomColor}: ParseRawCSVStringValueParams
+  {rawString, color}: ParseRawCSVStringValueParams
 ): [MeasurementCaseForGraph, string[]] => {
   const parsedValues = parseValuesFromCsv(rawString);
 
@@ -30,7 +31,7 @@ export const parseRawCSVStringToGraphData = (
     dataRows
   } = parsedValues;
 
-  const emptyMeasurementCase = generateEmptyGraphMeasurementCase(getRandomColor());
+  const emptyMeasurementCase = generateEmptyGraphMeasurementCase(color);
 
   const errors: string[] = []
 

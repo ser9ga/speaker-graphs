@@ -1,8 +1,7 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {Flex, HStack, Table, Text} from '@chakra-ui/react';
+import {HStack, Table, Text, VStack} from '@chakra-ui/react';
 import {OverlayLoader} from "@/app/_modules/ViewComponents/OverlayLoader/OverlayLoader";
-import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 import {ActEntityForm} from "@/app/_modules/ViewComponents/ActEntityForm/ActEntityForm";
 import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
 import {EntityCategoryName} from "@/app/_modules/Constants/EntityCategoryName";
@@ -10,6 +9,7 @@ import {EntityTableActionBar} from "@/app/_modules/ViewComponents/EntityTableAct
 import {toaster} from "@/app/_modules/components/ui/toaster";
 import {EntityTableColumn} from "@/app/_modules/Types/entityTable";
 import {FieldValues, Path} from "react-hook-form";
+import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 
 interface EntityTableProps<T extends FieldValues, N extends Path<T>> {
   dialogNamePrefix: EntityCategoryName;
@@ -106,10 +106,9 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
 
   return (
     <OverlayLoader isLoading={isLoading}>
-      <Flex
+      <VStack
         justifyContent={'start'}
         alignItems={'end'}
-        direction={'column'}
         gap={'10px'}
       >
         <EntityTableActionBar
@@ -147,6 +146,7 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
                 return (
                   <Table.ColumnHeader
                     key={column.keyName}
+                    padding={'6px'}
                     {...(column.width && {width: `${column.width}px`})}
                   >
                     {column.label}
@@ -208,6 +208,7 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
                     return (
                       <Table.Cell
                         key={column.keyName}
+                        padding={'6px'}
                         {...(column.width && {width: `${column.width}px`})}
                       >
                         {getCellContent(entity[column.keyName])}
@@ -219,7 +220,7 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
             })}
           </Table.Body>
         </Table.Root>
-      </Flex>
+      </VStack>
     </OverlayLoader>
   )
 }

@@ -18,7 +18,6 @@ export function HeaderSort ({
   getToggleSortingHandler
 }: MeasurementCaseTableHeaderSortingProps) {
   const canSort = getCanSort()
-
   const sortDirection = getIsSorted()
 
   if (!canSort) {
@@ -28,7 +27,11 @@ export function HeaderSort ({
   const button = (icon: ReactNode) => (
     <IconButton
       size={'xs'}
-      variant={'ghost'}
+      variant={
+        !!sortDirection
+          ? 'subtle'
+          : 'ghost'
+      }
       onClick={getToggleSortingHandler()}
     >
       {icon}

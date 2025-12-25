@@ -6,10 +6,10 @@ import {
 import {PiCar, PiCompassTool, PiSpeakerNone} from "react-icons/pi";
 import * as React from "react";
 import {ReactNode} from "react";
-import {TbCircuitResistor, TbCircuitVoltmeter, TbFileDescription, TbRulerMeasure} from "react-icons/tb";
+import {TbCircuitResistor, TbCircuitVoltmeter, TbRulerMeasure} from "react-icons/tb";
 import {IoCompassOutline} from "react-icons/io5";
 import {MdOutlineColorLens} from "react-icons/md";
-import {LuDiameter} from "react-icons/lu";
+import {LuDiameter, LuPencilLine} from "react-icons/lu";
 import {RiSpeaker2Line} from "react-icons/ri";
 import {GiCarDoor} from "react-icons/gi";
 
@@ -29,7 +29,7 @@ export const MEASUREMENT_CASE_TABLE_COLUMN_ICON: {
   [MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL]: <PiCar size={size}/>,
   [MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING]: <TbCircuitVoltmeter size={size}/>,
   [MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED]: <GiCarDoor size={size}/>,
-  [MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION]: <TbFileDescription size={size}/>,
+  [MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION]: <LuPencilLine size={size}/>,
 } as const;
 
 export type MeasurementCaseTableColumnIcon = valueof<typeof MEASUREMENT_CASE_TABLE_COLUMN_ICON>;

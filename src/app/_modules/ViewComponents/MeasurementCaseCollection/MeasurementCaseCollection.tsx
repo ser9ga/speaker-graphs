@@ -29,12 +29,17 @@ import {
   selectedMeasurementCaseCollectionSelector
 } from "@/app/_modules/Store/MeasurementCaseCatalog/MeasurementCaseCatalogSelectors";
 import {
+  eraseColorCollection,
+  eraseSelectedMeasurementCaseCollection,
   setColorCollection,
   setMainMeasurementCaseCollection,
   setSelectedMeasurementCaseCollection
 } from "@/app/_modules/Store/MeasurementCaseCatalog/MeasurementCaseCatalogSlice";
-import {LegendColors} from "@/app/_modules/Constants";
+import {LegendColors, MAIN_TAB_NAME} from "@/app/_modules/Constants";
 import {colorRandomaizerFactory} from "@/app/_modules/Utils/colorRandomaizer";
+import {addOptionsToMeasurementCaseForGraph} from "@/app/_modules/Utils/measurementCaseFormUtils";
+import {setGraphData} from "@/app/_modules/Store/GraphData/GraphDataSlice";
+import {setActiveTab} from "@/app/_modules/Store/AppControl/AppControlSlice";
 
 export const MeasurementCaseCollection = () => {
   const colorRandomaizer = useMemo(() => colorRandomaizerFactory(), [])
@@ -49,10 +54,16 @@ export const MeasurementCaseCollection = () => {
   const setSelectedMeasurementCases = (cases: MeasurementCaseFromCatalogue[]) => {
     dispatch(setSelectedMeasurementCaseCollection(cases))
   }
+  const eraseSelectedMeasurementCases = () => {
+    dispatch(eraseSelectedMeasurementCaseCollection())
+  }
 
   const colors = useAppSelector(colorCollectionSelector);
   const setColors = (colors: Record<number, LegendColors>) => {
     dispatch(setColorCollection(colors))
+  }
+  const eraseColors = () => {
+    dispatch(eraseColorCollection())
   }
 
   const onMeasurementCaseAdd = (measurementCase: MeasurementCaseFromCatalogue) => {
@@ -111,6 +122,20 @@ export const MeasurementCaseCollection = () => {
     []
   );
 
+  const onEraseSelectedListClick = () => {
+    eraseSelectedMeasurementCases();
+    eraseColors();
+    colorRandomaizer.reset();
+  }
+
+  const onDrawGraphsClick = () => {
+    const parsedRaws = selectedMeasurementCases
+      .map(measurementCase => addOptionsToMeasurementCaseForGraph(measurementCase, colors[measurementCase.id]))
+
+    dispatch(setGraphData(parsedRaws))
+    dispatch(setActiveTab(MAIN_TAB_NAME.GRAPH_DRAWS))
+  }
+
   const getDialogFullName = (id: number | 'new') => `measurementCase_${id}`
 
   const onEntityAdd = async (values: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
@@ -129,7 +154,6 @@ export const MeasurementCaseCollection = () => {
 
     await getMeasurementCases()
   }
-
 
   const onEntityEdit = async (id: number, values: MeasurementCaseFromCatalogue) => {
     const res = await measurementCaseService.update(values);
@@ -229,7 +253,9 @@ export const MeasurementCaseCollection = () => {
           isFilterable
         />
         <MeasurementCaseSelectedCollectionTableActionBar
-          checkedMeasurementCases={selectedMeasurementCases}
+          onDrawClick={onDrawGraphsClick}
+          onEraseClick={onEraseSelectedListClick}
+          isEraseDisabled={selectedMeasurementCases.length === 0}
         />
         <MeasurementCaseTable
           table={table2}

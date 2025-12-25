@@ -51,6 +51,7 @@ export const HeaderSelect = ({
           })
       })
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [getFacetedUniqueValues()],
   );
 

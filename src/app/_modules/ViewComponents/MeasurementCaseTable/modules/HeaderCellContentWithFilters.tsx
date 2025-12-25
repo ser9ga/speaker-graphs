@@ -42,7 +42,10 @@ export const HeaderCellContentWithFilters = ({
       justifyContent={'start'}
       alignItems={'start'}
     >
-      <HStack height={'32px'}>
+      <HStack
+        height={'22px'}
+        padding={'0 4px'}
+      >
         {children}
         <HeaderSort
           getCanSort={getCanSort}

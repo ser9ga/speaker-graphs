@@ -1,17 +1,7 @@
 import {LEGEND_COLORS, LegendColors} from "@/app/_modules/Constants";
 
-export const getRandomColorFactory = () => {
-  const colorPool  = Object.values(LEGEND_COLORS);
-
-  return () => {
-    const colorArrayIndex = Math.floor(Math.random() * colorPool.length)
-
-    return colorPool.splice(colorArrayIndex, 1)[0]
-  }
-}
-
 export const colorRandomaizerFactory = () => {
-  const colorPool  = Object.values(LEGEND_COLORS);
+  let colorPool  = Object.values(LEGEND_COLORS);
 
   const getColor = () => {
     const colorArrayIndex = Math.floor(Math.random() * colorPool.length)
@@ -23,8 +13,13 @@ export const colorRandomaizerFactory = () => {
     colorPool.push(color)
   }
 
+  const reset = () => {
+    colorPool  = Object.values(LEGEND_COLORS);
+  }
+
   return {
     getColor,
     passOffColor,
+    reset,
   }
 }

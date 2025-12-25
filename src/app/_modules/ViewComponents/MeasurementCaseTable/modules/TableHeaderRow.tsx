@@ -40,7 +40,7 @@ export const TableHeaderRow = ({
               <Table.ColumnHeader
                 key={header.id}
                 padding={'6px'}
-                height={isFilterable ? '76px' : '44px'}
+                height={isFilterable ? '74px' : '34px'}
                 {...(size && {width: `${size}px`})}
                 {...(isSticked && {
                   ['data-sticky']: "end",

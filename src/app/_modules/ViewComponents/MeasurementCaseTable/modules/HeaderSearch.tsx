@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
 import {Updater,} from '@tanstack/react-table'
-import {Input} from "@chakra-ui/react";
+import {CloseButton, Input, InputGroup} from "@chakra-ui/react";
 
 export function DebouncedInput({
   value: initialValue,
@@ -19,21 +19,41 @@ export function DebouncedInput({
     setValue(initialValue)
   }, [initialValue])
 
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value)
-    }, debounce)
+  React.useEffect(
+    () => {
+      const timeout = setTimeout(() => {
+        onChange(value)
+      }, debounce)
 
-    return () => clearTimeout(timeout)
-  }, [value])
+      return () => clearTimeout(timeout)
+
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [value]
+  )
+
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const endElement = !!value && (
+    <CloseButton
+      size="2xs"
+      onClick={() => {
+        setValue("")
+        inputRef.current?.focus()
+      }}
+      me="-2"
+    />
+  )
 
   return (
+  <InputGroup endElement={endElement}>
     <Input
       {...props}
       size={'xs'}
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
+  </InputGroup>
   )
 }
 

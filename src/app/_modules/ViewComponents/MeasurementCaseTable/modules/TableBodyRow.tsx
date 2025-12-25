@@ -1,16 +1,16 @@
 'use client'
 
-import {HStack, Table, Text} from '@chakra-ui/react';
 import * as React from "react";
+import {ReactNode} from "react";
+import {HStack, Table, Text} from '@chakra-ui/react';
 import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
-import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 import {ActMeasurementCaseForm} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/ActMeasurementCaseForm";
 import {Cell, flexRender} from "@tanstack/react-table";
 import {LegendColors, MEASUREMENT_CASE_TABLE_COLUMN_NAME} from "@/app/_modules/Constants";
 import {TableColumnMeta} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
 import {accumulateLeftGapFabric} from "@/app/_modules/ViewComponents/MeasurementCaseTable/utils";
-import {ReactNode} from "react";
+import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 
 interface MeasurementCaseTableProps {
   id: string
@@ -96,14 +96,12 @@ export const TableBodyRow = ({
           }
 
           return contentText
-
-          return contentText
         }
 
         return (
           <Table.Cell
             key={cell.id}
-            padding={'6px'}
+            padding={'6px 10px'}
             {...(size && {width: `${size}px`})}
             {...(isSticked && {
               ['data-sticky']: "end",
