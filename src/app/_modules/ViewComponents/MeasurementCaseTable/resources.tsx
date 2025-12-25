@@ -7,13 +7,23 @@ import {
 } from "@/app/_modules/Constants/Translations/MeasurementCaseTableColumnLabel";
 import {createColumnHelper} from "@tanstack/react-table";
 import * as React from "react";
+import {ReactNode} from "react";
 import {Tooltip} from "@/app/_modules/components/ui/tooltip";
 import {MEASUREMENT_CASE_TABLE_COLUMN_ICON} from "@/app/_modules/Constants/MeasurementCaseTableColumnIcon";
+import {
+  MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX
+} from "@/app/_modules/Constants/Translations/MeasurementCaseTableColumnCellSuffix";
+
+export type TableColumnMeta = {
+  filterVariant?: 'select' | 'search' | undefined
+  sticked?: boolean
+  suffix: ReactNode
+}
 
 const columnHelper = createColumnHelper<MeasurementCaseFromCatalogue>()
 
 export const columns = [
-// @ts-ignore
+  // @ts-ignore
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR, {
     header: (
       <Tooltip
@@ -24,9 +34,12 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    width: 20,
+    size: 40,
     enableSorting: true,
     enableColumnFilter: false,
+    meta: {
+      sticked: true,
+    }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID, {
     header: (
@@ -41,6 +54,9 @@ export const columns = [
     size: 150,
     enableSorting: false,
     enableColumnFilter: false,
+    meta: {
+      sticked: true,
+    }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_LABEL, {
     header: (
@@ -57,6 +73,7 @@ export const columns = [
     enableColumnFilter: true,
     meta: {
       filterVariant: 'select',
+      sticked: true,
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE, {
@@ -75,6 +92,7 @@ export const columns = [
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
+      suffix: MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_COIL_RESISTANCE]
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE, {
@@ -93,6 +111,7 @@ export const columns = [
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
+      suffix: MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX[MEASUREMENT_CASE_TABLE_COLUMN_NAME.SPEAKER_SIZE]
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME, {
@@ -111,6 +130,7 @@ export const columns = [
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
+      suffix: MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX[MEASUREMENT_CASE_TABLE_COLUMN_NAME.CABINET_VOLUME]
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER, {
@@ -129,6 +149,7 @@ export const columns = [
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
+      suffix: MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_DIAMETER]
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH, {
@@ -147,6 +168,7 @@ export const columns = [
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
+      suffix: MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX[MEASUREMENT_CASE_TABLE_COLUMN_NAME.PORT_LENGTH]
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.CAR_LABEL, {
@@ -185,6 +207,7 @@ export const columns = [
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
+      suffix: MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX[MEASUREMENT_CASE_TABLE_COLUMN_NAME.IS_DOOR_OPENED]
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING, {
@@ -203,6 +226,7 @@ export const columns = [
     filterFn: 'myCustomFilterFn',
     meta: {
       filterVariant: 'select',
+      suffix: MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX[MEASUREMENT_CASE_TABLE_COLUMN_NAME.VOLTAGE_OF_TESTING]
     }
   }),
   columnHelper.accessor(MEASUREMENT_CASE_TABLE_COLUMN_NAME.DESCRIPTION, {

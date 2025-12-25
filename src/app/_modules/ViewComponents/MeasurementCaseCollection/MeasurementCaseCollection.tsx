@@ -17,7 +17,8 @@ import {
   getCoreRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getSortedRowModel, Row,
+  getSortedRowModel,
+  Row,
   useReactTable
 } from "@tanstack/react-table";
 import {columns} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
@@ -136,7 +137,6 @@ export const MeasurementCaseCollection = () => {
     },
   })
 
-
   return (
     <SpinnerWrapper isSpinning={isLoading}>
       <Grid
@@ -172,6 +172,7 @@ export const MeasurementCaseCollection = () => {
               }
             )
           }}
+          isFilterable
         />
         <MeasurementCaseSelectedCollectionTableActionBar
           checkedMeasurementCases={checkedMeasurementCases}
