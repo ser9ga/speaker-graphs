@@ -6,10 +6,12 @@ import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalog
 import {TableBodyRow} from "@/app/_modules/ViewComponents/MeasurementCaseTable/modules/TableBodyRow";
 import {Table as TanstackTable} from "@tanstack/react-table";
 import {TableHeaderRow} from "@/app/_modules/ViewComponents/MeasurementCaseTable/modules/TableHeaderRow";
+import {LegendColors} from "@/app/_modules/Constants";
 
 interface MeasurementCaseTableProps {
   table: TanstackTable<MeasurementCaseFromCatalogue>
   measurementCases: MeasurementCaseFromCatalogue[]
+  colors: Record<number, LegendColors>
   getDialogFullName: (param: number | 'new') => string
   onEntityEdit: (id: MeasurementCaseFromCatalogue['id'], value: MeasurementCaseFromCatalogue) => void,
   onEntityDelete: (id: MeasurementCaseFromCatalogue['id']) => void,
@@ -19,6 +21,7 @@ interface MeasurementCaseTableProps {
 
 export function MeasurementCaseTable ({
   table,
+  colors,
   getDialogFullName,
   onEntityEdit,
   onEntityDelete,
@@ -83,6 +86,7 @@ export function MeasurementCaseTable ({
                   key={row.id}
                   id={row.id}
                   original={row.original}
+                  colors={colors}
                   getVisibleCells={row.getVisibleCells}
                   getDialogFullName={getDialogFullName}
                   onEntityEdit={onEntityEdit}

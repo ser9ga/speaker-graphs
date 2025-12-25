@@ -30,7 +30,7 @@ export function DebouncedInput({
   return (
     <Input
       {...props}
-      size={"sm"}
+      size={'xs'}
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />

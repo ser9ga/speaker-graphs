@@ -7,7 +7,7 @@ import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDia
 import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
 import {ActMeasurementCaseForm} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/ActMeasurementCaseForm";
 import {Cell, flexRender} from "@tanstack/react-table";
-import {MEASUREMENT_CASE_TABLE_COLUMN_NAME} from "@/app/_modules/Constants";
+import {LegendColors, MEASUREMENT_CASE_TABLE_COLUMN_NAME} from "@/app/_modules/Constants";
 import {TableColumnMeta} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
 import {accumulateLeftGapFabric} from "@/app/_modules/ViewComponents/MeasurementCaseTable/utils";
 import {ReactNode} from "react";
@@ -15,6 +15,7 @@ import {ReactNode} from "react";
 interface MeasurementCaseTableProps {
   id: string
   original: MeasurementCaseFromCatalogue
+  colors: Record<number, LegendColors>
   getVisibleCells: () => Cell<MeasurementCaseFromCatalogue, unknown>[]
   getDialogFullName: (param: number | 'new') => string
   onEntityEdit: (id: MeasurementCaseFromCatalogue['id'], value: MeasurementCaseFromCatalogue) => void,
@@ -25,6 +26,7 @@ interface MeasurementCaseTableProps {
 export const TableBodyRow = ({
   id,
   original,
+  colors,
   getVisibleCells,
   getDialogFullName,
   onEntityEdit,
@@ -69,8 +71,21 @@ export const TableBodyRow = ({
 
         // @ts-ignore
         const suffix = (cell.column.columnDef.meta as TableColumnMeta)?.suffix
+        const strokeColor = colors?.[original.id]
 
         const renderCellContent = (contentText: ReactNode) => {
+          if (accessorKey === MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR) {
+            return (
+              <div
+                style={{
+                  height: '15px',
+                  width: '100%',
+                  backgroundColor: strokeColor
+                }}
+              />
+            )
+          }
+
           if (accessorKey === MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID) {
             return (
               <HStack gap={0}>
@@ -81,11 +96,14 @@ export const TableBodyRow = ({
           }
 
           return contentText
+
+          return contentText
         }
 
         return (
           <Table.Cell
             key={cell.id}
+            padding={'6px'}
             {...(size && {width: `${size}px`})}
             {...(isSticked && {
               ['data-sticky']: "end",

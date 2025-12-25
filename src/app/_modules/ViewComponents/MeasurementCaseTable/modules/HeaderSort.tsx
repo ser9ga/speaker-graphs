@@ -3,8 +3,7 @@
 import {IconButton} from '@chakra-ui/react';
 import * as React from "react";
 import {ReactNode} from "react";
-import {HiChevronUp, HiChevronUpDown} from "react-icons/hi2";
-import {HiChevronDown} from "react-icons/hi";
+import {HiChevronDown, HiChevronUp, HiChevronUpDown} from "react-icons/hi2";
 import {SortDirection} from "@tanstack/table-core";
 
 interface MeasurementCaseTableHeaderSortingProps {

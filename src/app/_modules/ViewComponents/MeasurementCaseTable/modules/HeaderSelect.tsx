@@ -68,7 +68,7 @@ export const HeaderSelect = ({
   return (
     <Select.Root
       collection={frameworks}
-      size="sm"
+      size={'xs'}
       multiple
       onValueChange={(e) => {
         setFilterValue(e.value)

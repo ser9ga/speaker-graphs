@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Grid} from '@chakra-ui/react';
 import {MeasurementCaseTable} from "@/app/_modules/ViewComponents/MeasurementCaseTable/MeasurementCaseTable";
 import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
@@ -22,10 +22,71 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import {columns} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
+import {useAppDispatch, useAppSelector} from "@/app/_modules/Store/Hooks";
+import {
+  colorCollectionSelector,
+  measurementCaseCatalogSelector,
+  selectedMeasurementCaseCollectionSelector
+} from "@/app/_modules/Store/MeasurementCaseCatalog/MeasurementCaseCatalogSelectors";
+import {
+  setColorCollection,
+  setMainMeasurementCaseCollection,
+  setSelectedMeasurementCaseCollection
+} from "@/app/_modules/Store/MeasurementCaseCatalog/MeasurementCaseCatalogSlice";
+import {LegendColors} from "@/app/_modules/Constants";
+import {colorRandomaizerFactory} from "@/app/_modules/Utils/colorRandomaizer";
 
 export const MeasurementCaseCollection = () => {
-  const [measurementCases, setMeasurementCases] = useState<MeasurementCaseFromCatalogue[]>([])
-  const [checkedMeasurementCases, setCheckedMeasurementCases] = useState<MeasurementCaseFromCatalogue[]>([])
+  const colorRandomaizer = useMemo(() => colorRandomaizerFactory(), [])
+
+  const dispatch = useAppDispatch();
+
+  const measurementCases = useAppSelector(measurementCaseCatalogSelector);
+  const setMeasurementCases = (cases: MeasurementCaseFromCatalogue[]) => {
+    dispatch(setMainMeasurementCaseCollection(cases))
+  }
+  const selectedMeasurementCases = useAppSelector(selectedMeasurementCaseCollectionSelector);
+  const setSelectedMeasurementCases = (cases: MeasurementCaseFromCatalogue[]) => {
+    dispatch(setSelectedMeasurementCaseCollection(cases))
+  }
+
+  const colors = useAppSelector(colorCollectionSelector);
+  const setColors = (colors: Record<number, LegendColors>) => {
+    dispatch(setColorCollection(colors))
+  }
+
+  const onMeasurementCaseAdd = (measurementCase: MeasurementCaseFromCatalogue) => {
+    if (selectedMeasurementCases.length >= 12) {
+      toaster.create({
+        description: `Достигнут максимальный размер выборки`,
+        type: "error",
+      })
+
+      return;
+    }
+
+    if (!selectedMeasurementCases
+      .some(prevMeasurementCase => prevMeasurementCase.id === measurementCase.id)) {
+      setSelectedMeasurementCases(selectedMeasurementCases.concat(measurementCase))
+      setColors({
+        ...colors,
+        [measurementCase.id]: colorRandomaizer.getColor()
+      })
+    }
+  }
+  const onMeasurementCaseDelete = (measurementCase: MeasurementCaseFromCatalogue) => {
+    setSelectedMeasurementCases(selectedMeasurementCases
+      .filter(prevMeasurementCase => {
+        return prevMeasurementCase.id !== measurementCase.id
+      }))
+
+    const copyColors = {...colors};
+    colorRandomaizer.passOffColor(colors[measurementCase.id])
+    delete copyColors[measurementCase.id];
+
+    setColors(copyColors)
+  }
+
   const [isLoading, setIsLoading] = useState(false)
 
   const measurementCaseService = services.measurementCases
@@ -68,6 +129,7 @@ export const MeasurementCaseCollection = () => {
 
     await getMeasurementCases()
   }
+
 
   const onEntityEdit = async (id: number, values: MeasurementCaseFromCatalogue) => {
     const res = await measurementCaseService.update(values);
@@ -126,7 +188,7 @@ export const MeasurementCaseCollection = () => {
 
   const table2 = useReactTable
   ({
-    data: checkedMeasurementCases,
+    data: selectedMeasurementCases,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -159,38 +221,24 @@ export const MeasurementCaseCollection = () => {
         <MeasurementCaseTable
           table={table}
           measurementCases={measurementCases}
+          colors={colors}
           getDialogFullName={getDialogFullName}
           onEntityEdit={onEntityEdit}
           onEntityDelete={onEntityDelete}
-          onRowDoubleClick={(measurementCase) => {
-            setCheckedMeasurementCases(
-              prev => {
-                if (prev.some(prevMeasurementCase => prevMeasurementCase.id === measurementCase.id)) {
-                  return prev
-                }
-
-                return [...prev, measurementCase]
-              }
-            )
-          }}
+          onRowDoubleClick={onMeasurementCaseAdd}
           isFilterable
         />
         <MeasurementCaseSelectedCollectionTableActionBar
-          checkedMeasurementCases={checkedMeasurementCases}
+          checkedMeasurementCases={selectedMeasurementCases}
         />
         <MeasurementCaseTable
           table={table2}
-          measurementCases={checkedMeasurementCases}
+          measurementCases={selectedMeasurementCases}
+          colors={colors}
           getDialogFullName={getDialogFullName}
           onEntityEdit={onEntityEdit}
           onEntityDelete={onEntityDelete}
-          onRowDoubleClick={(measurementCase) => {
-            setCheckedMeasurementCases(
-              prev => {
-                return prev.filter(prevMeasurementCase => prevMeasurementCase.id !== measurementCase.id)
-              }
-            )
-          }}
+          onRowDoubleClick={onMeasurementCaseDelete}
         />
       </Grid>
     </SpinnerWrapper>

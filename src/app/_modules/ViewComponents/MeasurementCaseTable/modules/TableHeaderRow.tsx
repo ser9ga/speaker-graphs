@@ -39,6 +39,7 @@ export const TableHeaderRow = ({
             return (
               <Table.ColumnHeader
                 key={header.id}
+                padding={'6px'}
                 height={isFilterable ? '76px' : '44px'}
                 {...(size && {width: `${size}px`})}
                 {...(isSticked && {

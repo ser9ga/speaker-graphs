@@ -6,7 +6,7 @@ export const LEGEND_COLORS = {
   RED: 'Red',
   GOLDENROD: 'Goldenrod',
   SIENNA: 'Sienna',
-  ORANGE_RED: 'OrangeRed',
+  DARK_ORANGE: 'DarkOrange',
   LIME: 'Lime',
   GREEN: 'Green',
   AQUA: 'Aqua',

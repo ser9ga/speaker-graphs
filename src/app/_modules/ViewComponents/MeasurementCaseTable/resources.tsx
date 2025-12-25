@@ -86,7 +86,7 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    size: 100,
+    size: 80,
     enableSorting: true,
     enableColumnFilter: true,
     filterFn: 'myCustomFilterFn',
@@ -105,7 +105,7 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    size: 100,
+    size: 80,
     enableSorting: true,
     enableColumnFilter: true,
     filterFn: 'myCustomFilterFn',
@@ -124,7 +124,7 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    size: 100,
+    size: 80,
     enableSorting: true,
     enableColumnFilter: true,
     filterFn: 'myCustomFilterFn',
@@ -143,7 +143,7 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    size: 100,
+    size: 80,
     enableSorting: true,
     enableColumnFilter: true,
     filterFn: 'myCustomFilterFn',
@@ -162,7 +162,7 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    size: 100,
+    size: 80,
     enableSorting: true,
     enableColumnFilter: true,
     filterFn: 'myCustomFilterFn',
@@ -201,7 +201,7 @@ export const columns = [
     cell: (info) => info.getValue()
       ? "открыта"
       : "закрыта",
-    size: 130,
+    size: 110,
     enableSorting: false,
     enableColumnFilter: true,
     filterFn: 'myCustomFilterFn',
@@ -220,7 +220,7 @@ export const columns = [
       </Tooltip>
     ),
     cell: (info) => info.getValue(),
-    size: 100,
+    size: 80,
     enableSorting: true,
     enableColumnFilter: true,
     filterFn: 'myCustomFilterFn',
