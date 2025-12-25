@@ -1,9 +1,9 @@
 import {Box, Center, Spinner} from "@chakra-ui/react"
-import React, {FC} from "react";
+import React, {FC, ReactNode} from "react";
 
 interface SpinnerWrapperProps {
   isSpinning: boolean,
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
 export const SpinnerWrapper: FC<SpinnerWrapperProps> = ({isSpinning, children}) => {

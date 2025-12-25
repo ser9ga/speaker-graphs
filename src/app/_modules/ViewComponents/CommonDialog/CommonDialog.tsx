@@ -1,12 +1,13 @@
 'use client'
 
 import * as React from "react";
+import {ReactNode} from "react";
 import {createOverlay, Dialog, Portal} from "@chakra-ui/react"
 
 interface actEntityDialogProps {
   title: string
   description?: string
-  content?: React.ReactNode
+  content?: ReactNode
   exitCallback?: () => void;
 }
 

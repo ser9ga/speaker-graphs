@@ -1,15 +1,15 @@
 import {Button, HStack, Popover, Portal, Text} from "@chakra-ui/react"
-import React, {FC, useState} from "react";
+import React, {FC, ReactNode, useState} from "react";
 
 interface ConfirmActionPopoverProps {
-  header: React.ReactNode,
-  description?: React.ReactNode,
+  header: ReactNode,
+  description?: ReactNode,
   confirmButtonLabel?: string,
   onConfirm?: () => void,
   onReject?: () => void,
   onExitComplete?: () => void,
   beforePopover?: () => Promise<boolean>
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({

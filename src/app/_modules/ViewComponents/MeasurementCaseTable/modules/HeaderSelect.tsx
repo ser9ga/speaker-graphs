@@ -12,8 +12,10 @@ export const HeaderSelect = ({
   setFilterValue,
 }: {
   accessorKey: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getFacetedUniqueValues: () => Map<any, number>
   getFilterValue: () => unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue: (updater: Updater<any>) => void
 })=> {
   // @ts-ignore

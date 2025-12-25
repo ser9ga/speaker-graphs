@@ -2,9 +2,10 @@
 
 import {createOverlay, Drawer, Portal} from '@chakra-ui/react';
 import * as React from 'react';
+import {ReactNode} from "react";
 
 interface actEntityDialogProps {
-  errorList: React.ReactNode;
+  errorList: ReactNode;
 }
 
 export const errorListDrawer = createOverlay<actEntityDialogProps>((props) => {

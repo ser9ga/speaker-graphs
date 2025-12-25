@@ -6,18 +6,21 @@ import {Updater} from "@tanstack/react-table";
 import {HeaderSort} from "@/app/_modules/ViewComponents/MeasurementCaseTable/modules/HeaderSort";
 import {FilterContent} from "@/app/_modules/ViewComponents/MeasurementCaseTable/modules/HeaderFilter";
 import {SortDirection} from "@tanstack/table-core";
+import {ReactNode} from "react";
 
 interface MeasurementCaseTableProps {
   accessorKey: string
   filterVariant: string | undefined
   getCanFilter: () => boolean
   getCanSort: () => boolean,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getFacetedUniqueValues: () => Map<any, number>
   getFilterValue: () => unknown
   getIsSorted: () => false | SortDirection,
   getToggleSortingHandler: () => ((event: unknown) => void) | undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue: (updater: Updater<any>) => void
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export const HeaderCellContentWithFilters = ({
@@ -30,7 +33,7 @@ export const HeaderCellContentWithFilters = ({
   getIsSorted,
   getToggleSortingHandler,
   setFilterValue,
-                                    children
+  children
 }: MeasurementCaseTableProps)=> {
   return (
     <VStack

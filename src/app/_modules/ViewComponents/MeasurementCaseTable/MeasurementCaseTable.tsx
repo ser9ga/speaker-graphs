@@ -38,9 +38,9 @@ export function MeasurementCaseTable ({
           "table-layout": 'fixed',
           "& [data-sticky]": {
             position: "sticky",
-            zIndex: 1,
             bg: "bg",
           },
+
           "& [data-sticky=end]": {
             _after: {
               content: '""',

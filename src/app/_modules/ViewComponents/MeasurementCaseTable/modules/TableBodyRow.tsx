@@ -9,6 +9,8 @@ import {ActMeasurementCaseForm} from "@/app/_modules/ViewComponents/ActMeasureme
 import {Cell, flexRender} from "@tanstack/react-table";
 import {MEASUREMENT_CASE_TABLE_COLUMN_NAME} from "@/app/_modules/Constants";
 import {TableColumnMeta} from "@/app/_modules/ViewComponents/MeasurementCaseTable/resources";
+import {accumulateLeftGapFabric} from "@/app/_modules/ViewComponents/MeasurementCaseTable/utils";
+import {ReactNode} from "react";
 
 interface MeasurementCaseTableProps {
   id: string
@@ -29,6 +31,8 @@ export const TableBodyRow = ({
   onEntityDelete,
   onRowDoubleClick,
 }: MeasurementCaseTableProps) => {
+  const accumulateLeftGap = accumulateLeftGapFabric();
+
   const actionButtons = (
     <EntityActionTableCell
       onEditClick={(exitCallback) => {
@@ -60,39 +64,23 @@ export const TableBodyRow = ({
       {getVisibleCells().map((cell) => {
         // @ts-ignore
         const accessorKey = cell.column.columnDef?.accessorKey
-        const size = cell.column.columnDef.size
+        const size = cell.column.columnDef.size || 0
         const isSticked = (cell.column.columnDef.meta as TableColumnMeta)?.sticked
 
         // @ts-ignore
         const suffix = (cell.column.columnDef.meta as TableColumnMeta)?.suffix
 
-        const mainCellDataComponent = (
-          <Text
-            {...(size && {width: `${size - 24}px`})}
-            textStyle="sm"
-            truncate
-          >
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-            &nbsp;
-            {suffix && suffix}
-          </Text>
-        )
+        const renderCellContent = (contentText: ReactNode) => {
+          if (accessorKey === MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID) {
+            return (
+              <HStack gap={0}>
+                {contentText}
+                {actionButtons}
+              </HStack>
+            )
+          }
 
-        if (accessorKey === MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID) {
-          return (
-            <HStack
-              key={cell.id}
-            >
-              <Table.Cell
-                {...(size && {width: `${size}px`})}
-              >
-                <HStack gap={0}>
-                  {mainCellDataComponent}
-                  {actionButtons}
-                </HStack>
-              </Table.Cell>
-            </HStack>
-          )
+          return contentText
         }
 
         return (
@@ -101,10 +89,22 @@ export const TableBodyRow = ({
             {...(size && {width: `${size}px`})}
             {...(isSticked && {
               ['data-sticky']: "end",
-              left: 0
+              left: accumulateLeftGap(size)
             })}
           >
-            {mainCellDataComponent}
+            {
+              renderCellContent(
+                <Text
+                  {...(size && {width: `${size - 24}px`})}
+                  textStyle="sm"
+                  truncate
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  &nbsp;
+                  {suffix && suffix}
+                </Text>
+              )
+            }
           </Table.Cell>
         )
       })}

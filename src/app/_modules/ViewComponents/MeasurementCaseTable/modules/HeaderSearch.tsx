@@ -42,6 +42,7 @@ export const HeaderSearch = ({
   setFilterValue
 }: {
   getFilterValue: () => unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue: (updater: Updater<any>) => void
 }) => {
   return (

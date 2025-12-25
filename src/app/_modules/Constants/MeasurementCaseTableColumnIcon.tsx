@@ -5,6 +5,7 @@ import {
 } from "@/app/_modules/Constants/MeasurementCaseTableColumnName";
 import {PiCar, PiCompassTool, PiSpeakerNone} from "react-icons/pi";
 import * as React from "react";
+import {ReactNode} from "react";
 import {TbCircuitResistor, TbCircuitVoltmeter, TbFileDescription, TbRulerMeasure} from "react-icons/tb";
 import {IoCompassOutline} from "react-icons/io5";
 import {MdOutlineColorLens} from "react-icons/md";
@@ -15,7 +16,7 @@ import {GiCarDoor} from "react-icons/gi";
 const size = 20
 
 export const MEASUREMENT_CASE_TABLE_COLUMN_ICON: {
-  [K in MeasurementCaseTableColumnName]: React.ReactNode
+  [K in MeasurementCaseTableColumnName]: ReactNode
 } = {
   [MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID]: <IoCompassOutline size={size}/>,
   [MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR]: <MdOutlineColorLens size={size}/>,

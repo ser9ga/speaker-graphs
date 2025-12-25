@@ -17,7 +17,9 @@ export const FilterContent = ({
   filterVariant: string | undefined
   getCanFilter: () => boolean
   getFilterValue: () => unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue: (updater: Updater<any>) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getFacetedUniqueValues: () => Map<any, number>
 
 }) => {

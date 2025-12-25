@@ -3,10 +3,10 @@ import {
   MEASUREMENT_CASE_TABLE_COLUMN_NAME,
   MeasurementCaseTableColumnName
 } from "@/app/_modules/Constants/MeasurementCaseTableColumnName";
-import * as React from "react";
+import {ReactNode} from "react";
 
 export const MEASUREMENT_CASE_TABLE_COLUMN_CELL_SUFFIX: {
-  [K in MeasurementCaseTableColumnName]: React.ReactNode
+  [K in MeasurementCaseTableColumnName]: ReactNode
 } = {
   [MEASUREMENT_CASE_TABLE_COLUMN_NAME.ID]: null,
   [MEASUREMENT_CASE_TABLE_COLUMN_NAME.COLOR]: null,
