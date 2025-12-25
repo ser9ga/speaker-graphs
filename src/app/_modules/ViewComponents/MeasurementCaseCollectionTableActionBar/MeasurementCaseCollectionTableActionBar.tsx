@@ -31,15 +31,17 @@ interface Props {
   table: TanstackTable<MeasurementCaseFromCatalogue>
   getDialogFullName: (param: number | 'new') => string
   onEntityAdd: (values: Omit<MeasurementCaseFromCatalogue, 'id'>) => void
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  getMeasurementCases: Function // TODO
+
+  getMeasurementCases: () => void
+  isResetFiltersDisabled?: boolean
 }
 
 export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
   table,
   getDialogFullName,
   onEntityAdd,
-  getMeasurementCases
+  getMeasurementCases,
+  isResetFiltersDisabled
 }) => {
   // TODO переделать на RTQ
   const [speakers, setSpeakers] = useState<SpeakerFromCatalogue[]>([]);
@@ -248,6 +250,7 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
         <Button
           variant={"outline"}
           onClick={resetFilters}
+          disabled={isResetFiltersDisabled}
         >
           <TbFilterOff />
           Сбросить фильтры

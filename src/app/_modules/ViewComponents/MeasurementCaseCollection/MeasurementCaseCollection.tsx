@@ -154,6 +154,7 @@ export const MeasurementCaseCollection = () => {
           getDialogFullName={getDialogFullName}
           onEntityAdd={onEntityAdd}
           getMeasurementCases={getMeasurementCases}
+          isResetFiltersDisabled={table.getState().columnFilters.length === 0}
         />
         <MeasurementCaseTable
           table={table}
