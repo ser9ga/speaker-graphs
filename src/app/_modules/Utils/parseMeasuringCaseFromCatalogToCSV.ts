@@ -14,11 +14,11 @@ export const parseMeasuringCaseFromCatalogToCSV = (rawValues: MeasurementCaseFro
   ]
 
   const secRow = [
-    rawValues.meta.speaker.label || '',
-    rawValues.meta.cabinet.volume || '',
-    String(rawValues.meta.port.diameter) || '_',
-    String(rawValues.meta.port.length) || '_',
-    rawValues.meta.car.label || '',
+    rawValues.meta.speaker?.label || '',
+    rawValues.meta.cabinet?.volume || '',
+    String(rawValues.meta.port?.diameter) || '_',
+    String(rawValues.meta.port?.length) || '_',
+    rawValues.meta.car?.label || '',
     rawValues.meta.isDoorOpened
       ? DOOR_STATE_LABEL[DOOR_STATE_NAME.OPENED]
       : DOOR_STATE_LABEL[DOOR_STATE_NAME.CLOSED],
