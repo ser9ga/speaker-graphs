@@ -2,12 +2,12 @@ import * as React from "react";
 import {EntityTable} from "@/app/_modules/ViewComponents/EntityTable/EntityTable";
 import {PORTS_ENTITIES_FIELD_NAME, PORTS_FIELD_LABEL} from "@/app/_modules/Constants";
 import {services} from "@/app/_modules/services";
-import {ENTITY_CATEGORY_NAME} from "@/app/_modules/Constants/EntityCategoryName";
+import {ENTITY_NAME} from "@/app/_modules/Constants/EntityName";
 
 export const PortsEntityTable = () => {
   return (
     <EntityTable
-      dialogNamePrefix={ENTITY_CATEGORY_NAME.PORTS}
+      dialogNamePrefix={ENTITY_NAME.PORT}
       columns={[
         {
           keyName: PORTS_ENTITIES_FIELD_NAME.ID,

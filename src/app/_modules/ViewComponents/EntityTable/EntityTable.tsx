@@ -4,15 +4,16 @@ import {HStack, Table, Text, VStack} from '@chakra-ui/react';
 import {OverlayLoader} from "@/app/_modules/ViewComponents/OverlayLoader/OverlayLoader";
 import {ActEntityForm} from "@/app/_modules/ViewComponents/ActEntityForm/ActEntityForm";
 import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
-import {EntityCategoryName} from "@/app/_modules/Constants/EntityCategoryName";
 import {EntityTableActionBar} from "@/app/_modules/ViewComponents/EntityTableActionBar/EntityTableActionBar";
 import {toaster} from "@/app/_modules/components/ui/toaster";
 import {EntityTableColumn} from "@/app/_modules/Types/entityTable";
 import {FieldValues, Path} from "react-hook-form";
 import {EntityActionTableCell} from "@/app/_modules/ViewComponents/EntityActionTableCell/EntityActionTableCell";
+import {ENTITY_NAME_LABEL} from "@/app/_modules/Constants/Translations/EntityNameLabel";
+import {EntityName} from "@/app/_modules/Constants/EntityName";
 
 interface EntityTableProps<T extends FieldValues, N extends Path<T>> {
-  dialogNamePrefix: EntityCategoryName;
+  dialogNamePrefix: EntityName;
   columns: EntityTableColumn<T, N>[]
   entityService: {
     getAll:() => Promise<T[] | Error>;
@@ -61,7 +62,7 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
     }
 
     toaster.create({
-      title: `${dialogNamePrefix} успешно создан`,
+      title: `${ENTITY_NAME_LABEL[dialogNamePrefix]} успешно создан`,
       type: "success",
     })
 
@@ -79,7 +80,7 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
     }
 
     toaster.create({
-      title: `${dialogNamePrefix} успешно изменён`,
+      title: `${ENTITY_NAME_LABEL[dialogNamePrefix]} успешно изменён`,
       type: "success",
     })
 
@@ -97,7 +98,7 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
     }
 
     toaster.create({
-      title: `${dialogNamePrefix} успешно удалён`,
+      title: `${ENTITY_NAME_LABEL[dialogNamePrefix]} успешно удалён`,
       type: "success",
     })
 

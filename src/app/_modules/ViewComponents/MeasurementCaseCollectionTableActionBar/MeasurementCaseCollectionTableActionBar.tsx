@@ -137,7 +137,7 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
         })
 
         toaster.create({
-          title: 'Парсинг файла удачно завершен',
+          title: 'Импорт файла удачно завершен',
           type: "success",
         })
       }
@@ -150,102 +150,107 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
   }
 
   const importFileCollection = async () => {
-    const importDialogKey = 'importSingleFileInFormDialog'
-    const rawCSVCollection: CSVFileAttributes[] = await importFilesDialog.open(importDialogKey, {
-      onClose: () => {
-        importFilesDialog.close(importDialogKey);
-      },
-      onSubmit: async (fileAttributes) => {
-        importFilesDialog.close(importDialogKey, fileAttributes)
-      },
-      params: {
-        directory: true,
-        maxFiles: 100000
-      }
-    })
-
-    // TODO грязь
-    const parsedMeasurementCasesWithErrors = rawCSVCollection
-      // @ts-ignore
-      .reduce((acc, rawCSV) => {
-        const [parsedMeasurementCase, errors] = parseRawCSVStringToMeasurementCase({
-          rawString: rawCSV.content,
-          speakers,
-          cabinets,
-          ports,
-          cars
-        });
-
-        console.log('errors', errors)
-
-        parsedMeasurementCase.meta.description = rawCSV.name
-
-        return {
-          // @ts-ignore
-          measurementCases: acc.measurementCases.concat(parsedMeasurementCase),
-          errors: {
-            ...acc.errors,
-            ...(errors.length && {[rawCSV.name]: errors})
-          }
+    if (speakers && cabinets && ports && cars) {
+      const importDialogKey = 'importSingleFileInFormDialog'
+      const rawCSVCollection: CSVFileAttributes[] = await importFilesDialog.open(importDialogKey, {
+        onClose: () => {
+          importFilesDialog.close(importDialogKey);
+        },
+        onSubmit: async (fileAttributes) => {
+          importFilesDialog.close(importDialogKey, fileAttributes)
+        },
+        params: {
+          directory: true,
+          maxFiles: 100000
         }
-      }, {
-        measurementCases: [],
-        errors: {},
-        // TODO TS дичь
-      } as unknown as {
-        measurementCases: EditableMeasurementCaseFromCatalogue,
-        errors: Record<string, string[]>
-      }) as unknown as {
-      measurementCases: MeasurementCaseFromCatalogue,
-      errors: Record<string, string[]>
-    }
-
-    const parsedErrorEntries =  Object.entries(parsedMeasurementCasesWithErrors?.errors || {})
-
-    if (parsedErrorEntries.length) {
-      const errorList = (
-        <List.Root>
-          {parsedErrorEntries
-            .map(([fileName, errorTextCollection]) => {
-              return (
-                <List.Item
-                  key={fileName}
-                  paddingBottom={'15px'}
-                >
-                  {fileName}
-                  <List.Root ps={'20px'}>
-                    {errorTextCollection
-                      .map((errorText) => {
-                        return (
-                          <List.Item key={errorText}>
-                            {errorText}
-                          </List.Item>
-                        )
-                      })
-                    }
-                  </List.Root>
-                </List.Item>
-              )
-            })
-          }
-        </List.Root>
-      )
-
-      errorListDrawer.open('importCollectionErrors', {errorList})
-    } else {
-      toaster.create({
-        title: 'Парсинг файлов удачно завершен',
-        type: "success",
       })
 
-      const measurementCaseService = services.measurementCases
-      const res = await measurementCaseService.add(parsedMeasurementCasesWithErrors.measurementCases);
+      // TODO грязь
+      const parsedMeasurementCasesWithErrors = rawCSVCollection
+        // @ts-ignore
+        .reduce((acc, rawCSV) => {
+          const [parsedMeasurementCase, errors] = parseRawCSVStringToMeasurementCase({
+            rawString: rawCSV.content,
+            speakers,
+            cabinets,
+            ports,
+            cars
+          });
 
-      if (res?.isError) {
-        return;
+          parsedMeasurementCase.meta.description = rawCSV.name
+
+          return {
+            // @ts-ignore
+            measurementCases: acc.measurementCases.concat(parsedMeasurementCase),
+            errors: {
+              ...acc.errors,
+              ...(errors.length && {[rawCSV.name]: errors})
+            }
+          }
+        }, {
+          measurementCases: [],
+          errors: {},
+          // TODO TS дичь
+        } as unknown as {
+          measurementCases: EditableMeasurementCaseFromCatalogue,
+          errors: Record<string, string[]>
+        }) as unknown as {
+        measurementCases: MeasurementCaseFromCatalogue,
+        errors: Record<string, string[]>
       }
 
-      await getMeasurementCases()
+      const parsedErrorEntries =  Object.entries(parsedMeasurementCasesWithErrors?.errors || {})
+
+      if (parsedErrorEntries.length) {
+        const errorList = (
+          <List.Root>
+            {parsedErrorEntries
+              .map(([fileName, errorTextCollection]) => {
+                return (
+                  <List.Item
+                    key={fileName}
+                    paddingBottom={'15px'}
+                  >
+                    {fileName}
+                    <List.Root ps={'20px'}>
+                      {errorTextCollection
+                        .map((errorText) => {
+                          return (
+                            <List.Item key={errorText}>
+                              {errorText}
+                            </List.Item>
+                          )
+                        })
+                      }
+                    </List.Root>
+                  </List.Item>
+                )
+              })
+            }
+          </List.Root>
+        )
+
+        errorListDrawer.open('importCollectionErrors', {errorList})
+      } else {
+        toaster.create({
+          title: 'Импорт файлов удачно завершен',
+          type: "success",
+        })
+
+        const measurementCaseService = services.measurementCases
+        const res = await measurementCaseService.add(parsedMeasurementCasesWithErrors.measurementCases);
+
+        if (res?.isError) {
+          return;
+        }
+
+        await getMeasurementCases()
+      }
+    } else {
+      toaster.create({
+        title: 'Данные справочников не загружены',
+        type: "error",
+      })
     }
   }
 

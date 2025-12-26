@@ -2,12 +2,12 @@ import * as React from "react";
 import {services} from "@/app/_modules/services";
 import {EntityTable} from "@/app/_modules/ViewComponents/EntityTable/EntityTable";
 import {CABINETS_ENTITIES_FIELD_NAME, CABINETS_FIELD_LABEL} from "@/app/_modules/Constants";
-import {ENTITY_CATEGORY_NAME} from "@/app/_modules/Constants/EntityCategoryName";
+import {ENTITY_NAME} from "@/app/_modules/Constants/EntityName";
 
 export const CabinetsEntityTable = () => {
   return (
     <EntityTable
-      dialogNamePrefix={ENTITY_CATEGORY_NAME.CABINETS}
+      dialogNamePrefix={ENTITY_NAME.CABINET}
       columns={[
         {
           keyName: CABINETS_ENTITIES_FIELD_NAME.ID,

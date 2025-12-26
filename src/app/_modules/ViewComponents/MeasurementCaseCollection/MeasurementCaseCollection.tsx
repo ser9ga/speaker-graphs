@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useMemo, useState} from "react";
-import {Center, Grid, Splitter, VStack} from '@chakra-ui/react';
+import {Splitter, VStack} from '@chakra-ui/react';
 import {MeasurementCaseTable} from "@/app/_modules/ViewComponents/MeasurementCaseTable/MeasurementCaseTable";
 import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {services} from "@/app/_modules/services";

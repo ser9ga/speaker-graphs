@@ -54,7 +54,7 @@ export const ChooseImportFilesButton = () => {
       errorListDrawer.open('importCollectionErrors', {errorList})
     } else {
       toaster.create({
-        title: 'Парсинг файлов удачно завершен',
+        title: 'Импорт файлов удачно завершен',
         type: "success",
       })
     }
