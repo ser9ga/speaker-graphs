@@ -116,7 +116,7 @@ export const FormMetaParams = ({
               control={control}
               params={{
                 suffix: 'В',
-                width: '50px',
+                width: '100px',
                 min: 0,
                 max: 99,
                 required: true

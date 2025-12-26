@@ -1,9 +1,9 @@
 'use client'
 
 import * as React from "react";
-import {Field, HStack, NumberInput} from "@chakra-ui/react"
+import {FC, FocusEventHandler, useState} from "react";
+import {Field, HStack, Input} from "@chakra-ui/react"
 import {Control, Controller, FieldValues, Path} from "react-hook-form";
-import {isNaN} from "lodash";
 
 type NumericalFormFieldProps<T extends FieldValues, N extends Path<T>> = {
   fieldName: N,
@@ -21,6 +21,60 @@ type NumericalFormFieldProps<T extends FieldValues, N extends Path<T>> = {
   }
 }
 
+type adf = {
+  value: number | null,
+  onChange: (value: number | null) => void,
+  onBlur?: FocusEventHandler<HTMLInputElement>
+}
+
+const ControlledNumberInput: FC<adf> = ({
+  value,
+  onChange,
+  onBlur,
+  ...rest
+}) => {
+  const [val,setVal] = useState(String(value || '').replace('.', ','));
+
+  const parsFromInputToState = (inputValue: string) => {
+    if (inputValue === '') {
+      return inputValue
+    }
+
+    const match = inputValue.match(/^(?:0|[1-9]\d*)(?:,\d{0,2})?$/);
+
+    if (!match) {
+      return val;
+    }
+
+    return inputValue;
+  };
+
+  const parseFromInputToExternal = (inputValue: string) => {
+    if (inputValue === '') {
+      return null
+    }
+
+    return Number(inputValue.replace(/,\s*$/, '').replace(',', '.'))
+  };
+
+  return (
+    <Input
+      {...rest}
+      onBlur={(...args) => {
+        onBlur?.(...args)
+        setVal(p => p.replace(/,\s*$/, ''))
+      }}
+      value={val}
+      onChange={(e) => {
+        const newValue = e.target.value;
+        const newVal = parsFromInputToState(newValue)
+        setVal(newVal);
+        onChange(parseFromInputToExternal(newVal));
+      }}
+    />
+  )
+}
+
 export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
   fieldName,
   fieldLabel,
@@ -36,23 +90,6 @@ export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
     required,
     validate
   } = params || {};
-
-  const getInputValue = (formValue: number | null) => {
-    if (isNaN(formValue) || formValue === null) {
-      return ''
-    }
-
-    return String(formValue)
-  }
-
-  const getFormValue = (inputValue: string) => {
-    if (inputValue === '') {
-      return null
-    }
-
-    return Number(inputValue)
-  }
-
   return (
     <Controller
       control={control}
@@ -75,24 +112,19 @@ export function NumericalFormField <T extends FieldValues, N extends Path<T>>({
               {fieldLabel}
             </Field.Label>
           )}
-          <NumberInput.Root
-            {...(disabled === true && {disabled})}
-            {...(typeof min === 'number' && {min})}
-            {...(typeof max === 'number' && {max})}
-            value={getInputValue(value)}
-            onValueChange={(e) => {
-              onChange(getFormValue(e.value))}
-            }
-          >
-            <HStack>
-              <NumberInput.Input
-                {...((typeof width === 'number'
+          <HStack>
+            <ControlledNumberInput
+              value={value}
+              onChange={onChange}
+              {...((typeof width === 'number'
                   || typeof width === 'string')
-                  && {width})}
-              />
-              {typeof suffix === 'string' && suffix}
-            </HStack>
-          </NumberInput.Root>
+                && {width})}
+              {...(disabled === true && {disabled})}
+              {...(typeof min === 'number' && {min})}
+              {...(typeof max === 'number' && {max})}
+            />
+            {suffix}
+          </HStack>
         </Field.Root>
       )}
     />
