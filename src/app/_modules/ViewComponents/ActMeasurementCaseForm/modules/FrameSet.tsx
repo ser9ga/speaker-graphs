@@ -1,6 +1,6 @@
 'use client'
 
-import {Grid, Text} from "@chakra-ui/react"
+import {Box, Grid, ScrollArea, Text} from "@chakra-ui/react"
 import * as React from "react";
 import {Fragment} from "react";
 import {EditableMeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
@@ -21,72 +21,106 @@ export function FrameSet <T extends FieldValues>({
     return !!get(errors, `data.${key}`)
   }
 
-  return (
-    <Grid
-      templateColumns={"repeat(4, 1fr)"}
-      templateRows={"30px auto"}
-      gap={'30px'}
-    >
-      {
-        [...Array(4)]
-          .map((_, columnIndex) => (
-            <Grid
-              key={columnIndex}
-              templateColumns ={"repeat(4, 1fr)"}
-              templateRows={"repeat16, 1fr)"}
-              gap={'10px'}
-            >
-              {
-                [
-                  (
-                    <Fragment key={'header'}>
-                      <Text justifySelf={'center'}>Гц</Text>
-                      <Text justifySelf={'center'}>В</Text>
-                      <Text justifySelf={'center'}>А</Text>
-                      <Text justifySelf={'center'}>дБ/м</Text>
-                    </Fragment>
-                  ),
-                  [...Array(15)]
-                    .map((_, rowIndex) => {
-                      const frequency = columnIndex * 15 + rowIndex + 20
-                      const key = frequency
+  const getCellContent = (cellText: string) => {
+    return (
+      <Box
+        height={'100%'}
+        width={'100%'}
+        justifySelf={'center'}
+        position={'sticky'}
+        top={'0px'}
+        left={'0px'}
+        zIndex={'1'}
+        backgroundColor={'white'}
+        css={{
+          "&": {
+            _after: {
+              content: '""',
+              position: "absolute",
+              zIndex: '-1',
+              top: "-10px",
+              left: "-5px",
+              width: "80px",
+              height: "40px",
+              backgroundColor: 'white',
+            },
+          },
+        }}
+      >
+        <Text
+          justifySelf={'center'}
+          position={'relative'}
+        >
+          {cellText}
+        </Text>
+      </Box>
+    )
+  }
 
-                      if (frequency > 70) {
-                        return null
-                      }
-                      
-                      return (
-                        <Fragment key={frequency}>
-                          <Text
-                            width={"35px"}
-                            alignSelf={'center'}
-                            {...(getIsErrors(frequency) && {color: 'red'})}
-                          >
-                            {frequency}гц
-                          </Text>
-                          <MeasuredValueField
-                            fieldName={`data.${key}.Uin`}
-                            control={control}
-                            framePath={`data.${key}`}
-                          />
-                          <MeasuredValueField
-                            fieldName={`data.${key}.I`}
-                            control={control}
-                            framePath={`data.${key}`}
-                          />
-                          <MeasuredValueField
-                            fieldName={`data.${key}.Pa`}
-                            control={control}
-                            framePath={`data.${key}`}
-                          />
-                        </Fragment>
-                      )}
-                    )
-                ]
-              }
-            </Grid>
-          ))
-      }
-    </Grid>
+  return (
+    <ScrollArea.Root width={'unset'}>
+      <ScrollArea.Viewport>
+        <ScrollArea.Content paddingEnd="5">
+          <Grid
+            templateColumns ={"repeat(4, 1fr)"}
+            templateRows={"repeat16, 1fr)"}
+            gap={'10px'}
+          >
+            {
+              [
+                (
+                  <Fragment key={'header'}>
+                    {getCellContent('Гц')}
+                    {getCellContent('В')}
+                    {getCellContent('А')}
+                    {getCellContent('дБ/м')}
+                  </Fragment>
+                ),
+                [...Array(51)]
+                  .map((_, rowIndex) => {
+                    const frequency = rowIndex + 20
+                    const key = frequency
+
+                    if (frequency > 70) {
+                      return null
+                    }
+
+                    return (
+                      <Fragment key={frequency}>
+                        <Text
+                          width={"35px"}
+                          alignSelf={'center'}
+                          {...(getIsErrors(frequency) && {color: 'red'})}
+                        >
+                          {frequency}гц
+                        </Text>
+                        <MeasuredValueField
+                          fieldName={`data.${key}.Uin`}
+                          control={control}
+                          framePath={`data.${key}`}
+                        />
+                        <MeasuredValueField
+                          fieldName={`data.${key}.I`}
+                          control={control}
+                          framePath={`data.${key}`}
+                        />
+                        <MeasuredValueField
+                          fieldName={`data.${key}.Pa`}
+                          control={control}
+                          framePath={`data.${key}`}
+                        />
+                      </Fragment>
+                    )}
+                  )
+              ]
+            }
+          </Grid>
+        </ScrollArea.Content>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar>
+        <ScrollArea.Thumb />
+      </ScrollArea.Scrollbar>
+      <ScrollArea.Corner />
+    </ScrollArea.Root>
   )
 }

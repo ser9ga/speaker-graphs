@@ -217,7 +217,7 @@ export const columns = [
       ? "открыта"
       : "закрыта",
     size: 110,
-    enableSorting: false,
+    enableSorting: true,
     enableColumnFilter: true,
     // @ts-ignore
     filterFn: 'myCustomFilterFn',

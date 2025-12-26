@@ -139,6 +139,9 @@ export function EntityTable<T extends FieldValues, N extends Path<T>> ({
         <Table.Root
           width="100%"
           interactive
+          css={{
+            "table-layout": 'fixed'
+          }}
         >
           <Table.Header>
             <Table.Row>
