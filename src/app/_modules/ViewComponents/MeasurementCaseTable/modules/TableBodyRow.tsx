@@ -101,7 +101,7 @@ export const TableBodyRow = ({
         return (
           <Table.Cell
             key={cell.id}
-            padding={'6px 10px'}
+            padding={'0px 10px'}
             {...(size && {width: `${size}px`})}
             {...(isSticked && {
               ['data-sticky']: "end",

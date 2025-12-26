@@ -32,6 +32,8 @@ export function MeasurementCaseTable ({
     <Table.ScrollArea
       borderWidth="1px"
       rounded="md"
+      width={'100%'}
+      height={'100%'}
     >
       <Table.Root
         width="100%"

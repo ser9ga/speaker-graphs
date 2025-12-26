@@ -35,7 +35,7 @@ export const columns = [
     ),
     cell: (info) => info.getValue(),
     size: 40,
-    enableSorting: true,
+    enableSorting: false,
     enableColumnFilter: false,
     meta: {
       sticked: true,

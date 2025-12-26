@@ -86,7 +86,7 @@ export const importFilesDialog = createOverlay<actEntityDialogProps>((props) => 
                 asChild
                 onClick={() => onClose()}
               >
-                <CloseButton size="sm" />
+                <CloseButton size="md" />
               </Dialog.CloseTrigger>
             </Dialog.Header>
             <Dialog.Body margin={'20px'}>
@@ -109,7 +109,10 @@ export const importFilesDialog = createOverlay<actEntityDialogProps>((props) => 
                   <FileUpload.Trigger asChild>
                     <Button variant="outline" size="sm">
                       <HiUpload />
-                      Выберите файлы
+                      {params?.directory
+                        ? 'Выберите папку'
+                        : 'Выберите файлы'
+                      }
                     </Button>
                   </FileUpload.Trigger>
                   <FileUpload.List showSize clearable />

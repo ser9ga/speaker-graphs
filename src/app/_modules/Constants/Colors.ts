@@ -7,12 +7,12 @@ export const LEGEND_COLORS = {
   GOLDENROD: 'Goldenrod',
   SIENNA: 'Sienna',
   DARK_ORANGE: 'DarkOrange',
-  LIME: 'Lime',
+  LIME_GREEN: 'LimeGreen',
   GREEN: 'Green',
-  AQUA: 'Aqua',
-  TEAL: 'Teal',
-  ROYAL_BLUE: 'RoyalBlue',
-  NAVY: 'Navy',
+  DEEP_SKY_BLUE: 'DeepSkyBlue',
+  YELLOW_GREEN: 'YellowGreen',
+  CORNFLOWER_BLUE: 'CornflowerBlue',
+  MEDIUM_BLUE: 'MediumBlue',
 } as const;
 
 export type LegendColors = valueof<typeof LEGEND_COLORS>;

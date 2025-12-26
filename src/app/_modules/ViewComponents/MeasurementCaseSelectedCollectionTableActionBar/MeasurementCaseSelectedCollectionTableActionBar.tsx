@@ -18,7 +18,8 @@ export const MeasurementCaseSelectedCollectionTableActionBar: React.FC<Measureme
 }) => {
   return (
     <HStack
-      justifySelf={'end'}
+      width={'100%'}
+      justifyContent={'end'}
     >
       <Button
         variant={"outline"}

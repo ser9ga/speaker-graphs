@@ -48,26 +48,22 @@ export const TableHeaderRow = ({
                   zIndex: 1
                 })}
               >
-                {isFilterable
-                  ? (
-                    <HeaderCellContentWithFilters
-                      // @ts-ignore
-                      accessorKey={header.column.columnDef.accessorKey}
-                      // @ts-ignore
-                      filterVariant={(header.column.columnDef.meta as TableColumnMeta)?.filterVariant}
-                       getCanFilter={header.column.getCanFilter}
-                      getCanSort={header.column.getCanSort}
-                      getFacetedUniqueValues={header.column.getFacetedUniqueValues}
-                      getFilterValue={header.column.getFilterValue}
-                      getIsSorted={header.column.getIsSorted}
-                      getToggleSortingHandler={header.column.getToggleSortingHandler}
-                      setFilterValue={header.column.setFilterValue}
-                    >
-                      {headerCellContents}
-                    </HeaderCellContentWithFilters>
-                  )
-                  : headerCellContents
-                }
+                <HeaderCellContentWithFilters
+                  // @ts-ignore
+                  accessorKey={header.column.columnDef.accessorKey}
+                  // @ts-ignore
+                  filterVariant={(header.column.columnDef.meta as TableColumnMeta)?.filterVariant}
+                  getCanFilter={header.column.getCanFilter}
+                  getCanSort={header.column.getCanSort}
+                  getFacetedUniqueValues={header.column.getFacetedUniqueValues}
+                  getFilterValue={header.column.getFilterValue}
+                  getIsSorted={header.column.getIsSorted}
+                  getToggleSortingHandler={header.column.getToggleSortingHandler}
+                  setFilterValue={header.column.setFilterValue}
+                  isFilterable={isFilterable}
+                >
+                  {headerCellContents}
+                </HeaderCellContentWithFilters>
               </Table.ColumnHeader>
             )
           },

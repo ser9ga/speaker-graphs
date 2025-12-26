@@ -7,9 +7,7 @@ import {useAppDispatch, useAppSelector} from '@/app/_modules/Store/Hooks';
 import {isCleanLookEnabledSelector} from '@/app/_modules/Store/GraphSetControl/GraphSetControlSelectors';
 import React from "react";
 import {MAIN_TAB_NAME, MainTabName} from "@/app/_modules/Constants/MainTabName";
-import {
-  MeasurementCaseCollection
-} from "@/app/_modules/ViewComponents/MeasurementCaseCollection/MeasurementCaseCollection";
+import MeasurementCaseCollection from "@/app/_modules/ViewComponents/MeasurementCaseCollection/MeasurementCaseCollection";
 import flags from "@/app/feature-flags.json";
 import {EntityRegistryTab} from "@/app/_modules/ViewComponents/EntityRegistryTab/EntityRegistryTab";
 import {VscGraph} from "react-icons/vsc";

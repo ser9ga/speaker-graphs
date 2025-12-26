@@ -8,62 +8,62 @@ import {parseRawCSVStringToGraphData} from "@/app/_modules/ViewComponents/Choose
 import {setGraphData} from "@/app/_modules/Store/GraphData/GraphDataSlice";
 import {colorRandomaizerFactory} from "@/app/_modules/Utils/colorRandomaizer";
 import {CSVFileAttributes} from "@/app/_modules/Types/csv";
+import {errorListDrawer} from "@/app/_modules/ViewComponents/ErrorListDrawer/ErrorListDrawer";
 
 export const ChooseImportFilesButton = () => {
   const dispatch = useAppDispatch();
 
-  return (
-    <IconButton
-      onClick={async () => {
-        const importDialogKey = 'importFilesDirectToGraphs'
+  const onImportClick = async () => {
+    const importDialogKey = 'importFilesDirectToGraphs'
 
-        const rawCSVCollection: CSVFileAttributes[] = await importFilesDialog.open(importDialogKey, {
-          onClose: () => {
-            importFilesDialog.close(importDialogKey);
-          },
-          onSubmit: async (qweqwe) => {
-            importFilesDialog.close(importDialogKey, qweqwe)
-          },
-          params: {
-            maxFiles: 12
-          }
+    const rawCSVCollection: CSVFileAttributes[] = await importFilesDialog.open(importDialogKey, {
+      onClose: () => {
+        importFilesDialog.close(importDialogKey);
+      },
+      onSubmit: async (fileAttributes) => {
+        importFilesDialog.close(importDialogKey, fileAttributes)
+      },
+      params: {
+        maxFiles: 12
+      }
+    })
+
+    let errors: string[] = []
+
+    const colorRandomaizer = colorRandomaizerFactory()
+
+    const parsedRaws = rawCSVCollection
+      .map((rawCSV: CSVFileAttributes) => {
+        const [parsedMeasurementCase, error] = parseRawCSVStringToGraphData({
+          rawString: rawCSV.content,
+          color: colorRandomaizer.getColor()
         })
+        errors = error.concat(error)
 
-        let errors: string[] = []
+        return parsedMeasurementCase
+      })
 
-        const colorRandomaizer = colorRandomaizerFactory()
+    if (errors.length) {
 
-        const parsedRaws = rawCSVCollection
-          .map((rawCSV: CSVFileAttributes) => {
-            const [parsedMeasurementCase, error] = parseRawCSVStringToGraphData({
-              rawString: rawCSV.content,
-              color: colorRandomaizer.getColor()
-            })
-            errors = error.concat(error)
+      const errorList = (
+        <List.Root>
+          {errors.map((error) => <List.Item key={error}>{error}</List.Item>)}
+        </List.Root>
+      )
 
-            return parsedMeasurementCase
-          })
+      errorListDrawer.open('importCollectionErrors', {errorList})
+    } else {
+      toaster.create({
+        title: 'Парсинг файлов удачно завершен',
+        type: "success",
+      })
+    }
 
-        if (errors.length) {
-          toaster.create({
-            title: 'Ошибки при прасинге файлов',
-            description: (
-              <List.Root>
-                {errors.map((error) => <List.Item key={error}>{error}</List.Item>)}
-              </List.Root>
-            ),
-            type: "error",
-          })
-        } else {
-          toaster.create({
-            title: 'Парсинг файлов удачно завершен',
-            type: "success",
-          })
-        }
+    dispatch(setGraphData(parsedRaws))
+  }
 
-        dispatch(setGraphData(parsedRaws))
-      }}
-    >
+  return (
+    <IconButton onClick={onImportClick}>
       <PiFileCsvLight />
     </IconButton>
   );

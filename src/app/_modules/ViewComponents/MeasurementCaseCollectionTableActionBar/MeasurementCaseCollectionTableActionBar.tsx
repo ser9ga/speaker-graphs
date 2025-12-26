@@ -44,10 +44,10 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
   isResetFiltersDisabled
 }) => {
   // TODO переделать на RTQ
-  const [speakers, setSpeakers] = useState<SpeakerFromCatalogue[]>([]);
-  const [cabinets, setCabinets] = useState<CabinetFromCatalogue[]>([]);
-  const [ports, setPorts] = useState<PortFromCatalogue[]>([]);
-  const [cars, setCars] = useState<CarFromCatalogue[]>([]);
+  const [speakers, setSpeakers] = useState<SpeakerFromCatalogue[] | null>(null);
+  const [cabinets, setCabinets] = useState<CabinetFromCatalogue[] | null>(null);
+  const [ports, setPorts] = useState<PortFromCatalogue[] | null>(null);
+  const [cars, setCars] = useState<CarFromCatalogue[] | null>([]);
 
   useEffect(() => {
     (async () => {
@@ -70,7 +70,7 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
 
   const createMeasurementCase = () => {
     commonDialog.open(getDialogFullName('new'), {
-      title: 'Создание нового случая изменрения',
+      title: 'Создание нового случая измерения',
       content: (
         <ActMeasurementCaseForm
           values={generateEmptyCatalogMeasurementCase()}
@@ -90,54 +90,63 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
       onClose: () => {
         importFilesDialog.close(importDialogKey);
       },
-      onSubmit: async (qweqwe) => {
-        importFilesDialog.close(importDialogKey, qweqwe)
+      onSubmit: async (fileAttributes) => {
+        importFilesDialog.close(importDialogKey, fileAttributes)
       },
       params: {
         maxFiles: 1
       }
     })
 
-    const [parsedMeasurementCase, errors] = parseRawCSVStringToMeasurementCase({
-      rawString: rawCSVCollection?.[0].content,
-      speakers,
-      cabinets,
-      ports,
-      cars,
-    })
+    let parsedMeasurementCase: EditableMeasurementCaseFromCatalogue
 
-    parsedMeasurementCase.meta.description = rawCSVCollection?.[0].name
+    let errors: (string[] | null) = null
 
-    if (errors.length) {
-      toaster.create({
-        title: 'Ошибки при прасинге файла',
-        description: (
+    if (speakers && cabinets && ports && cars) {
+      [parsedMeasurementCase, errors] = parseRawCSVStringToMeasurementCase({
+        rawString: rawCSVCollection?.[0].content,
+        speakers,
+        cabinets,
+        ports,
+        cars,
+      })
+
+      parsedMeasurementCase.meta.description = rawCSVCollection?.[0].name
+
+      if (errors.length) {
+        const errorList = (
           <List.Root>
             {errors.map((error) => <List.Item key={error}>{error}</List.Item>)}
           </List.Root>
-        ),
-        type: "error",
-      })
+        )
+
+        errorListDrawer.open('importCollectionErrors', {errorList})
+      } else {
+        commonDialog.open(getDialogFullName('new'), {
+          title: 'Создание нового случая измерения',
+          content: (
+            <ActMeasurementCaseForm
+              values={parsedMeasurementCase}
+              onSave={(values) => onEntityAdd(values)}
+              confirmText={'Подтвердить создание?'}
+              confirmButtonLabel={'Подтвердить'}
+            />
+          ),
+          // @ts-ignore
+          size: "cover"
+        })
+
+        toaster.create({
+          title: 'Парсинг файла удачно завершен',
+          type: "success",
+        })
+      }
     } else {
-      toaster.create({
-        title: 'Парсинг файла удачно завершен',
-        type: "success",
+        toaster.create({
+          title: 'Данные справочников не загружены',
+          type: "error",
       })
     }
-
-    commonDialog.open(getDialogFullName('new'), {
-      title: 'Создание нового случая изменрения',
-      content: (
-        <ActMeasurementCaseForm
-          values={parsedMeasurementCase}
-          onSave={(values) => onEntityAdd(values)}
-          confirmText={'Подтвердить создание?'}
-          confirmButtonLabel={'Подтвердить'}
-        />
-      ),
-      // @ts-ignore
-      size: "cover"
-    })
   }
 
   const importFileCollection = async () => {
@@ -146,8 +155,8 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
       onClose: () => {
         importFilesDialog.close(importDialogKey);
       },
-      onSubmit: async (qweqwe) => {
-        importFilesDialog.close(importDialogKey, qweqwe)
+      onSubmit: async (fileAttributes) => {
+        importFilesDialog.close(importDialogKey, fileAttributes)
       },
       params: {
         directory: true,
@@ -222,7 +231,7 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
         </List.Root>
       )
 
-      errorListDrawer.open('qweqwe', {errorList})
+      errorListDrawer.open('importCollectionErrors', {errorList})
     } else {
       toaster.create({
         title: 'Парсинг файлов удачно завершен',
@@ -230,16 +239,15 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
       })
 
       const measurementCaseService = services.measurementCases
-
       const res = await measurementCaseService.add(parsedMeasurementCasesWithErrors.measurementCases);
 
-        if (res?.isError) {
-          return;
-        }
-
-        await getMeasurementCases()
+      if (res?.isError) {
+        return;
       }
+
+      await getMeasurementCases()
     }
+  }
 
   return (
     <HStack

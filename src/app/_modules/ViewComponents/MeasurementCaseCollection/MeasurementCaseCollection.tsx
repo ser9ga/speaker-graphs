@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useMemo, useState} from "react";
-import {Grid} from '@chakra-ui/react';
+import {Center, Grid, Splitter, VStack} from '@chakra-ui/react';
 import {MeasurementCaseTable} from "@/app/_modules/ViewComponents/MeasurementCaseTable/MeasurementCaseTable";
 import {MeasurementCaseFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
 import {services} from "@/app/_modules/services";
@@ -41,7 +41,7 @@ import {addOptionsToMeasurementCaseForGraph} from "@/app/_modules/Utils/measurem
 import {setGraphData} from "@/app/_modules/Store/GraphData/GraphDataSlice";
 import {setActiveTab} from "@/app/_modules/Store/AppControl/AppControlSlice";
 
-export const MeasurementCaseCollection = () => {
+const MeasurementCaseCollection = () => {
   const colorRandomaizer = useMemo(() => colorRandomaizerFactory(), [])
 
   const dispatch = useAppDispatch();
@@ -66,18 +66,27 @@ export const MeasurementCaseCollection = () => {
     dispatch(eraseColorCollection())
   }
 
-  const onMeasurementCaseAdd = (measurementCase: MeasurementCaseFromCatalogue) => {
-    if (selectedMeasurementCases.length >= 12) {
+  const onSelectionAddOrDelete = (measurementCase: MeasurementCaseFromCatalogue) => {
+    if (selectedMeasurementCases
+      .some(prevMeasurementCase => prevMeasurementCase.id === measurementCase.id)) {
+      setSelectedMeasurementCases(selectedMeasurementCases
+        .filter(prevMeasurementCase => {
+          return prevMeasurementCase.id !== measurementCase.id
+        }))
+
+      const copyColors = {...colors};
+      colorRandomaizer.passOffColor(colors[measurementCase.id])
+      delete copyColors[measurementCase.id];
+
+      setColors(copyColors)
+    } else if (selectedMeasurementCases.length >= 12) {
       toaster.create({
-        description: `Достигнут максимальный размер выборки`,
+        title: `Достигнут максимальный размер выборки`,
         type: "error",
       })
 
       return;
-    }
-
-    if (!selectedMeasurementCases
-      .some(prevMeasurementCase => prevMeasurementCase.id === measurementCase.id)) {
+    } else {
       setSelectedMeasurementCases(selectedMeasurementCases.concat(measurementCase))
       setColors({
         ...colors,
@@ -85,7 +94,8 @@ export const MeasurementCaseCollection = () => {
       })
     }
   }
-  const onMeasurementCaseDelete = (measurementCase: MeasurementCaseFromCatalogue) => {
+
+  const onSelectionDelete = (measurementCase: MeasurementCaseFromCatalogue) => {
     setSelectedMeasurementCases(selectedMeasurementCases
       .filter(prevMeasurementCase => {
         return prevMeasurementCase.id !== measurementCase.id
@@ -225,48 +235,69 @@ export const MeasurementCaseCollection = () => {
 
   return (
     <SpinnerWrapper isSpinning={isLoading}>
-      <Grid
-        templateRows={"auto 1fr auto 500px"}
-        gap={'15px'}
-        width={'100%'}
-        height={'100%'}
-        minHeight={'0px'}
-        minWidth={'0px'}
-        padding={'15px'}
-        overflow={'hidden'}
+      <Splitter.Root
+        orientation="vertical"
+        borderWidth="1px"
+        minH="60"
+        height={'500px'}
+        defaultSize={[70, 30]}
+        panels={[
+          { id: "a", minSize: 20 },
+          { id: "b", minSize: 20 },
+        ]}
       >
-        <MeasurementCaseCollectionTableActionBar
-          table={table}
-          getDialogFullName={getDialogFullName}
-          onEntityAdd={onEntityAdd}
-          getMeasurementCases={getMeasurementCases}
-          isResetFiltersDisabled={table.getState().columnFilters.length === 0}
-        />
-        <MeasurementCaseTable
-          table={table}
-          measurementCases={measurementCases}
-          colors={colors}
-          getDialogFullName={getDialogFullName}
-          onEntityEdit={onEntityEdit}
-          onEntityDelete={onEntityDelete}
-          onRowDoubleClick={onMeasurementCaseAdd}
-          isFilterable
-        />
-        <MeasurementCaseSelectedCollectionTableActionBar
-          onDrawClick={onDrawGraphsClick}
-          onEraseClick={onEraseSelectedListClick}
-          isEraseDisabled={selectedMeasurementCases.length === 0}
-        />
-        <MeasurementCaseTable
-          table={table2}
-          measurementCases={selectedMeasurementCases}
-          colors={colors}
-          getDialogFullName={getDialogFullName}
-          onEntityEdit={onEntityEdit}
-          onEntityDelete={onEntityDelete}
-          onRowDoubleClick={onMeasurementCaseDelete}
-        />
-      </Grid>
+        <Splitter.Panel id="a">
+          <VStack
+            gap={'15px'}
+            padding={'15px'}
+            width={'100%'}
+            height={'100%'}
+          >
+            <MeasurementCaseCollectionTableActionBar
+              table={table}
+              getDialogFullName={getDialogFullName}
+              onEntityAdd={onEntityAdd}
+              getMeasurementCases={getMeasurementCases}
+              isResetFiltersDisabled={table.getState().columnFilters.length === 0}
+            />
+            <MeasurementCaseTable
+              table={table}
+              measurementCases={measurementCases}
+              colors={colors}
+              getDialogFullName={getDialogFullName}
+              onEntityEdit={onEntityEdit}
+              onEntityDelete={onEntityDelete}
+              onRowDoubleClick={onSelectionAddOrDelete}
+              isFilterable
+            />
+          </VStack>
+        </Splitter.Panel>
+        <Splitter.ResizeTrigger id="a:b" />
+        <Splitter.Panel id="b">
+          <VStack
+            gap={'15px'}
+            padding={'15px'}
+            width={'100%'}
+            height={'100%'}
+          >
+            <MeasurementCaseSelectedCollectionTableActionBar
+              onDrawClick={onDrawGraphsClick}
+              onEraseClick={onEraseSelectedListClick}
+              isEraseDisabled={selectedMeasurementCases.length === 0}
+            />
+            <MeasurementCaseTable
+              table={table2}
+              measurementCases={selectedMeasurementCases}
+              colors={colors}
+              getDialogFullName={getDialogFullName}
+              onEntityEdit={onEntityEdit}
+              onEntityDelete={onEntityDelete}
+              onRowDoubleClick={onSelectionDelete}
+            />
+          </VStack>
+        </Splitter.Panel>
+      </Splitter.Root>
     </SpinnerWrapper>
   )
 }
+export default MeasurementCaseCollection

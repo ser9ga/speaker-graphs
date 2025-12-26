@@ -20,6 +20,7 @@ interface MeasurementCaseTableProps {
   getToggleSortingHandler: () => ((event: unknown) => void) | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue: (updater: Updater<any>) => void
+  isFilterable: boolean | undefined;
   children: ReactNode
 }
 
@@ -33,36 +34,45 @@ export const HeaderCellContentWithFilters = ({
   getIsSorted,
   getToggleSortingHandler,
   setFilterValue,
+  isFilterable,
   children
 }: MeasurementCaseTableProps)=> {
-  return (
-    <VStack
-      width={'100%'}
-      height={'100%'}
-      justifyContent={'start'}
-      alignItems={'start'}
+  const commonPart = (
+    <HStack
+      height={'22px'}
+      padding={'0 4px'}
     >
-      <HStack
-        height={'22px'}
-        padding={'0 4px'}
-      >
-        {children}
-        <HeaderSort
-          getCanSort={getCanSort}
-          getIsSorted={getIsSorted}
-          getToggleSortingHandler={getToggleSortingHandler}
-        />
-      </HStack>
-      <FilterContent
-        // @ts-ignore
-        accessorKey={accessorKey}
-        // @ts-ignore
-        filterVariant={filterVariant}
-        getFacetedUniqueValues={getFacetedUniqueValues}
-        getCanFilter={getCanFilter}
-        setFilterValue={setFilterValue}
-        getFilterValue={getFilterValue}
+      {children}
+      <HeaderSort
+        getCanSort={getCanSort}
+        getIsSorted={getIsSorted}
+        getToggleSortingHandler={getToggleSortingHandler}
       />
-    </VStack>
+    </HStack>
   )
+
+  if (isFilterable) {
+    return (
+      <VStack
+        width={'100%'}
+        height={'100%'}
+        justifyContent={'start'}
+        alignItems={'start'}
+      >
+        {commonPart}
+        <FilterContent
+          // @ts-ignore
+          accessorKey={accessorKey}
+          // @ts-ignore
+          filterVariant={filterVariant}
+          getFacetedUniqueValues={getFacetedUniqueValues}
+          getCanFilter={getCanFilter}
+          setFilterValue={setFilterValue}
+          getFilterValue={getFilterValue}
+        />
+      </VStack>
+    )
+  }
+
+  return commonPart
 }

@@ -16,7 +16,7 @@ export function serviceFabric<T extends object> (
       // @ts-ignore
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось загрузить ${collectionLabel}`,
+        title: `Не удалось загрузить ${collectionLabel}`,
         type: "error",
       })
 
@@ -38,7 +38,7 @@ export function serviceFabric<T extends object> (
       // @ts-ignore
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось загрузить ${collectionLabel}`,
+        title: `Не удалось загрузить ${collectionLabel}`,
         type: "error",
       })
 
@@ -64,7 +64,7 @@ export function serviceFabric<T extends object> (
       // @ts-ignore
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось создать ${collectionLabel}`,
+        title: `Не удалось создать ${collectionLabel}`,
         type: "error",
       })
 
@@ -92,7 +92,7 @@ export function serviceFabric<T extends object> (
       // @ts-ignore
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось изменить ${collectionLabel}`,
+        title: `Не удалось изменить ${collectionLabel}`,
         type: "error",
       })
 
@@ -115,7 +115,7 @@ export function serviceFabric<T extends object> (
       // @ts-ignore
     } catch (e: object) {
       toaster.create({
-        description: `Не удалось удалить ${collectionLabel}`,
+        title: `Не удалось удалить ${collectionLabel}`,
         type: "error",
       })
 
