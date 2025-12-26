@@ -17,8 +17,12 @@ export function FrameSet <T extends FieldValues>({
   control,
   errors,
 }: FrameSetProps<T>){
-  const getIsErrors = (key: number) => {
+  const getFrameError = (key: number) => {
     return !!get(errors, `data.${key}`)
+  }
+
+  const getMeasuringDataError = () => {
+    return !!get(errors, `data`)
   }
 
   const getCellContent = (cellText: string) => {
@@ -48,6 +52,7 @@ export function FrameSet <T extends FieldValues>({
         }}
       >
         <Text
+          {...(getMeasuringDataError() && {color: 'red'})}
           justifySelf={'center'}
           position={'relative'}
         >
@@ -90,7 +95,7 @@ export function FrameSet <T extends FieldValues>({
                         <Text
                           width={"35px"}
                           alignSelf={'center'}
-                          {...(getIsErrors(frequency) && {color: 'red'})}
+                          {...(getFrameError(frequency) && {color: 'red'})}
                         >
                           {frequency}гц
                         </Text>
