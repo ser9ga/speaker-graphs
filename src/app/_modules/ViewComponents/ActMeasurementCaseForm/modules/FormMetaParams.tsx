@@ -1,12 +1,13 @@
 'use client'
 
-import {Button, ScrollArea, Stack} from "@chakra-ui/react"
+import {Button, DownloadTrigger, HStack, ScrollArea, Stack} from "@chakra-ui/react"
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {ConfirmActionPopover} from "@/app/_modules/ViewComponents/ConfirmActionPopover/ConfirmActionPopover";
 import {
   CabinetFromCatalogue,
-  CarFromCatalogue, EditableMeasurementCaseFromCatalogue,
+  CarFromCatalogue,
+  EditableMeasurementCaseFromCatalogue,
   MeasurementCaseFromCatalogue,
   PortFromCatalogue,
   SpeakerFromCatalogue
@@ -27,6 +28,8 @@ interface ActEntityFormProps {
   handleSubmit: UseFormHandleSubmit<EditableMeasurementCaseFromCatalogue, EditableMeasurementCaseFromCatalogue>,
   trigger: (name?: (FieldPath<EditableMeasurementCaseFromCatalogue> | FieldPath<EditableMeasurementCaseFromCatalogue>[]), options?: TriggerConfig) => Promise<boolean>
   onSave: (values: MeasurementCaseFromCatalogue) => void
+  onExport: () => Promise<string>,
+  getFileName: () => string,
   confirmText?: string
   confirmButtonLabel?: string
   onDeleteConfirmPopoverExit?: () => void,
@@ -37,6 +40,8 @@ export const FormMetaParams = ({
   handleSubmit,
   trigger,
   onSave,
+  onExport,
+  getFileName,
   confirmText,
   confirmButtonLabel,
   onDeleteConfirmPopoverExit
@@ -125,17 +130,32 @@ export const FormMetaParams = ({
                 isTextarea: true,
               }}
             />
-            <ConfirmActionPopover
-              header={confirmText ||'Сохранить?'}
-              onConfirm={onSubmit}
-              onExitComplete={onDeleteConfirmPopoverExit}
-              confirmButtonLabel={confirmButtonLabel || 'Сохранить'}
-              beforePopover={trigger}
-            >
-              <Button alignSelf={'end'}>
-                {'Сохранить'}
-              </Button>
-            </ConfirmActionPopover>
+            <HStack>
+              <ConfirmActionPopover
+                header={confirmText ||'Сохранить?'}
+                onConfirm={onSubmit}
+                onExitComplete={onDeleteConfirmPopoverExit}
+                confirmButtonLabel={confirmButtonLabel || 'Сохранить'}
+                beforePopover={trigger}
+              >
+                <Button alignSelf={'end'}>
+                  Сохранить
+                </Button>
+              </ConfirmActionPopover>
+              <DownloadTrigger
+                data={onExport}
+                fileName={getFileName()}
+                mimeType="text/plain"
+                asChild
+              >
+                <Button
+                  alignSelf={'end'}
+                  variant={'outline'}
+                >
+                  Экспортировать
+                </Button>
+              </DownloadTrigger>
+            </HStack>
           </Stack>
         </ScrollArea.Content>
       </ScrollArea.Viewport>

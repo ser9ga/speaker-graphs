@@ -9,6 +9,9 @@ import {
 } from "@/app/_modules/Types/dataFromCatalogue";
 import {FrameSet} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/modules/FrameSet";
 import {FormMetaParams} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/modules/FormMetaParams";
+import {toaster} from "@/app/_modules/components/ui/toaster";
+import {parseMeasuringCaseFromCatalogToCSV} from "@/app/_modules/Utils/parseMeasuringCaseFromCatalogToCSV";
+import {getExportedCSVFileName} from "@/app/_modules/Utils/getExportedCSVFileName";
 
 interface ActEntityFormProps {
   values: EditableMeasurementCaseFromCatalogue,
@@ -29,10 +32,34 @@ export const ActMeasurementCaseForm = ({
     handleSubmit,
     control,
     formState: { errors },
-    trigger
+    trigger,
+    getValues
   } = useForm<EditableMeasurementCaseFromCatalogue>({values});
 
   const onSubmit = handleSubmit((data) => onSave(data as MeasurementCaseFromCatalogue))
+
+  const onExport  = async () => {
+    const flag = await trigger()
+
+    if (flag) {
+      const values = getValues();
+
+      toaster.create({
+        title: 'Экспорт завершен',
+        type: "success",
+      })
+
+      return parseMeasuringCaseFromCatalogToCSV(values as MeasurementCaseFromCatalogue)
+    } else {
+      toaster.create({
+        title: 'Экспорт не выполнен',
+        description: 'Некорректные значения в форме',
+        type: "error",
+      })
+    }
+  }
+
+  const getFileName = () => getExportedCSVFileName(getValues() as MeasurementCaseFromCatalogue)
 
   return (
     <form
@@ -50,6 +77,9 @@ export const ActMeasurementCaseForm = ({
           handleSubmit={handleSubmit}
           trigger={trigger}
           onSave={onSave}
+          // @ts-ignore
+          onExport={onExport}
+          getFileName={getFileName}
           confirmText={confirmText}
           confirmButtonLabel={confirmButtonLabel}
           onDeleteConfirmPopoverExit={onDeleteConfirmPopoverExit}
