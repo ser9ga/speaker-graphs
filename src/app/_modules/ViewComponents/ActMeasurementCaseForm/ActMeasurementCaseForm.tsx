@@ -49,7 +49,11 @@ export const ActMeasurementCaseForm = ({
         type: "success",
       })
 
-      return parseMeasuringCaseFromCatalogToCSV(values as MeasurementCaseFromCatalogue)
+      const result = parseMeasuringCaseFromCatalogToCSV(values as MeasurementCaseFromCatalogue)
+
+      return new Blob([`\ufeff${result}`], {
+        type: 'text/csv;charset=utf-8'
+      })
     } else {
       toaster.create({
         title: 'Экспорт не выполнен',

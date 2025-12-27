@@ -145,7 +145,7 @@ export const FormMetaParams = ({
               <DownloadTrigger
                 data={onExport}
                 fileName={getFileName()}
-                mimeType="text/plain"
+                mimeType="text/csv"
                 asChild
               >
                 <Button

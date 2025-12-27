@@ -38,6 +38,7 @@ export const EntityActionTableCell: FC<Props> = ({
                 alignItems={'start'}
               >
                 <Button
+                  size={'sm'}
                   variant="solid"
                   onClick={() => {
                     setIsOpened(false)
@@ -54,6 +55,7 @@ export const EntityActionTableCell: FC<Props> = ({
                   onExitComplete={() => setIsOpened(false)}
                 >
                   <Button
+                    size={'sm'}
                     variant="surface"
                   >
                     <MdOutlineDeleteForever/>
