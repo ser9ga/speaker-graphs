@@ -8,7 +8,7 @@ import {
   MeasurementCaseFromCatalogue
 } from "@/app/_modules/Types/dataFromCatalogue";
 import {FrameSet} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/modules/FrameSet";
-import {FormMetaParams} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/modules/FormMetaParams";
+import FormMetaParams from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/modules/FormMetaParams";
 import {toaster} from "@/app/_modules/components/ui/toaster";
 import {parseMeasuringCaseFromCatalogToCSV} from "@/app/_modules/Utils/parseMeasuringCaseFromCatalogToCSV";
 import {getExportedCSVFileName} from "@/app/_modules/Utils/getExportedCSVFileName";

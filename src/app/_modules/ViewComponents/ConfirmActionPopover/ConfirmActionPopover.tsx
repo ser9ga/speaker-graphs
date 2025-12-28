@@ -21,21 +21,21 @@ export const ConfirmActionPopover: FC<ConfirmActionPopoverProps> = ({
   onExitComplete,
   beforePopover
 }) => {
-  const [open, setOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Popover.Root
       onExitComplete={onExitComplete}
-      open={open}
+      open={isOpen}
       onOpenChange={async (e) => {
         if (e.open && typeof beforePopover === "function") {
           const releaseFlag = await beforePopover();
 
           if (releaseFlag) {
-            setOpen(e.open)
+            setIsOpen(e.open)
           }
         } else {
-          setOpen(e.open)
+          setIsOpen(e.open)
         }
       }}
     >

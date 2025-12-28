@@ -1,10 +1,47 @@
 import * as React from "react";
-import {services} from "@/app/_modules/services";
-import {SPEAKERS_ENTITIES_FIELD_NAME, SPEAKERS_FIELD_LABEL} from "@/app/_modules/Constants";
 import {EntityTable} from "@/app/_modules/ViewComponents/EntityTable/EntityTable";
+import {SPEAKERS_ENTITIES_FIELD_NAME, SPEAKERS_FIELD_LABEL} from "@/app/_modules/Constants";
 import {ENTITY_NAME} from "@/app/_modules/Constants/EntityName";
+import {
+  useCreateSpeakersMutation,
+  useDeleteSpeakersMutation,
+  useGetAllSpeakersQuery,
+  useUpdateSpeakersMutation
+} from "@/app/_modules/Store/Api/SpeakersApi";
+import {SpeakerFromCatalogue} from "@/app/_modules/Types/dataFromCatalogue";
+
+type ApiEntityType = SpeakerFromCatalogue;
 
 export const SpeakersEntityTable = () => {
+  const {data: entities, isLoading: isGetAllLoading} = useGetAllSpeakersQuery();
+  const [createEntities] = useCreateSpeakersMutation();
+  const [updateEntities] = useUpdateSpeakersMutation();
+  const [deleteEntities] = useDeleteSpeakersMutation();
+
+  const onEntityAdd = async (
+    values: Omit<ApiEntityType, 'id'>,
+    callback?: () => void
+  ) => {
+    await createEntities(values);
+    callback?.();
+  }
+
+  const onEntityEdit = async (
+    values: ApiEntityType,
+    callback?: () => void
+  ) => {
+    await updateEntities(values);
+    callback?.();
+  }
+
+  const onEntityDelete = async (
+    id: ApiEntityType['id'],
+    callback?: () => void
+  ) => {
+    await deleteEntities(id);
+    callback?.();
+  }
+
   return (
     <EntityTable
       dialogNamePrefix={ENTITY_NAME.SPEAKER}
@@ -43,7 +80,11 @@ export const SpeakersEntityTable = () => {
           fieldType: 'textArea'
         },
       ]}
-      entityService={services.speakers}
+      entities={entities}
+      onEntityAdd={onEntityAdd}
+      onEntityEdit={onEntityEdit}
+      onEntityDelete={onEntityDelete}
+      isLoading={isGetAllLoading}
     />
   )
 }

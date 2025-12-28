@@ -42,7 +42,6 @@ export const parseMeasuringCaseFromCatalogToCSV = (rawValues: MeasurementCaseFro
 
   const dataRowsCollection = Object.entries(rawValues.data)
     .map(([key, frameDate]) => {
-      console.log('String(frameDate.Uin).replace(\'.\', \',\') || \'\'', String(frameDate.Uin).replace('.', ',') || '')
       return [
         String(key) || '',
         normalize(frameDate.Uin),

@@ -19,7 +19,7 @@ interface MeasurementCaseTableProps {
   getVisibleCells: () => Cell<MeasurementCaseFromCatalogue, unknown>[]
   getDialogFullName: (param: number | 'new') => string
   onEntityEdit: (id: MeasurementCaseFromCatalogue['id'], value: MeasurementCaseFromCatalogue) => void,
-  onEntityDelete: (id: MeasurementCaseFromCatalogue['id']) => void,
+  onEntityDelete: (id: MeasurementCaseFromCatalogue['id'], callback?: () => void) => void,
   onRowDoubleClick?: (item: MeasurementCaseFromCatalogue) => void
 }
 
@@ -54,7 +54,7 @@ export const TableBodyRow = ({
           size: "cover"
         })
       }}
-      onEntityClick={() => onEntityDelete(original.id)}
+      onDeleteClick={(callback) => onEntityDelete(original.id, callback)}
     />
   )
 

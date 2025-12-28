@@ -40,6 +40,7 @@ import {colorRandomaizerFactory} from "@/app/_modules/Utils/colorRandomaizer";
 import {addOptionsToMeasurementCaseForGraph} from "@/app/_modules/Utils/measurementCaseFormUtils";
 import {setGraphData} from "@/app/_modules/Store/GraphData/GraphDataSlice";
 import {setActiveTab} from "@/app/_modules/Store/AppControl/AppControlSlice";
+import {getDialogFullNameFactory} from "@/app/_modules/Utils/getDialogFullName";
 
 const MeasurementCaseCollection = () => {
   const colorRandomaizer = useMemo(() => colorRandomaizerFactory(), [])
@@ -146,7 +147,7 @@ const MeasurementCaseCollection = () => {
     dispatch(setActiveTab(MAIN_TAB_NAME.GRAPH_DRAWS))
   }
 
-  const getDialogFullName = (id: number | 'new') => `measurementCase_${id}`
+  const getDialogFullName = getDialogFullNameFactory('measurementCase');
 
   const onEntityAdd = async (values: Omit<MeasurementCaseFromCatalogue, 'id'>) => {
     const res = await measurementCaseService.add(values);

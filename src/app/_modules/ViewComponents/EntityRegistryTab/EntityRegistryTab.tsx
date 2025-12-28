@@ -8,11 +8,11 @@ import * as React from "react";
 import {useCallback, useState} from "react";
 import {RiSpeaker2Line} from "react-icons/ri";
 import {IoCarOutline} from "react-icons/io5";
+import {CabinetsEntityTable} from "@/app/_modules/ViewComponents/CabinetsEntityTable/CabinetsEntityTable";
+import {CarsEntityTable} from "@/app/_modules/ViewComponents/CarsEntityTable/CarsEntityTable";
+import {PortsEntityTable} from "@/app/_modules/ViewComponents/PortsEntityTable/PortsEntityTable";
 import {SpeakersEntityTable} from "@/app/_modules/ViewComponents/SpeakersEntityTable/SpeakersEntityTable";
 import {_exhaustiveCheck} from "@/app/_modules/Utils/Common";
-import {CabinetsEntityTable} from "@/app/_modules/ViewComponents/CabinetsEntityTable/CabinetsEntityTable";
-import {PortsEntityTable} from "@/app/_modules/ViewComponents/PortsEntityTable/PortsEntityTable";
-import {CarsEntityTable} from "@/app/_modules/ViewComponents/CarsEntityTable/CarsEntityTable";
 import {ENTITY_CATEGORY_NAME, EntityCategoryName} from "@/app/_modules/Constants/EntityCategoryName";
 
 export const EntityRegistryTab = () => {

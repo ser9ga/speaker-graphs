@@ -7,21 +7,21 @@ import {VscTools} from "react-icons/vsc";
 
 interface Props {
   width?: number,
-  onEntityClick: () => void;
   onEditClick: (exitCallback?: () => void) => void;
+  onDeleteClick: (callback?: () => void) => void;
 }
 
 export const EntityActionTableCell: FC<Props> = ({
-  onEntityClick,
-  onEditClick
+  onEditClick,
+  onDeleteClick
 }) => {
-  const [isOpened, setIsOpened] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Popover.Root
-      open={isOpened}
+      open={isOpen}
       onOpenChange={async (e) => {
-        setIsOpened(e.open)
+        setIsOpen(e.open)
       }}
     >
       <Popover.Trigger>
@@ -41,8 +41,8 @@ export const EntityActionTableCell: FC<Props> = ({
                   size={'sm'}
                   variant="solid"
                   onClick={() => {
-                    setIsOpened(false)
-                    onEditClick(() => setIsOpened(false))
+                    setIsOpen(false)
+                    onEditClick(() => setIsOpen(false))
                   }}
                 >
                   <MdOutlineEdit/>
@@ -51,8 +51,8 @@ export const EntityActionTableCell: FC<Props> = ({
 
                 <ConfirmActionPopover
                   header={'Выполнить удаление?'}
-                  onConfirm={onEntityClick}
-                  onExitComplete={() => setIsOpened(false)}
+                  onConfirm={() => onDeleteClick(() => setIsOpen(false))}
+                  onExitComplete={() => setIsOpen(false)}
                 >
                   <Button
                     size={'sm'}

@@ -1,19 +1,14 @@
 'use client'
 
-import {Button, HStack, List} from "@chakra-ui/react"
+import {Button, HStack, List, Text} from "@chakra-ui/react"
 import * as React from "react";
-import {useEffect, useState} from "react";
 import {IoIosAdd} from "react-icons/io";
 import {commonDialog} from "@/app/_modules/ViewComponents/CommonDialog/CommonDialog";
 import {ActMeasurementCaseForm} from "@/app/_modules/ViewComponents/ActMeasurementCaseForm/ActMeasurementCaseForm";
 import {generateEmptyCatalogMeasurementCase} from "@/app/_modules/Utils/measurementCaseFormUtils";
 import {
-  CabinetFromCatalogue,
-  CarFromCatalogue,
   EditableMeasurementCaseFromCatalogue,
-  MeasurementCaseFromCatalogue,
-  PortFromCatalogue,
-  SpeakerFromCatalogue
+  MeasurementCaseFromCatalogue
 } from "@/app/_modules/Types/dataFromCatalogue";
 import {PiFileCsvLight, PiFolderLight} from "react-icons/pi";
 import {importFilesDialog} from "@/app/_modules/ViewComponents/ImportFilesDialog/ImportFilesDialog";
@@ -26,6 +21,10 @@ import {CSVFileAttributes} from "@/app/_modules/Types/csv";
 import {errorListDrawer} from "@/app/_modules/ViewComponents/ErrorListDrawer/ErrorListDrawer";
 import {TbFilterOff} from "react-icons/tb";
 import {Table as TanstackTable} from "@tanstack/react-table";
+import {useGetAllSpeakersQuery} from "@/app/_modules/Store/Api/SpeakersApi";
+import {useGetAllCabinetsQuery} from "@/app/_modules/Store/Api/CabinetsApi";
+import {useGetAllPortsQuery} from "@/app/_modules/Store/Api/PortsApi";
+import {useGetAllCarsQuery} from "@/app/_modules/Store/Api/CarsApi";
 
 interface Props {
   table: TanstackTable<MeasurementCaseFromCatalogue>
@@ -43,25 +42,23 @@ export const MeasurementCaseCollectionTableActionBar: React.FC<Props> = ({
   getMeasurementCases,
   isResetFiltersDisabled
 }) => {
-  // TODO переделать на RTQ
-  const [speakers, setSpeakers] = useState<SpeakerFromCatalogue[] | null>(null);
-  const [cabinets, setCabinets] = useState<CabinetFromCatalogue[] | null>(null);
-  const [ports, setPorts] = useState<PortFromCatalogue[] | null>(null);
-  const [cars, setCars] = useState<CarFromCatalogue[] | null>([]);
+  const {data: speakers} = useGetAllSpeakersQuery();
+  const {data: cabinets} = useGetAllCabinetsQuery();
+  const {data: ports} = useGetAllPortsQuery();
+  const {data: cars} = useGetAllCarsQuery();
 
-  useEffect(() => {
-    (async () => {
-      const speakersRes = await services.speakers.getAll()
-      const cabinetsRes = await services.cabinets.getAll()
-      const portsRes = await services.ports.getAll()
-      const carsRes = await services.cars.getAll()
-
-      setSpeakers(speakersRes)
-      setCabinets(cabinetsRes)
-      setPorts(portsRes)
-      setCars(carsRes)
-    })()
-  }, [])
+  if (
+    !speakers
+    || !cabinets
+    || !ports
+    || !cars
+  ) {
+    return (
+      <Text>
+        Проблема с загрузкой реестров
+      </Text>
+    )
+  }
 
   const resetFilters = () => {
     table.resetColumnFilters();
